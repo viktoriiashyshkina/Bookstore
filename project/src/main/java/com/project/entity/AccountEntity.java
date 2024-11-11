@@ -23,6 +23,8 @@ public class AccountEntity {
   @Column(name = "account_id")
   private Long id;
 
+  private String username = getEmail();
+
   private String firstName;
 
   private String lastName;
