@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AccountController {
 
-  @GetMapping("/login/user")
+  @GetMapping("/login")
   public String showLoginPage() {
 //    if (userIsAuthenticated()) {
 //      return "redirect:/user/home";  // Redirect authenticated users to home
 //    }
-    return "login-user";  // Show login page for unauthenticated users
+    return "login";  // Show login page for unauthenticated users
   }
 
 
