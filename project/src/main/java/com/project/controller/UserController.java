@@ -47,10 +47,10 @@ public class UserController {
   }
 
   // Redirect users based on roles
-  @GetMapping("/home")
-  public String homePage() {
-    return "home"; // Show home page
-  }
+//  @GetMapping("/home")
+//  public String homePage() {
+//    return "home"; // Show home page
+//  }
 
 
 }

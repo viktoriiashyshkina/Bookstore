@@ -55,7 +55,7 @@ public class SecurityConfiguration {
           .authorizeHttpRequests(authorize -> authorize
               .requestMatchers("/admin/**").hasRole("ADMIN")
               .requestMatchers("/user/**").hasRole("USER")
-              .requestMatchers("/login", "/signup", "/").permitAll()
+              .requestMatchers("/login", "/signup", "/", "/home").permitAll()
               .requestMatchers("signup/**").permitAll()
               .requestMatchers("/books/**").permitAll()
               .anyRequest().authenticated()
