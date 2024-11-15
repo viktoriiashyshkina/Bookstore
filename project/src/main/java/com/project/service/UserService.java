@@ -43,16 +43,13 @@ public class UserService implements UserDetailsService {
   }
 
 
-  public void saveUser(String username, String email, String password) {
-    if (findByUsername(username) != null) {
-      throw new UserAlreadyExistsException("Username '" + username + "' is already taken");
-    }
+  public void saveUser(String username, String email, String password, Role role) {
 
     User newUser = new User();
     newUser.setUsername(username);
     newUser.setEmail(email);
-    newUser.setPassword(passwordEncoder.encode(password));  // Encrypt password
-
+    newUser.setPassword(passwordEncoder.encode(password));
+    newUser.setRoles(Set.of(role));
     userRepository.save(newUser);
 
     System.out.println(newUser.getUsername());
