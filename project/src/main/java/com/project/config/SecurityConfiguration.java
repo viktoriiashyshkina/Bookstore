@@ -57,6 +57,7 @@ public class SecurityConfiguration {
               .requestMatchers("/user/**").hasRole("USER")
               .requestMatchers("/login", "/signup", "/").permitAll()
               .requestMatchers("signup/**").permitAll()
+              .requestMatchers("/books/**").permitAll()
               .anyRequest().authenticated()
           )
           .formLogin(login -> login

@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Book Store</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+  <style>
+    .book-container {
+        display: flex;
+        align-items: flex-start;
+        margin: 20px 0;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 20px;
+        max-width: 900px;
+    }
+
+    .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+    .book-image {
+        width: 150px;
+        height: 200px;
+        background-color: #f0f0f0;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.1rem;
+        color: #888;
+        margin-right: 20px;
+    }
+
+    .book-info {
+        flex-grow: 1;
+    }
+
+    .book-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+    .book-author {
+        color: #666;
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+    }
+
+    .add-book-container,
+    .edit-book-container {
+        display: none;
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .image-upload {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .image-upload-frame {
+        width: 150px;
+        height: 200px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px dashed #888;
+        background-color: #f0f0f0;
+        cursor: pointer;
+        font-size: 2rem;
+        color: #666;
+        position: relative;
+    }
+
+    .image-upload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.upload-icon-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+        opacity: 0;
+    transition: opacity 0.3s ease;
+    }
+
+    .upload-icon-container:hover {
+    opacity: 1;
+}
+
+
+    .upload-icon {
+    font-size: 2rem;
+    color: #666;
+}
+
+
+    .image-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: none;
+    }
+  </style>
+  <script>
+    // Toggle Add Book Form visibility
+    function toggleAddBook() {
+        const container = document.getElementById("addBookContainer");
+        container.style.display = container.style.display === "none" ? "block" : "none";
+    }
+
+
+    // Toggle Edit Book Form visibility for a specific book
+    function toggleEditBook(bookId) {
+        const editContainer = document.getElementById(`editBookContainer-${bookId}`);
+
+        // Toggle the visibility of the corresponding edit container
+        if (editContainer) {
+            const isCurrentlyVisible = editContainer.style.display === "block";
+            editContainer.style.display = isCurrentlyVisible ? "none" : "block";
+        }
+    }
+
+
+
+    // Preview the uploaded image
+    function previewImage(event, previewId) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            const output = document.getElementById(previewId);
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
+</head>
+<body>
+<div class="container">
+  <h1 class="my-4">Book Store</h1>
+
+  <!-- Add Book Button -->
+  <div class="d-flex justify-content-start">
+    <button type="button" class="btn btn-primary mb-3" onclick="toggleAddBook()">+ Add Book</button>
+  </div>
+
+  <!-- Add Book Form -->
+  <div id="addBookContainer" class="add-book-container">
+    <form th:action="@{/books/add}" method="post" enctype="multipart/form-data">
+      <div class="image-upload">
+        <label for="imageUpload" class="image-upload-frame">
+          <span id="uploadIcon" style="display: block;">+</span>
+          <img id="imagePreview" class="image-preview" alt="Preview">
+        </label>
+        <input type="file" id="imageUpload" name="image" accept="image/*" onchange="previewImage(event, 'imagePreview')" style="display: none;">
+      </div>
+
+      <input type="text" class="form-control mb-3" name="title" placeholder="Add title" required>
+      <input type="text" class="form-control mb-3" name="author" placeholder="Add author" required>
+      <input type="text" class="form-control mb-3" name="category" placeholder="Add category">
+      <textarea class="form-control mb-3" name="description" placeholder="Add description"></textarea>
+      <input type="text" class="form-control mb-3" name="isbn" placeholder="Add ISBN" required>
+      <input type="number" step="0.01" class="form-control mb-3" name="price" placeholder="Add price" required>
+
+      <button type="submit" class="btn btn-primary">Save Book</button>
+    </form>
+  </div>
+
+  <!-- Display Books -->
+  <div th:each="book : ${books}" class="book-container">
+    <div class="book-image" th:if="${book.image == null}">No picture</div>
+<!--    <img th:src="@{${book.image}}" th:if="${book.image != null}" class="book-image" alt="Book Image">-->
+    <img th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}"  th:if="${book.image != null}" class="book-image" alt="Book Image">
+    <div class="book-info">
+      <div class="book-title" th:text="${book.title}">Book Title</div>
+      <div class="book-author">by <span th:text="${book.author}">Author Name</span></div>
+      <p>Category: <span th:text="${book.category}">Category</span></p>
+      <p>ISBN: <span th:text="${book.isbn}">ISBN</span></p>
+      <p>Price: $<span th:text="${book.price}">Price</span></p>
+      <p>Id: <span th:text="${book.id}">Id</span></p>
+    </div>
+
+    <!-- Edit Button -->
+<!--    <button class="btn btn-secondary" onclick="toggleEditBook()">Edit</button>-->
+
+    <button class="btn btn-secondary" th:onclick="|toggleEditBook('${book.id}')|">Edit</button>
+
+    <!-- Edit Book Form (Hidden by Default) -->
+    <div th:id="|editBookContainer-${book.id}|" class="edit-book-container">
+      <form th:action="@{/books/edit/{id}(id=${book.id})}" method="post" enctype="multipart/form-data">
+
+
+        <div class="image-upload">
+          <label th:for="|editImageUpload-${book.id}|" class="image-upload-frame">
+            <div class="image-upload-content">
+<!--            <span style="display: block;">+</span>-->
+            <img th:id="|editImagePreview-${book.id}|" th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" th:if="${book.image != null}" class="image-preview" alt="Preview" style="display: block;">
+            <img th:id="|editImagePreview-${book.id}|" src="#" class="image-preview" alt="Preview" style="display: none;">
+              <div class="upload-icon-container">
+                <span class="upload-icon">+</span>
+              </div>
+            </div>
+          </label>
+          <input type="file" th:id="|editImageUpload-${book.id}|" name="image" accept="image/*" th:onchange="|previewImage(event, 'editImagePreview-${book.id}')|" style="display: none;">
+        </div>
+
+
+        <input type="text" class="form-control mb-3" name="title" th:value="${book.title}" required>
+        <input type="text" class="form-control mb-3" name="author" th:value="${book.author}" required>
+        <input type="text" class="form-control mb-3" name="category" th:value="${book.category}">
+        <textarea class="form-control mb-3" name="description" th:text="${book.description}"></textarea>
+        <input type="text" class="form-control mb-3" name="isbn" th:value="${book.isbn}" required>
+        <input type="number" step="0.01" class="form-control mb-3" name="price" th:value="${book.price}" required>
+
+        <button type="submit" class="btn btn-primary">Update Book</button>
+      </form>
+    </div>
+
+
+
+
+
+<!--    <div id="editBookContainer-book.id" class="edit-book-container">-->
+<!--      <div th:id="|editBookContainer-${book.id}|" class="edit-book-container">-->
+<!--      <form th:action="@{/books/add}" method="post" enctype="multipart/form-data">-->
+<!--        <div class="image-upload">-->
+<!--          <label for="imageUpload" class="image-upload-frame">-->
+<!--            <span id="uploadIcon1" style="display: block;">+</span>-->
+<!--            <img id="imagePreview1" class="image-preview" alt="Preview">-->
+<!--          </label>-->
+<!--          <input type="file" id="imageUpload1" name="image" accept="image/*" onchange="previewImage(event, 'imagePreview')" style="display: none;">-->
+<!--        </div>-->
+
+<!--        <form th:action="@{/books/edit/{id}(id=${book.id})}" method="post" enctype="multipart/form-data">-->
+<!--          &lt;!&ndash; Hidden field to store the book ID for editing &ndash;&gt;-->
+<!--          &lt;!&ndash;      <input type="hidden" id="editBookId" name="id">&ndash;&gt;-->
+<!--          <div class="image-upload">-->
+<!--            <label for="editImageUpload" class="image-upload-frame">-->
+<!--              <span style="display: block;">+</span>-->
+<!--              <img id="editImagePreview" class="image-preview" alt="Preview" style="display: none;">-->
+<!--            </label>-->
+<!--            <input type="file" id="editImageUpload" name="image" accept="image/*" onchange="previewImage(event, 'editImagePreview')" style="display: none;">-->
+<!--          </div>-->
+
+<!--        <input type="text" class="form-control mb-3" name="title" placeholder="Add title" required>-->
+<!--        <input type="text" class="form-control mb-3" name="author" placeholder="Add author" required>-->
+<!--        <input type="text" class="form-control mb-3" name="category" placeholder="Add category">-->
+<!--        <textarea class="form-control mb-3" name="description" placeholder="Add description"></textarea>-->
+<!--        <input type="text" class="form-control mb-3" name="isbn" placeholder="Add ISBN" required>-->
+<!--        <input type="number" step="0.01" class="form-control mb-3" name="price" placeholder="Add price" required>-->
+
+<!--        <button type="submit" class="btn btn-primary">Update Book</button>-->
+<!--      </form>-->
+<!--    </div>-->
+
+
+
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
