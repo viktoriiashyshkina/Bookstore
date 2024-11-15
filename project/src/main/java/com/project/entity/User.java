@@ -12,6 +12,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.HashSet;
@@ -42,6 +45,12 @@ public class User implements UserDetails {
 
   @Column(name = "password")
   private String password;
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+  @Column(name = "role")
+  @Enumerated(EnumType.STRING)
+  private Set<Role> roles = new HashSet<>();
 
 
   @Override
