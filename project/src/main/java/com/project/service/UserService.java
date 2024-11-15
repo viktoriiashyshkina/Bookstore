@@ -42,25 +42,8 @@ public class UserService implements UserDetailsService {
     return userRepository.findByUsername(username);
   }
 
-//  @Override
-//  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//    Optional<User> user = userRepository.findByUsername(username);
-//
-//    if (user.isEmpty()) {
-//      throw new UsernameNotFoundException("No ser with username" + username);
-//    }
-//    return org.springframework.security.core.userdetails.User
-//        .withUsername(user.get().getUsername())
-//        .password(user.get().getPassword()).build();
-//  }
-//
-//  public Optional<User> findByUsername(String username) {
-//    return userRepository.findByUsername(username);
-//  }
-//
-//
-//
-  public void saveUser(String username, String email, String password, Role role) {
+
+  public void saveUser(String username, String email, String password) {
     if (findByUsername(username) != null) {
       throw new UserAlreadyExistsException("Username '" + username + "' is already taken");
     }
@@ -69,7 +52,7 @@ public class UserService implements UserDetailsService {
     newUser.setUsername(username);
     newUser.setEmail(email);
     newUser.setPassword(passwordEncoder.encode(password));  // Encrypt password
-    newUser.setRole(Role.USER);  // Use the passed role
+
     userRepository.save(newUser);
 
     System.out.println(newUser.getUsername());
@@ -77,16 +60,6 @@ public class UserService implements UserDetailsService {
   }
 
 
-
-//  // Register new user with roles and password encoding
-//  private User registerNewUser(User user) {
-//    if (isUsernameTaken(user.getUsername())) {
-//      throw new UserAlreadyExistsException("Username '" + user.getUsername() + "' is already taken");
-//    }
-//
-//    user.setPassword(passwordEncoder.encode(user.getPassword()));  // Encrypt password
-//    return userRepository.save(user);
-//  }
 }
 
 
