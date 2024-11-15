@@ -21,7 +21,7 @@ public class AccountService {
     return accountRepository.findByUsername(username);
   }
   public void saveAccountToDatabase (AccountEntity account) {
-    accountRepository.save(account);
+     accountRepository.save(account);
   }
 
   public String getLoggedInAccount() {
@@ -34,8 +34,6 @@ public class AccountService {
     AccountEntity account = getAccount(accountName);
     return account.getOrderList();
   }
-
-
 
 
 }
