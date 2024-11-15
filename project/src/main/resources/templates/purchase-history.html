@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase History - Bookstore</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            width: 100%;
+            height: 110px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #444;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background-color: #666;
+        }
+
+        .nav-left {
+            flex: 1;
+        }
+
+        .nav-center {
+            flex: 2;
+            text-align: center;
+        }
+
+        .nav-right {
+            flex: 1;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .nav-center form {
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-center input[type="text"] {
+            padding: 10px;
+            width: 250px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .nav-center button {
+            padding: 6px 12px;
+            margin-left: 10px;
+            background-color: #666;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .nav-center button:hover {
+            background-color: #555;
+        }
+
+        .category-dropdown {
+            display: inline-block;
+        }
+
+        .category-dropdown select {
+            padding: 5px;
+            margin-top: 10px;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        .purchase-history-table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        .purchase-history-table th, .purchase-history-table td {
+            padding: 12px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .purchase-history-table th {
+            background-color: #444;
+            color: white;
+        }
+
+        .purchase-history-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .purchase-history-table tr:hover {
+            background-color: #ddd;
+        }
+
+        .nav-right img {
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="../images/banner.jpg" alt="Welcome to the Bookstore">
+</header>
+
+<nav>
+    <div class="nav-left">
+        <a href="../index.html#home">Home</a>
+        <div class="category-dropdown">
+            <select onchange="window.location = this.value;">
+                <option value="">Select Category</option>
+                <option value="../category.html#fiction">Fiction</option>
+                <option value="../category.html#non-fiction">Non-fiction</option>
+                <option value="../category.html#mystery">Mystery</option>
+                <option value="../category.html#fantasy">Fantasy</option>
+            </select>
+        </div>
+    </div>
+    <div class="nav-center">
+        <form action="#searchResults" method="get">
+            <input type="text" name="search" placeholder="Search books..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="nav-right">
+        <a href="../signup.html#account">My Account</a>
+        <a href="../signup.html#signup">Sign Up</a>
+        <a href="../signup.html#login">Login</a>
+        <a href="../signup.html#basket"><img src="../images/purchase.png" alt="Shopping Basket"></a>
+    </div>
+</nav>
+
+<div class="main-content">
+    <h2>Purchase History</h2>
+    <p>Below is a record of your previous purchases.</p>
+
+    <table class="purchase-history-table">
+        <thead>
+            <tr>
+                <th>Book</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Example rows, you can dynamically fill this with actual data -->
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<footer>
+    <p>&copy; 2024 Bookstore. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

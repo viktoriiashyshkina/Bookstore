@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookstore</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            width: 100%;
+            height: 110px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #444;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            white-space: nowrap;
+        }
+
+        nav a:hover {
+            background-color: #666;
+        }
+
+        .nav-left {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-center {
+            flex: 2;
+            text-align: center;
+        }
+
+        .nav-right {
+            flex: 1;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .nav-right .account-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-center form {
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-center input[type="text"] {
+            padding: 10px;
+            width: 250px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .nav-center button {
+            padding: 6px 12px;
+            margin-left: 10px;
+            background-color: #666;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .nav-center button:hover {
+            background-color: #555;
+        }
+
+        .category-dropdown {
+            display: inline-block;
+        }
+
+        .category-dropdown select {
+            padding: 5px;
+            margin-top: 10px;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
+
+        /* Sections for content */
+        section {
+            display: none;
+        }
+
+        section:target {
+            display: block;
+        }
+
+        form input {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        form button {
+            padding: 10px 20px;
+            background-color: #444;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: auto;
+            font-size: 14px;
+        }
+
+        form button:hover {
+            background-color: #333;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .nav-right img {
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+        }
+
+        /* Basket section */
+        .basket-items {
+            margin-top: 20px;
+        }
+
+        .basket-items table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .basket-items th, .basket-items td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .basket-items th {
+            background-color: #444;
+            color: white;
+        }
+
+        .basket-items tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .basket-items tr:hover {
+            background-color: #ddd;
+        }
+
+        .pay-button {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        /* Styling the label to look like a button */
+        .pay-button label {
+            background-color: #444;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .pay-button label:hover {
+            background-color: #333;
+        }
+
+        /* Shipping Form */
+        .shipping-form {
+            display: none;
+            margin-top: 20px;
+        }
+
+        /* CSS for hiding and showing */
+        .pay-checkbox:checked ~ .basket-items {
+            display: none;
+        }
+
+        .pay-checkbox:checked ~ .pay-button {
+            display: none;
+        }
+
+        .pay-checkbox:checked ~ .shipping-form {
+            display: block;
+        }
+
+        .pay-checkbox {
+            display: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="../images/banner.jpg" alt="Welcome">
+</header>
+
+<nav>
+    <div class="nav-left">
+        <a href="index.html">Home</a>
+        <div class="category-dropdown">
+            <select onchange="window.location = this.value;">
+                <option value="">Select Category</option>
+                <option value="category.html#fiction">Fiction</option>
+                <option value="category.html#non-fiction">Non-fiction</option>
+                <option value="category.html#mystery">Mystery</option>
+                <option value="category.html#fantasy">Fantasy</option>
+            </select>
+        </div>
+    </div>
+    <div class="nav-center">
+        <form action="#searchResults" method="get">
+            <input type="text" name="search" placeholder="Search books..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="nav-right">
+        <div class="account-links">
+            <a href="#signup">Sign Up</a>
+            <a href="#login">Login</a>
+            <a href="#account">My Account</a>
+        </div>
+        <a href="#basket"><img src="../images/purchase.png" alt="Shopping Basket"></a>
+    </div>
+</nav>
+
+<section id="signup">
+    <div class="form-container">
+        <h2>Sign Up</h2>
+        <form action="#signup" method="post">
+            <input type="text" placeholder="Username" required>
+            <input type="email" placeholder="Email" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">Sign Up</button>
+        </form>
+    </div>
+</section>
+
+<section id="login">
+    <div class="form-container">
+        <h2>Login</h2>
+        <form action="#login" method="post">
+            <input type="text" placeholder="Username" required>
+            <input type="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</section>
+
+<section id="account">
+    <div class="form-container">
+        <h2>My Account</h2>
+        <form action="#account" method="post">
+            <input type="text" placeholder="Change Name" required>
+            <input type="email" placeholder="Change Email" required>
+            <input type="password" placeholder="Current Password" required>
+            <input type="password" placeholder="New Password">
+            <button type="submit">Update Account</button>
+        </form>
+        <br>
+        <a href="../purchase-history.html" target="_blank">View Purchase History</a>
+    </div>
+</section>
+
+<section id="basket">
+    <h2>Shopping Basket</h2>
+    
+    <!-- This is the content you want to hide -->
+    <div class="basket-items">
+        <table>
+            <thead>
+                <tr>
+                    <th>Book</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Book 1</td>
+                    <td>$15.00</td>
+                    <td>2</td>
+                    <td>$30.00</td>
+                </tr>
+                <tr>
+                    <td>Book 2</td>
+                    <td>$25.00</td>
+                    <td>1</td>
+                    <td>$25.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Label instead of button to trigger the checkbox -->
+    <div class="pay-button">
+        <label for="pay-now">Pay Now</label>
+    </div>
+
+    <!-- Hidden checkbox -->
+    <input type="checkbox" id="pay-now" class="pay-checkbox">
+    
+    <!-- Shipping Form -->
+    <section class="shipping-form">
+        <div class="form-container">
+            <h2>Enter Shipping Information</h2>
+            <form action="../payment.html" method="post">
+                <input type="text" name="full_name" placeholder="Full Name" required>
+                <input type="text" name="address" placeholder="Shipping Address" required>
+                <input type="text" name="city" placeholder="City" required>
+                <input type="text" name="zip" placeholder="Zip Code" required>
+                <button type="submit">Proceed to Payment</button>
+            </form>
+        </div>
+    </section>
+</section>
+
+<footer>
+    <p>&copy; 2024 Bookstore. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
