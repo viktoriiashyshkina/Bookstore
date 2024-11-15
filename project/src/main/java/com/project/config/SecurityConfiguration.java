@@ -54,13 +54,9 @@ public class SecurityConfiguration {
       http
           .authorizeHttpRequests(authorize -> authorize
               .requestMatchers("/admin/**").hasRole("ADMIN")
-              .requestMatchers("/**").hasRole("USER")
-              .requestMatchers(HttpMethod.GET, "/**").hasRole("USER")
-              .requestMatchers(HttpMethod.GET, "/**").hasRole("ADMIN")
-              .requestMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
-              .requestMatchers(HttpMethod.PUT, "/**").hasRole("ADMIN")
-              .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+              .requestMatchers("/user/**").hasRole("USER")
               .requestMatchers("/login", "/signup", "/").permitAll()
+              .requestMatchers("signup/**").permitAll()
               .anyRequest().authenticated()
           )
           .formLogin(login -> login
