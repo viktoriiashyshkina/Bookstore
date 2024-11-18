@@ -15,6 +15,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.MapKeyColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.HashSet;
@@ -51,6 +52,10 @@ public class User implements UserDetails {
   @Column(name = "role")
   @Enumerated(EnumType.STRING)
   private Set<Role> roles = new HashSet<>();
+
+//  @OneToOne(fetch = FetchType.LAZY)
+//  @JoinColumn(name = "account_id")
+//  private AccountEntity account;
 
 
   @Override

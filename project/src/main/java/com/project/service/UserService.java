@@ -4,9 +4,13 @@ import com.project.entity.User;
 import com.project.exception.UserAlreadyExistsException;
 import com.project.repository.UserRepository;
 import com.project.util.Role;
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,17 +32,25 @@ public class UserService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    User user = findByUsername(username);
+    User user = userRepository.findByUsername(username);
     if (user == null) {
-      throw new UsernameNotFoundException("No user with username " + username);
+      throw new UsernameNotFoundException("User not found");
     }
-    return org.springframework.security.core.userdetails.User
-        .withUsername(user.getUsername())
-        .password(user.getPassword())
-        .build();
+    System.out.println("User retrieved: " + user.getUsername());
+    return new org.springframework.security.core.userdetails.User(
+        user.getUsername(),
+        user.getPassword(),
+        mapRolesToAuthorities(user.getRoles())
+    );
   }
+    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles) {
+      return roles.stream()
+          .map(role -> new SimpleGrantedAuthority(role.name())) // Ensure the prefix "ROLE_" is added
+          .collect(Collectors.toList());
+    }
 
-  public User findByUsername(String username) {
+
+    public User findByUsername(String username) {
     return userRepository.findByUsername(username);
   }
 
