@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -255,7 +255,7 @@
 
 <nav>
     <div class="nav-left">
-        <a href="index.html">Home</a>
+        <a th:href="@{/home}">Home</a>
         <div class="category-dropdown">
             <select onchange="window.location = this.value;">
                 <option value="">Select Category</option>
@@ -322,31 +322,31 @@
 
 <section id="basket">
     <h2>Shopping Basket</h2>
-    
+
     <!-- This is the content you want to hide -->
     <div class="basket-items">
         <table>
             <thead>
-                <tr>
-                    <th>Book</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                </tr>
+            <tr>
+                <th>Book</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Book 1</td>
-                    <td>$15.00</td>
-                    <td>2</td>
-                    <td>$30.00</td>
-                </tr>
-                <tr>
-                    <td>Book 2</td>
-                    <td>$25.00</td>
-                    <td>1</td>
-                    <td>$25.00</td>
-                </tr>
+            <tr>
+                <td>Book 1</td>
+                <td>$15.00</td>
+                <td>2</td>
+                <td>$30.00</td>
+            </tr>
+            <tr>
+                <td>Book 2</td>
+                <td>$25.00</td>
+                <td>1</td>
+                <td>$25.00</td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -358,7 +358,7 @@
 
     <!-- Hidden checkbox -->
     <input type="checkbox" id="pay-now" class="pay-checkbox">
-    
+
     <!-- Shipping Form -->
     <section class="shipping-form">
         <div class="form-container">
