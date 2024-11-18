@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -353,12 +353,11 @@
 <body>
 
 <header>
-    <img src="../images/banner.jpg" alt="Welcome to the Bookstore">
-</header>
+    <img th:src="@{/images/banner.jpg}" alt="Welcome to the Bookstore" src=""></header>
 
 <nav>
     <div class="nav-left">
-        <a href="#home">Home</a>
+        <a th:href="@{/home}">Home</a>
         <!-- Category Dropdown -->
         <div class="category-dropdown">
             <select onchange="window.location = this.value;">
@@ -380,7 +379,9 @@
         <a href="../signup.html#signup">Sign Up</a>
         <a href="../signup.html#login">Login</a>
         <a href="../signup.html#account">My Account</a>
-        <a href="../signup.html#basket"><img src="../images/purchase.png" alt="Shopping Basket"> </a>
+        <a href="/basket">
+            <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
+        </a>
     </div>
 </nav>
 
