@@ -23,15 +23,15 @@ public class SearchController {
   }
 
   // Post method for handling the search query
-//  @PostMapping("/search")
-//  public String searchBooks(@RequestParam("search") String searchQuery, Model model) {
-//    // Call the service layer to search for books by the query
-////    List<Book> books = bookService.searchBooks(searchQuery);
-//
-//    // Add the search results to the model
+  @PostMapping("/search")
+  public String searchBooks(@RequestParam("search") String searchQuery, Model model) {
+    // Call the service layer to search for books by the query
+//    List<Book> books = bookService.searchBooks(searchQuery);
+
+    // Add the search results to the model
 //    model.addAttribute("books", books);
-//    model.addAttribute("searchQuery", searchQuery);
-//
-//    return "searchResults";  // This is the Thymeleaf template that shows search results
-//  }
+    model.addAttribute("searchQuery", searchQuery);
+
+    return "searchResults";  // This is the Thymeleaf template that shows search results
+  }
 }

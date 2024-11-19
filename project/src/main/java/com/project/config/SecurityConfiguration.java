@@ -3,6 +3,7 @@ package com.project.config;
 
 import com.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -24,59 +25,94 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-  private final UserDetailsService userDetailsService;
-  private final PasswordEncoder passwordEncoder;
-
-  @Autowired
-  public SecurityConfiguration(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-    this.userDetailsService = userDetailsService;
-    this.passwordEncoder = passwordEncoder;
-  }
-
-  // Define PasswordEncoder bean
-//  @Bean
-//  public PasswordEncoder passwordEncoder() {
-//    return new BCryptPasswordEncoder(); // Or use a custom PasswordEncoder
+//  private final UserService userService;
+//
+//
+//  public SecurityConfiguration(UserService userService) {
+//    this.userService = userService;
 //  }
 
-//   Bean for AuthenticationManager
-  @Bean
-  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-    AuthenticationManagerBuilder authManagerBuilder =  http.getSharedObject(AuthenticationManagerBuilder.class);
-    authManagerBuilder.userDetailsService(userDetailsService)
-        .passwordEncoder(passwordEncoder);
-    return authManagerBuilder.build();
-  }
+//
+//  @Autowired
+//  public UserService userService;
+//
+//  @Bean
+//  public PasswordEncoder passwordEncoder() {
+//    return new BCryptPasswordEncoder();
+//  }
 
-  // Security configuration setup
+  //  @Bean
+//  public AuthenticationProvider authenticationProvider() {
+//    DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+//    authenticationProvider.setUserDetailsService(userService);
+//    authenticationProvider.setPasswordEncoder(passwordEncoder);
+//    return authenticationProvider;
+//  }
+
+
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     @Bean
-    public SecurityFilterChain securityFilterChain (HttpSecurity http) throws Exception {
-      http
-          .authorizeHttpRequests(authorize -> authorize
-              .requestMatchers("/admin/**").hasRole("ADMIN")
-              .requestMatchers("/user/**").hasRole("USER")
-              .requestMatchers("/login", "/signup", "/home").permitAll()
-              .requestMatchers("/logged-in","/profile/**").authenticated()
-              .requestMatchers("/signup/**").permitAll()
-              .requestMatchers("/books/**").permitAll()
-              .anyRequest().authenticated()
-          )
-          .formLogin(login -> login
-              .loginPage("/login")
-              .defaultSuccessUrl("/logged-in")
-              .failureUrl("/login?error")
-              .loginProcessingUrl("/process-login")
-              .permitAll()
-          )
-          .logout(logout -> logout
-              .logoutUrl("/logout")
-              .logoutSuccessUrl("/")
-              .permitAll()
-          );
-
-      return http.build();
+    public BCryptPasswordEncoder passwordEncoder() {
+      return new BCryptPasswordEncoder();
     }
 
+
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .authorizeRequests(authorizeRequests ->
+            authorizeRequests
+                .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/", "/register", "/login", "/signup").permitAll()
+                .requestMatchers("/logged-in","/profile").authenticated()
+                .requestMatchers("/signup/**").permitAll()
+                .requestMatchers("/books/**").permitAll()
+        )
+        .formLogin(formLogin ->
+            formLogin
+                .loginPage("/login")
+                .defaultSuccessUrl("/logged-in", true)
+                .loginProcessingUrl("/process-login")
+        )
+        .logout(logout ->
+            logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+        );
+
+    return http.build();
   }
+
+  @Bean
+  public DaoAuthenticationProvider daoAuthenticationProvider() {
+    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    provider.setUserDetailsService(userDetailsService); // Use your CustomUserDetailsService
+    provider.setPasswordEncoder(passwordEncoder());
+    return provider;
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+    builder.authenticationProvider(daoAuthenticationProvider());
+    return builder.build();
+  }
+
+
+
+}
+
+
+
+
+
+
+
+
 
 

@@ -1,11 +1,11 @@
 package com.project.service;
 
+import com.project.config.PasswordEncoderConfig;
 import com.project.entity.User;
 import com.project.exception.UserAlreadyExistsException;
 import com.project.repository.UserRepository;
 import com.project.util.Role;
 import java.util.Collection;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,14 +21,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements UserDetailsService {
 
+//private final UserRepository userRepository;
+//private final PasswordEncoder passwordEncoder;
+//
+//  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+//    this.userRepository = userRepository;
+//    this.passwordEncoder = passwordEncoder;
+//  }
 
-  private UserRepository userRepository;
-  private PasswordEncoder passwordEncoder;
 
-  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-    this.userRepository = userRepository;
-    this.passwordEncoder = passwordEncoder;
-  }
+  @Autowired
+private UserRepository userRepository;
+
+  @Autowired
+  private BCryptPasswordEncoder passwordEncoder;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -45,7 +51,7 @@ public class UserService implements UserDetailsService {
   }
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles) {
       return roles.stream()
-          .map(role -> new SimpleGrantedAuthority(role.name())) // Ensure the prefix "ROLE_" is added
+          .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name())) // Ensure the prefix "ROLE_" is added
           .collect(Collectors.toList());
     }
 
@@ -56,7 +62,6 @@ public class UserService implements UserDetailsService {
 
 
   public void saveUser(String username, String email, String password, Role role) {
-
     User newUser = new User();
     newUser.setUsername(username);
     newUser.setEmail(email);

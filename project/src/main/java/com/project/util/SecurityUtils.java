@@ -5,13 +5,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class SecurityUtils {
 
-  public static boolean userIsAuthenticated() {
+  public static String userIsAuthenticated() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    if (authentication == null || !authentication.isAuthenticated()) {
-      return false;
+    if (authentication != null && authentication.isAuthenticated()) {
+      Object principal = authentication.getPrincipal();
+      if (principal instanceof UserDetails) {
+        return ((UserDetails) principal).getUsername();
+      }
+      return principal.toString();
     }
-    // Check if the user is not "anonymous"
-    return !(authentication.getPrincipal() instanceof String
-        && authentication.getPrincipal().equals("anonymousUser"));
+    return null;
   }
 }

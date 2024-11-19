@@ -1,4 +1,6 @@
 package com.project.controller;
+import static com.project.util.SecurityUtils.userIsAuthenticated;
+
 import com.project.entity.User;
 import com.project.service.UserService;
 import com.project.util.Role;
@@ -57,14 +59,14 @@ public class UserController {
 //
 //  }
 
-//@PreAuthorize("isAuthenticated()")
-//@Secured("USER")
-  @GetMapping("/logged-in")
-  public String homePage(Model model) {
-    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-    model.addAttribute("username", username);
-    return "logged-in"; // Show home page
-  }
+//  @PreAuthorize("isAuthenticated()")
+//  @GetMapping("/logged-in")
+//  public String homePage(Model model) {
+//    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//    model.addAttribute("username", username);
+//    return "logged-in"; // Show home page
+//  }
+
 
 
 

@@ -14,17 +14,6 @@ public class OtherPagesController {
     }
 
 
-    @GetMapping("/index")
-    public String indexPage() {
-        return "index";
-    }
-
-    @GetMapping("/logged-in")
-    public String loggedInPage() {
-        return "logged-in";
-    }
-
-
     @GetMapping("/payment")
     public String paymentPage() {
         return "payment";

@@ -2,7 +2,7 @@ package com.project.controller;
 
 import com.project.entity.AccountEntity;
 import com.project.entity.User;
-import com.project.service.AccountService;
+
 import com.project.service.UserService;
 import com.project.util.Role;
 import java.security.Principal;
@@ -15,19 +15,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-//@Controller("/logged-in")
-//public class AccountController {
-// private final UserService userService;
-//
-//  public AccountController(UserService userService) {
-//    this.userService = userService;
-//  }
-//
-//
-//  @GetMapping("/profile")
-//  public String viewProfile(Model model) {
-//    return "redirect:/profile";
-//  }
+@Controller("/logged-in")
+public class AccountController {
+
+  private final UserService userService;
+
+  public AccountController(UserService userService) {
+    this.userService = userService;
+  }
+
+
+  @PreAuthorize("isAuthenticated()")
+  @Secured("USER")
+  @GetMapping("/profile")
+  public String viewProfile() {
+    return "redirect:/profile";
+  }
 //
 //  @PostMapping("/profile")
 //  public String viewProfile(@RequestParam String username, Model model) {
@@ -35,7 +38,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 //
 //    return "redirect:/profile";
 //  }
-//
+}
+
 //  @Controller("/logged-in")
 //  public class AccountController {
 //
@@ -95,7 +99,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 //      return "redirect:/profile";  // Redirect to profile after updating
 //    }
 //  }
-//
-//
-//
+
+
+
 

@@ -376,11 +376,11 @@
         </form>
     </div>
     <div class="nav-right">
-        <a href="../signup.html#signup">Sign Up</a>
-        <a href="../signup.html#login">Login</a>
-        <a href="../signup.html#account">My Account</a>
+        <a href="/login#signup">Sign Up</a>
+        <a href="/login#login">Login</a>
+        <a href="/logged-in#account">My Account</a>
         <a href="/basket">
-            <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
+           <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
         </a>
     </div>
 </nav>
@@ -421,8 +421,10 @@
     <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
         <a th:href="@{'?page=' + ${pageNum} + '&size=10'}"
            th:text="${pageNum + 1}" <!-- Display page numbers as 1-based index -->
-           th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>
+          th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>
     </span>
+
+
 
     <span th:if="${currentPage < totalPages - 1}">
         <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10'}" class="next">Next</a>
