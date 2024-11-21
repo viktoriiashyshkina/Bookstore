@@ -1,6 +1,7 @@
 package com.project.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,13 +28,20 @@ public class BookEntity {
   @Column(name ="book_id")
   private Long id;
 
-  private String author;
+  @ElementCollection
+  private List<String> author = new ArrayList<>();
 
   private String title;
 
   private String isbn;
 
-  private String category;
+// private String category;
+
+//  @OneToMany
+//  @JoinColumn(name= "book_id")
+@ElementCollection
+private List<String> category = new ArrayList<>();
+ //private List<String> category;
 
   private String description;
 
