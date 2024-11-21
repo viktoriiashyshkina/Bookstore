@@ -23,7 +23,7 @@ public class AccountEntity {
   @Column(name = "account_id")
   private Long id;
 
-  private String username = getEmail();
+  private String username;
 
   private String firstName;
 
@@ -44,6 +44,8 @@ public class AccountEntity {
   @OneToMany
   @JoinColumn(name ="account_id")
   private List<OrderEntity> orderList;
+
+
 
 
 

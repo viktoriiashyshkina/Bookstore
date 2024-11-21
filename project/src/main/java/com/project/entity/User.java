@@ -1,6 +1,7 @@
 package com.project.entity;
 
 import com.project.util.Role;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -53,9 +54,10 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Set<Role> roles = new HashSet<>();
 
-//  @OneToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "account_id")
-//  private AccountEntity account;
+
+  @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JoinColumn(name = "account_id", referencedColumnName = "account_id")
+  private AccountEntity account;
 
 
   @Override
