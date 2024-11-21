@@ -4,3 +4,6 @@
 --ALTER COLUMN image
 --SET DATA TYPE oid
 --USING image::bytea;
+
+
+

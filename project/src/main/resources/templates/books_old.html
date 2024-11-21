@@ -1,101 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title></title>
+  <title>Book Store</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
   <style>
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            width: 100%;
-            height: 110px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        header img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-          nav {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 20px;
-            background-color: #444;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            padding: 8px 15px;
-            border-radius: 5px;
-        }
-
-        nav a:hover {
-            background-color: #666;
-        }
-
-        .nav-left {
-            flex: 1;
-        }
-
-        .nav-center {
-            flex: 2;
-            text-align: center;
-        }
-
-        .nav-right {
-            flex: 1;
-            text-align: right;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-        }
-
-        .nav-center form {
-            display: flex;
-            justify-content: center;
-        }
-
-        .nav-center input[type="text"] {
-            padding: 10px;
-            width: 250px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .nav-center button {
-            padding: 6px 12px;
-            margin-left: 10px;
-            background-color: #666;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .nav-center button:hover {
-            background-color: #555;
-        }
-
-        .category-dropdown {
-            display: inline-block;
-        }
-
-        .category-dropdown select {
-            padding: 5px;
-            margin-top: 10px;
-        }
 
 #authorDisplayContainer
   #categoryDisplayContainer {
@@ -231,55 +139,11 @@
         object-fit: cover;
         display: none;
     }
-
-            .pagination-bar {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.pagination-bar a {
-    display: inline-block;
-    margin: 0 5px;
-    padding: 5px 10px;
-    text-decoration: none;
-    color: #444;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-}
-
-    .pagination-bar a:hover {
-    background-color: #ccc;
-}
-
-.pagination-bar .active {
-    font-weight: bold;
-    background-color: #444;
-    color: white;
-}
-
-.pagination-bar .prev,
-.pagination-bar .next {
-    font-weight: bold;
-}
-
-.pagination-bar .prev:hover,
-.pagination-bar .next:hover {
-    background-color: #ccc;
-}
-
-
-
-    footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 20px; /* Increased padding to give some space */
-    position: relative; /* Ensure footer is at the bottom of content */
-    width: 100%;
-    margin-top: 20px; /* Add some margin above footer */
-}
   </style>
   <script>
+
+
+
 
 
 
@@ -292,6 +156,25 @@
   }
 
 
+<!--      function setDeleteBookId(bookId) {-->
+<!--      // Update the hidden input with the book ID-->
+<!--      document.getElementById('deleteBookId').value = bookId;-->
+
+<!--      // Dynamically update the form's action URL-->
+<!--      const deleteForm = document.getElementById('deleteBookForm');-->
+<!--      deleteForm.action = `/books/delete/${bookId}`;-->
+<!--    }-->
+
+
+<!--  // Store the book ID temporarily when the delete button is clicked-->
+<!--let bookIdToDelete = null;-->
+
+<!--function setDeleteBookId(bookId) {-->
+<!--  bookIdToDelete = bookId;-->
+<!--  // Update the form action dynamically based on the selected book ID-->
+<!--  const deleteForm = document.getElementById('deleteBookForm');-->
+<!--  deleteForm.action = `/books/delete/${bookIdToDelete}`;-->
+<!--}-->
 
 let categoryList = []; // Global array to store categories
 
@@ -387,6 +270,31 @@ function closeEditCategoryModal(bookId) {
   document.getElementById(`editCategoryInput-${bookId}`).value = '';
 }
 
+<!--function submitEditCategory(bookId) {-->
+<!--  const categoryInput = document.getElementById(`editCategoryInput-${bookId}`).value.trim();-->
+<!--  if (categoryInput) {-->
+<!--    // Get the container for displaying categories-->
+<!--    const categoryDisplayContainer = document.getElementById(`editCategoryDisplayContainer-${bookId}`);-->
+<!--    // Create a new category pill-->
+<!--    const categoryPill = document.createElement('div');-->
+<!--    categoryPill.className = 'category-pill';-->
+<!--    categoryPill.textContent = categoryInput;-->
+<!--    categoryDisplayContainer.appendChild(categoryPill);-->
+
+<!--    // Get the hidden input storing the list of categories-->
+<!--    const hiddenInput = document.querySelector(`[name="editCategoryList-${bookId}"]`);-->
+<!--    // Parse the existing categories, append the new one, and update the input value-->
+<!--    let categories = hiddenInput.value ? hiddenInput.value.split(',') : [];-->
+<!--    categories.push(categoryInput);-->
+<!--    hiddenInput.value = categories.join(',');-->
+
+<!--    // Close the modal-->
+<!--    closeEditCategoryModal(bookId);-->
+<!--  }-->
+<!--}-->
+
+
+
 
 
 
@@ -394,7 +302,17 @@ function closeEditCategoryModal(bookId) {
 function submitEditCategory(bookId) {
   const categoryInput = document.getElementById(`editCategoryInput-${bookId}`).value.trim();
   if (categoryInput) {
+    // Get the container for displaying categories
+    const categoryDisplayContainer = document.getElementById(`editCategoryDisplayContainer-${bookId}`);
 
+    // Create a new category pill
+    const categoryPill = document.createElement('div');
+    categoryPill.className = 'd-flex align-items-center me-2 category-pill';
+    categoryPill.innerHTML = `
+      <input type="text" class=" form-control me-2" value="${categoryInput}" placeholder="Enter category" oninput="updateCategoryList('${bookId}')">
+      <button type="button" class="btn btn-danger btn-sm" onclick="removeCategory('${bookId}', this)">Remove</button>
+    `;
+    categoryDisplayContainer.appendChild(categoryPill);
 
     // Get the hidden input storing the list of categories
     const hiddenInput = document.getElementById(`editCategoryList-${bookId}`);
@@ -410,6 +328,46 @@ function submitEditCategory(bookId) {
 
 
 
+
+
+
+function updateEditCategoryList(bookId, button) {
+  // Get the input field for the category being updated
+  const categoryInput = button.previousElementSibling;
+  const newValue = categoryInput.value.trim();
+
+  // Get the hidden input storing the list of categories
+  const hiddenInput = document.getElementById(`editCategoryList-${bookId}`);
+
+  // Parse the existing categories, update the changed one, and update the input value
+  let categories = hiddenInput.value ? hiddenInput.value.split(',') : [];
+  const index = categories.findIndex(cat => cat === categoryInput.value);
+  if (index !== -1) {
+    categories[index] = newValue;
+    hiddenInput.value = categories.join(',');
+  }
+
+  // Update the category display
+  categoryInput.value = newValue;
+}
+
+
+
+<!--function updateEditCategoryList(bookId) {-->
+<!--  // Get the input fields in the editCategoryDisplayContainer-->
+<!--  const categoryInputs = document.querySelectorAll(`#editCategoryDisplayContainer-${bookId} input.category-pill`);-->
+
+<!--  // Create an array of the current category values-->
+<!--  const categoryValues = Array.from(categoryInputs).map(input => input.value);-->
+
+<!--  // Update the editCategoryList input field with the new values-->
+<!--  const editCategoryListInput = document.getElementById(`editCategoryList-${bookId}`);-->
+<!--  editCategoryListInput.value = categoryValues.join(',');-->
+<!--}-->
+
+
+
+
 function updateCategoryList(bookId) {
   // Get the input fields in the editCategoryDisplayContainer
   const categoryInputs = document.querySelectorAll(`#editCategoryDisplayContainer-${bookId} input.form-control`);
@@ -421,6 +379,57 @@ function updateCategoryList(bookId) {
   const editCategoryListInput = document.getElementById(`editCategoryList-${bookId}`);
   editCategoryListInput.value = categoryValues.join(',');
 }
+
+
+function removeCategory(bookId, categoryInput) {
+  // Get the container for displaying categories
+  const categoryDisplayContainer = document.getElementById(`editCategoryDisplayContainer-${bookId}`);
+
+  // Find the category pill element and remove it
+  const categoryPill = categoryInput.closest('.category-pill');
+  categoryDisplayContainer.removeChild(categoryPill);
+
+  // Get the hidden input storing the list of categories
+  const hiddenInput = document.getElementById(`editCategoryList-${bookId}`);
+
+  // Parse the existing categories, remove the deleted one, and update the input value
+  let categories = hiddenInput.value ? hiddenInput.value.split(',') : [];
+  const index = categories.findIndex(cat => cat === categoryInput.value.trim());
+  if (index !== -1) {
+    categories.splice(index, 1);
+    hiddenInput.value = categories.join(',');
+  }
+
+  updateCategoryList(bookId);
+}
+
+<!--function removeCategory(event) {-->
+<!--  const button = event.target;-->
+<!--  const bookId = button.getAttribute('data-book-id');-->
+<!--  const categoryInput = button.previousElementSibling;-->
+
+<!--  // Get the container for displaying categories-->
+<!--  const categoryDisplayContainer = document.getElementById(`editCategoryDisplayContainer-${bookId}`);-->
+
+<!--  // Find the category pill element and remove it-->
+<!--  const categoryPill = categoryInput.closest('.category-pill');-->
+<!--  categoryDisplayContainer.removeChild(categoryPill);-->
+
+<!--  // Get the hidden input storing the list of categories-->
+<!--  const hiddenInput = document.getElementById(`editCategoryList-${bookId}`);-->
+
+<!--  // Parse the existing categories, remove the deleted one, and update the input value-->
+<!--  let categories = hiddenInput.value ? hiddenInput.value.split(',') : [];-->
+<!--  const index = categories.findIndex(cat => cat === categoryInput.value.trim());-->
+<!--  if (index !== -1) {-->
+<!--    categories.splice(index, 1);-->
+<!--    hiddenInput.value = categories.join(',');-->
+<!--  }-->
+<!--}-->
+
+
+
+
 
 
 
@@ -439,6 +448,13 @@ function closeEditAuthorModal(bookId) {
 function submitEditAuthor(bookId) {
   const authorInput = document.getElementById(`editAuthorInput-${bookId}`).value.trim();
   if (authorInput) {
+<!--    // Get the container for displaying authors-->
+<!--    const authorDisplayContainer = document.getElementById(`editAuthorDisplayContainer-${bookId}`);-->
+<!--    // Create a new author pill-->
+<!--    const authorPill = document.createElement('div');-->
+<!--    authorPill.className = 'author-pill';-->
+<!--    authorPill.textContent = authorInput;-->
+<!--    authorDisplayContainer.appendChild(authorPill);-->
 
     // Get the hidden input storing the list of authors
     const hiddenInput = document.querySelector(`[name="editAuthorList-${bookId}"]`);
@@ -474,6 +490,14 @@ function submitEditAuthor(bookId) {
     }
 
 
+function removePill(bookId, categoryPill) {
+  // Get the container for displaying categories
+  const categoryDisplayContainer = document.getElementById(`editCategoryDisplayContainer-${bookId}`);
+
+  // Find the category pill element and remove it
+  categoryDisplayContainer.removeChild(categoryPill.closest('.category-pill'))
+  }
+
 
 
 
@@ -490,47 +514,8 @@ function submitEditAuthor(bookId) {
   </script>
 </head>
 <body>
-
-<header>
-  <img src="../images/banner.jpg" alt="Welcome to the Bookstore">
-</header>
-
-<nav>
-  <div class="nav-left">
-    <a href="#home">Home</a>
-    <!-- Category Dropdown -->
-    <div class="category-dropdown">
-      <select onchange="window.location = this.value;">
-        <option value="">Select Category</option>
-        <option value="../category.html#fiction">Fiction</option>
-        <option value="../category.html#non-fiction">Non-fiction</option>
-        <option value="../category.html#mystery">Mystery</option>
-        <option value="../category.html#fantasy">Fantasy</option>
-      </select>
-    </div>
-  </div>
-  <div class="nav-center">
-    <form action="#searchResults" method="get">
-      <input type="text" name="search" placeholder="Search books..." required>
-      <button type="submit">Search</button>
-    </form>
-  </div>
-  <div class="nav-right">
-    <a href="../signup.html#signup">Sign Up</a>
-    <a href="../signup.html#login">Login</a>
-    <a href="../signup.html#account">My Account</a>
-    <a href="../signup.html#basket"><img src="../images/purchase.png" alt="Shopping Basket"> </a>
-  </div>
-</nav>
-
-<!-- Search Results Section -->
-<section id="searchResults">
-  <h2>Search Results</h2>
-  <p>search results</p>
-</section>
-
-
 <div class="container">
+  <h1 class="my-4">Book Store</h1>
 
   <!-- Add Book Button -->
   <div class="d-flex justify-content-start">
@@ -580,6 +565,11 @@ function submitEditAuthor(bookId) {
           </div>
         </div>
       </div>
+
+
+
+<!--      <input type="text" class="form-control mb-3" name="author" placeholder="Add author" required>-->
+
 
 
 
@@ -666,7 +656,24 @@ function submitEditAuthor(bookId) {
           <input type="file" th:id="|editImageUpload-${book.id}|" name="image" accept="image/*" th:onchange="|previewImage(event, 'editImagePreview-${book.id}')|" style="display: none;">
         </div>
 
+
         <input type="text" class="form-control mb-3" name="title" th:value="${book.title}" required>
+
+
+<!--        <div class="form-group">-->
+<!--          &lt;!&ndash; Container for displaying added authors &ndash;&gt;-->
+<!--&lt;!&ndash;          <div th:id="|editAuthorDisplayContainer-${book.id}|" class="d-flex flex-wrap mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div th:each="author : ${book.author}" class="author-pill" th:text="${author}"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+
+<!--          <input  class="form-control mb-3" th:name="|editAuthorList-${book.id}|" th:value="${#strings.arrayJoin(book.author, ',')}">-->
+
+<!--          &lt;!&ndash; + Author  Button &ndash;&gt;-->
+<!--          <button type="button" class="btn btn-secondary" th:onclick="|openEditAuthorModal('${book.id}')|">+ Author</button>-->
+
+<!--        </div>-->
+
+
 
         <div class="form-group d-flex align-items-center" id="displayAuthors">
           <input th:id="|editAuthorList-${book.id}|" class="form-control me-2 mb-4" th:name="|editAuthorList-${book.id}|" th:value="${#strings.arrayJoin(book.author, ',')}">
@@ -693,6 +700,50 @@ function submitEditAuthor(bookId) {
           </div>
         </div>
 
+
+
+
+<!--        <div class="form-group" id="displayCategories">-->
+<!--          &lt;!&ndash; Container for displaying added categories &ndash;&gt;-->
+<!--          <div th:id="|editCategoryDisplayContainer-${book.id}|" class="d-flex flex-wrap mb-3">-->
+<!--            <div th:each="category : ${book.category}" class="category-pill" th:text="${category}"></div>-->
+<!--          </div>-->
+
+<!--          &lt;!&ndash; + Category Button &ndash;&gt;-->
+<!--          <button type="button" class="btn btn-secondary" th:onclick="|openEditCategoryModal('${book.id}')|">+ Category</button>-->
+
+<!--          &lt;!&ndash; Hidden input to store the final list of categories &ndash;&gt;-->
+<!--          <input type="hidden" class="form-control mb-3" th:name="|editCategoryList-${book.id}|" th:value="${#strings.arrayJoin(book.category, ',')}">-->
+<!--        </div>-->
+
+
+<!--        <div class="form-group" id="displayCategories">-->
+<!--&lt;!&ndash;           Container for displaying added categories as input fields&ndash;&gt;-->
+<!--&lt;!&ndash;          <div th:id="|editCategoryDisplayContainer-${book.id}|" class="d-flex flex-wrap mb-3">&ndash;&gt;-->
+<!--&lt;!&ndash;            &lt;!&ndash; Iterate through existing categories and display as input fields &ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            <div th:each="categoryInput: ${book.category}" class=" d-flex align-items-center me-2 category-pill">&ndash;&gt;-->
+<!--&lt;!&ndash;              <input type="text"&ndash;&gt;-->
+<!--&lt;!&ndash;                     class="form-control me-2"&ndash;&gt;-->
+<!--&lt;!&ndash;                     th:value="${categoryInput}"&ndash;&gt;-->
+<!--&lt;!&ndash;                     th:id="|editCategoryInput-${book.id}-${categoryInput}|"&ndash;&gt;-->
+<!--&lt;!&ndash;                     placeholder="Enter category"&ndash;&gt;-->
+<!--&lt;!&ndash;                     th:oninput="|updateCategoryList('${book.id}')|">&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <button type="button" class="btn btn-danger btn-sm" onclick="removePill('${bookId}', this)">Remove</button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <button type="button" class="btn btn-danger btn-sm" th:onclick="|updateEditCategoryList('${bookId}',this)|">Change</button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;              <button type="button" class="btn btn-primary btn-sm" th:onclick="|testButtonClicked('${book.id}', '${categoryInput}')|">Test</button>&ndash;&gt;&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;          </div>&ndash;&gt;-->
+
+
+<!--          <input  th:id="|editCategoryList-${book.id}|"  class="form-control mb-3" th:name="|editCategoryList-${book.id}|" th:value="${#strings.arrayJoin(book.category, ',')}">-->
+
+
+<!--          &lt;!&ndash; + Category Button &ndash;&gt;-->
+<!--          <button type="button" class="btn btn-secondary mb-4" th:onclick="|openEditCategoryModal('${book.id}')|">+ Add Category</button>-->
+
+<!--          &lt;!&ndash; Hidden input to store the final list of categories &ndash;&gt;-->
+<!--&lt;!&ndash;          <input  th:id="|editCategoryList-${book.id}|"  class="form-control mb-3" th:name="|editCategoryList-${book.id}|" th:value="${#strings.arrayJoin(book.category, ',')}">&ndash;&gt;-->
+<!--        </div>-->
 
 
         <div class="form-group d-flex align-items-center" id="displayCategories">
@@ -746,29 +797,6 @@ function submitEditAuthor(bookId) {
 
   </div>
 </div>
-
-
-<div class="pagination-bar">
-    <span th:if="${currentPage > 0}">
-        <a th:href="@{'?page=' + (${currentPage - 1}) + '&size=10'}" class="prev">Prev</a>
-    </span>
-
-  <!-- Loop through the total pages and create a link for each page -->
-  <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
-        <a th:href="@{'?page=' + ${pageNum} + '&size=10'}"
-           th:text="${pageNum + 1}"
-           th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>
-    </span>
-
-  <span th:if="${currentPage < totalPages - 1}">
-        <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10'}" class="next">Next</a>
-    </span>
-</div>
-
-
-<footer>
-  <p>&copy; 2024 Bookstore. All rights reserved.</p>
-</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
