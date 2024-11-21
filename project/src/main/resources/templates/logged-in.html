@@ -106,7 +106,7 @@
     <a th:href="@{/orders}">My Orders</a>
   </div>
   <div class="nav-center">
-    <form action="#searchResults" method="get">
+    <form th:action="@{searchResults}" method="get">
       <input type="text" name="search" placeholder="Search books..." required>
       <button type="submit">Search</button>
     </form>
@@ -126,7 +126,7 @@
   <h2>Dashboard</h2>
   <p>Here, you can access your profile, browse books, and manage your orders.</p>
   <div class="button-container">
-    <a th:href="@{/profile}">View Profile</a>
+    <a th:href="@{/logged-in/profile}">View Profile</a>
     <a th:href="@{/orders}">View Orders</a>
     <a th:href="@{/favorites}">Favorites</a>
   </div>

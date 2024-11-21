@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>View Profile - Bookstore</title>
   <style>
-    /* Custom styling, you can adjust it as per your requirement */
+    /* Basic Styling */
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Arial', sans-serif;
       margin: 0;
       padding: 0;
+      background-color: #f4f7fa;
     }
     header {
       width: 100%;
@@ -26,8 +27,9 @@
     nav {
       display: flex;
       justify-content: space-between;
-      padding: 10px 20px;
-      background-color: #444;
+      align-items: center;
+      padding: 10px 30px;
+      background-color: #333;
     }
     nav a {
       color: white;
@@ -37,14 +39,58 @@
       border-radius: 5px;
     }
     nav a:hover {
-      background-color: #666;
+      background-color: #555;
     }
     .content {
-      padding: 20px;
+      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
     .content h2 {
       text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    .input-field {
       margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .input-field label {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 5px;
+    }
+    .input-field input {
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    .input-field input:focus {
+      border-color: #007BFF;
+    }
+    .button-container {
+      display: flex;
+      justify-content: center;
+    }
+    .button-container button {
+      background-color: #007BFF;
+      color: white;
+      font-size: 16px;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .button-container button:hover {
+      background-color: #0056b3;
     }
     footer {
       background-color: #333;
@@ -57,47 +103,65 @@
     }
     .profile-info {
       display: flex;
-      justify-content: center;
+      flex-wrap: wrap;
+      justify-content: space-around;
       margin-top: 30px;
     }
     .profile-info div {
-      margin: 0 15px;
+      margin: 10px;
+      width: 250px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .profile-info div h3 {
+      text-align: center;
+      color: #007BFF;
+      margin-bottom: 15px;
+    }
+    .profile-info div p {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
 <header>
-  <img src="../images/banner.jpg" alt="Bookstore Banner">
+  <img th:src="@{/images/banner.jpg}" alt="Bookstore Banner">
 </header>
+
 <nav>
   <div class="nav-left">
-    <a href="/dashboard">Home</a>
-    <a href="/profile">My Profile</a>
-    <a href="/orders">My Orders</a>
+    <a th:href="@{/home}">Home</a>
+    <a th:href="@{/logged-in/profile}">My Profile</a>
+    <a th:href="@{/orders}">My Orders</a>
   </div>
   <div class="nav-center">
-    <form action="#searchResults" method="get">
+    <form th:action="@{/search}" method="get">
       <input type="text" name="search" placeholder="Search books..." required>
       <button type="submit">Search</button>
     </form>
   </div>
   <div class="nav-right">
     <span>Welcome, <strong th:text="${username}">User</strong></span>
-    <a href="#basket"><img src="../images/purchase.png" alt="Shopping Basket"></a>
-    <a href="/logout">Logout</a>
+    <a th:href="@{/basket}"><img th:src="@{images/purchase.png}" alt="Shopping Basket"></a>
+    <a th:href="@{/logout}">Logout</a>
   </div>
 </nav>
 
 <section class="content">
   <h2>Edit Profile</h2>
-  <form th:action="@{/updateProfile}" method="post">
+  <form th:action="@{/logged-in/updateProfile}" method="post">
+    <input type="hidden" name="_method" value="put">
     <div class="input-field">
       <label for="username">Username</label>
-      <input type="text" id="username" name="username" th:value="${username}" required>
+      <input type="text" id="username" name="username" th:value="${username}" disabled>
     </div>
     <div class="input-field">
       <label for="email">Email</label>
-      <input type="email" id="email" name="email" th:value="${email}" required>
+      <input type="email" id="email" name="email" th:value="${email}" disabled>
     </div>
     <div class="input-field">
       <label for="firstName">First Name</label>
@@ -123,11 +187,17 @@
       <label for="birthday">Birthday</label>
       <input type="date" id="birthday" name="birthday" th:value="${birthday}" required>
     </div>
-    <div>
+    <div class="button-container">
       <button type="submit">Save Changes</button>
     </div>
   </form>
 </section>
+
+
+
+<footer>
+  &copy; 2024 Bookstore. All Rights Reserved.
+</footer>
 
 </body>
 </html>

@@ -21,44 +21,77 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+//@Configuration
+//@EnableWebSecurity
+//public class SecurityConfiguration {
+//
+//
+//    @Autowired
+//    private UserDetailsService userDetailsService;
+//
+//    @Bean
+//    public BCryptPasswordEncoder passwordEncoder() {
+//      return new BCryptPasswordEncoder();
+//    }
+//
+//
+//  @Bean
+//  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//    http
+//        .authorizeRequests(authorizeRequests ->
+//            authorizeRequests
+//                .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
+//                .requestMatchers("/admin/**").hasRole("ADMIN")
+//                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+//                .requestMatchers("/signup", "/home", "/login", "/searchResults").permitAll()
+//                .requestMatchers("/logged-in").authenticated()
+//                .requestMatchers("/profile").authenticated()
+//                .requestMatchers("/logged-in/updateProfile").authenticated()
+//                .requestMatchers("/signup/**").permitAll()
+//                .requestMatchers("/books/**").permitAll()
+//        )
+//        .formLogin(formLogin ->
+//            formLogin
+//                .loginPage("/login")
+//                .defaultSuccessUrl("/logged-in")
+//                .loginProcessingUrl("/process-login")
+//
+//
+//        )
+//        .logout(logout ->
+//            logout
+//                .logoutUrl("/logout")
+//                .logoutSuccessUrl("/")
+//        );
+//
+//    return http.build();
+//  }
+//
+//  @Bean
+//  public DaoAuthenticationProvider daoAuthenticationProvider() {
+//    DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//    provider.setUserDetailsService(userDetailsService); // Use your CustomUserDetailsService
+//    provider.setPasswordEncoder(passwordEncoder());
+//    return provider;
+//  }
+//
+//  @Bean
+//  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+//    AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
+//    builder.authenticationProvider(daoAuthenticationProvider());
+//    return builder.build();
+//  }
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-//  private final UserService userService;
-//
-//
-//  public SecurityConfiguration(UserService userService) {
-//    this.userService = userService;
-//  }
+  @Autowired
+  private UserDetailsService userDetailsService;  // Assuming you have a custom UserDetailsService
 
-//
-//  @Autowired
-//  public UserService userService;
-//
-//  @Bean
-//  public PasswordEncoder passwordEncoder() {
-//    return new BCryptPasswordEncoder();
-//  }
-
-  //  @Bean
-//  public AuthenticationProvider authenticationProvider() {
-//    DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//    authenticationProvider.setUserDetailsService(userService);
-//    authenticationProvider.setPasswordEncoder(passwordEncoder);
-//    return authenticationProvider;
-//  }
-
-
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-      return new BCryptPasswordEncoder();
-    }
-
+  @Bean
+  public BCryptPasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -68,44 +101,48 @@ public class SecurityConfiguration {
                 .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/", "/register", "/login", "/signup").permitAll()
-                .requestMatchers("/logged-in","/profile").authenticated()
-                .requestMatchers("/signup/**").permitAll()
+                .requestMatchers("/signup", "/home", "/login", "/searchResults").permitAll()
+                .requestMatchers("/logged-in").authenticated()  // Restrict access to logged-in users
+                .requestMatchers("/profile").authenticated()
+                .requestMatchers("/logged-in/updateProfile").authenticated()
                 .requestMatchers("/books/**").permitAll()
         )
         .formLogin(formLogin ->
             formLogin
-                .loginPage("/login")
-                .defaultSuccessUrl("/logged-in", true)
-                .loginProcessingUrl("/process-login")
+                .loginPage("/login")  // Custom login page
+                .defaultSuccessUrl("/logged-in")  // Redirect after successful login
+                .loginProcessingUrl("/process-login")  // Form action for login
+                .permitAll()
         )
         .logout(logout ->
             logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
+                .logoutUrl("/logout")  // URL for logging out
+                .logoutSuccessUrl("/")  // Redirect after successful logout
         );
 
     return http.build();
   }
 
+  // Define DaoAuthenticationProvider for authenticating users from the UserDetailsService
   @Bean
   public DaoAuthenticationProvider daoAuthenticationProvider() {
     DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-    provider.setUserDetailsService(userDetailsService); // Use your CustomUserDetailsService
-    provider.setPasswordEncoder(passwordEncoder());
+    provider.setUserDetailsService(userDetailsService);  // Link the UserDetailsService
+    provider.setPasswordEncoder(passwordEncoder());  // Set password encoder (BCrypt)
     return provider;
   }
 
+  // AuthenticationManager bean to integrate the DaoAuthenticationProvider
   @Bean
   public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
     AuthenticationManagerBuilder builder = http.getSharedObject(AuthenticationManagerBuilder.class);
     builder.authenticationProvider(daoAuthenticationProvider());
     return builder.build();
   }
-
-
-
 }
+
+
+
 
 
 

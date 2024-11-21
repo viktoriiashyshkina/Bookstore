@@ -2,103 +2,93 @@ package com.project.controller;
 
 import com.project.entity.AccountEntity;
 import com.project.entity.User;
-
+import com.project.service.AccountService;
 import com.project.service.UserService;
-import com.project.util.Role;
-import java.security.Principal;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Controller("/logged-in")
+@Controller()
+@RequestMapping("/logged-in")
 public class AccountController {
 
   private final UserService userService;
+  private final AccountService accountService;
 
-  public AccountController(UserService userService) {
+  public AccountController(UserService userService, AccountService accountService) {
     this.userService = userService;
+    this.accountService = accountService;
+  }
+
+
+  @GetMapping("/profile")
+  public String getProfileUpdatePage(Model model) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    User user = userService.findByUsername(username);
+
+    // Check if the user exists and if the account is null
+    if (user != null && user.getAccount() != null) {
+      AccountEntity account = user.getAccount();
+
+      model.addAttribute("username", user.getUsername());
+      model.addAttribute("email", user.getEmail());
+      model.addAttribute("firstName", account.getFirstName());
+      model.addAttribute("lastName", account.getLastName());
+      model.addAttribute("phoneNumber", account.getPhoneNumber());
+      model.addAttribute("address", account.getAddress());
+      model.addAttribute("zipCode", account.getZipCode());
+      model.addAttribute("birthday", account.getBirthday());
+    } else {
+      // Handle case where the account is null (e.g., no account linked to the user)
+      System.out.println("User or Account details are null for username: " + username);
+      // Optionally, you can set default values or leave fields empty
+    }
+
+    return "profile"; // This should return the updated profile page
   }
 
 
   @PreAuthorize("isAuthenticated()")
-  @Secured("USER")
-  @GetMapping("/profile")
-  public String viewProfile() {
-    return "redirect:/profile";
+
+  @PostMapping("/updateProfile")
+  public String updateProfile(
+      @RequestParam String firstName,
+      @RequestParam String lastName,
+      @RequestParam String phoneNumber,
+      @RequestParam String address,
+      @RequestParam int zipCode,
+      @RequestParam String birthday) {
+
+    String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+    User user = userService.findByUsername(loggedInUsername);
+    // Create or update AccountEntity for the user
+    AccountEntity accountEntity = user.getAccount();
+    if (accountEntity == null) {
+      // If no AccountEntity exists, create a new one
+      accountEntity = new AccountEntity();
+    }
+    // Set account details
+    accountEntity.setUsername(user.getUsername());  // Use the username from the user
+    accountEntity.setFirstName(firstName);
+    accountEntity.setLastName(lastName);
+    accountEntity.setEmail(user.getEmail());
+    accountEntity.setPassword(user.getPassword());
+    accountEntity.setPhoneNumber(phoneNumber);
+    accountEntity.setAddress(address);
+    accountEntity.setZipCode(zipCode);
+    accountEntity.setBirthday(birthday);
+    // Save the account information
+    accountService.updateAccount(accountEntity);
+    // Optionally, save any additional user details if required
+    return "redirect:/logged-in";  // Redirect to the profile page after saving
   }
-//
-//  @PostMapping("/profile")
-//  public String viewProfile(@RequestParam String username, Model model) {
-//    User user = userService.findByUsername(username);
-//
-//    return "redirect:/profile";
-//  }
 }
 
-//  @Controller("/logged-in")
-//  public class AccountController {
-//
-//    private final UserService userService;
-//    private final AccountService accountService;
-//
-//    public AccountController(UserService userService, AccountService accountService) {
-//      this.userService = userService;
-//      this.accountService = accountService;
-//    }
-//
-//    @PreAuthorize("isAuthenticated()")
-//    @GetMapping("/profile")
-//    public String viewProfile(Model model, Principal principal) {
-//      if (principal == null) {
-//        return "redirect:/profile"; // If user is not authenticated, redirect to login page
-//      }
-//      // Get the logged-in user's username
-//      String username = principal.getName(); // This is Spring Security's way of getting the username
-//      // Fetch the user from the database
-//      User user = userService.findByUsername(username);
-//      // Add both the user and account details to the model
-//      model.addAttribute("user", user);
-//      return "redirect:profile";
-//    }
-//
-//    @PreAuthorize("isAuthenticated()")
-//    @Secured("USER")
-//    @PostMapping("/updateProfile")
-//    public String updateProfile(@RequestParam String username,
-//        @RequestParam String email,
-//        @RequestParam String firstName,
-//        @RequestParam String lastName,
-//        @RequestParam String phoneNumber,
-//        @RequestParam String address,
-//        @RequestParam int zipCode,
-//        @RequestParam String birthday) {
-//
-//      // Get the logged-in user's username
-//      String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
-//      User user = userService.findByUsername(loggedInUsername);
-//
-//      // Update the user's details
-//////      AccountEntity accountEntity = user.getAccount();
-////      accountEntity.setFirstName(firstName);
-////      accountEntity.setLastName(lastName);
-////      accountEntity.setEmail(email);
-////      accountEntity.setPhoneNumber(phoneNumber);
-////      accountEntity.setAddress(address);
-////      accountEntity.setZipCode(zipCode);
-////      accountEntity.setBirthday(birthday);
-//
-//      // Save the updated account
-////      accountService.updateAccount(accountEntity);
-//      userService.saveUser(user.getUsername(), user.getEmail(), user.getPassword(), Role.USER);  // Assuming you also want to update the user entity.
-//
-//      return "redirect:/profile";  // Redirect to profile after updating
-//    }
-//  }
 
 
 
