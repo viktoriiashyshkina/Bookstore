@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import java.util.List;
@@ -15,24 +16,26 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class AccountEntity {
+@NoArgsConstructor
+public class Basket {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "account_id")
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "order_id")
   private Long id;
 
-  private String username;
+  private String Date;
+
+  private Double totalAmount;
+
+  private String email;
 
   private String firstName;
 
   private String lastName;
 
-  private String email;
-
-  private String password;
+  private String phoneNumber;
 
   private int zipCode;
 
@@ -40,18 +43,17 @@ public class AccountEntity {
 
   private String birthday;
 
-  private String phoneNumber;
+
+  @ManyToOne
+  private AccountEntity accountEntity;
 
   @OneToMany
-  @JoinColumn(name ="account_id")
-  private List<OrderEntity> orderList;
+  @JoinColumn(name = "order_id")
+  private List<BasketDetails> basketDetails;
 
   @OneToOne
-  @JoinColumn(name ="account_id")
-  private Basket basket;
-
-
-
+  @JoinColumn(name = "order_id")
+  private PaymentEntity payment;
 
 
 }
