@@ -25,6 +25,9 @@ public class OrderDetailsEntity {
   @ManyToOne
   private BookEntity book;
 
+  @ManyToOne
+  private OrderEntity orderEntity;
+
 
 
 

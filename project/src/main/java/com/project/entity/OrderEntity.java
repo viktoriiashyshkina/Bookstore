@@ -30,20 +30,6 @@ public class OrderEntity {
 
   private Double totalAmount;
 
-  private String email;
-
-  private String firstName;
-
-  private String lastName;
-
-  private String phoneNumber;
-
-  private int zipCode;
-
-  private String address;
-
-  private String birthday;
-
 
   @ManyToOne
   private AccountEntity accountEntity;
