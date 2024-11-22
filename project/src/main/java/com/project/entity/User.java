@@ -53,9 +53,9 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Set<Role> roles = new HashSet<>();
 
-//  @OneToOne(fetch = FetchType.LAZY)
-//  @JoinColumn(name = "account_id")
-//  private AccountEntity account;
+  @OneToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "account_id")
+  private AccountEntity account;
 
 
   @Override

@@ -320,41 +320,32 @@
     </div>
 </section>
 
-<section id="basket">
-    <h2>Shopping Basket</h2>
-
-    <!-- This is the content you want to hide -->
-    <div class="basket-items">
-        <table>
-            <thead>
-            <tr>
-                <th>Book</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>Book 1</td>
-                <td>$15.00</td>
-                <td>2</td>
-                <td>$30.00</td>
-            </tr>
-            <tr>
-                <td>Book 2</td>
-                <td>$25.00</td>
-                <td>1</td>
-                <td>$25.00</td>
-            </tr>
-            </tbody>
-        </table>
+<h1>Your Shopping Basket</h1>
+<div th:if="${isBasketEmpty}">
+    <ul>
+        <li th:each="item : ${basket}">
+            <span th:text="${item.book.title}"></span> -
+            <span th:text="${item.quantity}"></span> x
+            <span th:text="${item.book.price}"></span> USD
+            <form th:action="@{/basket/remove/{bookId}(bookId=${item.book.id})}" method="post">
+                <button type="submit">Remove</button>
+            </form>
+        </li>
+    </ul>
+    <div>
+        <h3>Total Price: <span th:text="${totalPrice}"></span> USD</h3>
     </div>
+    <div>
+        <p th:if="${isBasketEmpty}">Your basket is empty.</p>
+</div>
 
-    <!-- Label instead of button to trigger the checkbox -->
-    <div class="pay-button">
-        <label for="pay-now">Pay Now</label>
-    </div>
+
+<div class="pay-button">
+    <form action="/checkout" method="post">
+        <button type="submit">Proceed to Checkout</button>
+    </form>
+</div>
+
 
     <!-- Hidden checkbox -->
     <input type="checkbox" id="pay-now" class="pay-checkbox">
@@ -372,7 +363,7 @@
             </form>
         </div>
     </section>
-</section>
+</div>
 
 <footer>
     <p>&copy; 2024 Bookstore. All rights reserved.</p>

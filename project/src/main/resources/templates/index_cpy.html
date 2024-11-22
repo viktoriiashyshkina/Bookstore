@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookstore</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            width: 100%;
+            height: 110px;
+            position: relative;
+            overflow: hidden;
+        }
+        header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #444;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+        nav a:hover {
+            background-color: #666;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .book-container {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            position: relative;
+        }
+        .book-image {
+            width: 100px;
+            height: 133px;
+            background-color: #f0f0f0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            color: #888;
+            margin-right: 20px;
+        }
+        .book-price {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #444;
+            margin-left: auto;
+            padding: 5px 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .book-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .book-author {
+            color: #666;
+            font-size: 1rem;
+        }
+        .add-to-basket-btn {
+            background-color: #666;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+        .add-to-basket-btn:hover {
+            background-color: #555;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="/images/banner.jpg" alt="Welcome to the Bookstore">
+</header>
+
+<nav>
+    <div class="nav-left">
+        <a href="/home">Home</a>
+    </div>
+    <div class="nav-center">
+        <form action="#searchResults" method="get">
+            <input type="text" name="search" placeholder="Search books..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="nav-right">
+        <a href="/signup">Sign Up</a>
+        <a href="/login">Login</a>
+        <a href="/account">My Account</a>
+        <a href="/basket">
+            <img src="/images/purchase.png" alt="Shopping Basket" style="width: 30px; height: 30px;">
+        </a>
+    </div>
+</nav>
+
+<h1>Book Store</h1>
+
+<div>
+    <p th:if="${books.size() == 0}">No books available.</p>
+</div>
+
+<div>
+    <ul>
+        <li th:each="book : ${books}">
+            <div>
+                <img th:if="${book.imageDataBase64}" th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" alt="Book Image" style="width: 100px; height: 150px;" />
+                <p><strong>Title:</strong> <span th:text="${book.title}"></span></p>
+                <p><strong>Author:</strong> <span th:text="${book.author}"></span></p>
+                <p><strong>Price:</strong> $<span th:text="${book.price}"></span></p>
+
+                <form th:action="@{/basket/add/{bookId}(bookId=${book.id})}" method="post">
+                    <input type="number" name="quantity" min="1" value="1" required />
+                    <button type="submit">Add to Basket</button>
+                </form>
+
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div>
+    <p>Page <span th:text="${currentPage + 1}"></span> of <span th:text="${totalPages}"></span></p>
+    <a th:if="${currentPage > 0}" th:href="@{/home_cpy(page=${currentPage - 1})}">Previous</a>
+    <a th:if="${currentPage + 1 < totalPages}" th:href="@{/home_cpy(page=${currentPage + 1})}">Next</a>
+</div>
+
+<footer>
+    <p>Bookstore &copy; 2024. All Rights Reserved.</p>
+</footer>
+
+
+</body>
+</html>
