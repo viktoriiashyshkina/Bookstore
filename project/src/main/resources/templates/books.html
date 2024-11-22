@@ -4,280 +4,349 @@
   <title></title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
   <style>
-
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            width: 100%;
-            height: 110px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        header img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-          nav {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 20px;
-            background-color: #444;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            padding: 8px 15px;
-            border-radius: 5px;
-        }
-
-        nav a:hover {
-            background-color: #666;
-        }
-
-        .nav-left {
-            flex: 1;
-        }
-
-        .nav-center {
-            flex: 2;
-            text-align: center;
-        }
-
-        .nav-right {
-            flex: 1;
-            text-align: right;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-        }
-
-        .nav-center form {
-            display: flex;
-            justify-content: center;
-        }
-
-        .nav-center input[type="text"] {
-            padding: 10px;
-            width: 250px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-
-        .nav-center button {
-            padding: 6px 12px;
-            margin-left: 10px;
-            background-color: #666;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .nav-center button:hover {
-            background-color: #555;
-        }
-
-        .category-dropdown {
-            display: inline-block;
-        }
-
-        .category-dropdown select {
-            padding: 5px;
-            margin-top: 10px;
-        }
-
-#authorDisplayContainer
-  #categoryDisplayContainer {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.author-pill,
-.category-pill {
-  display: inline-block;
-  padding: 5px 10px;
-  background-color: #f1f1f1;
-  border: 1px solid #ccc;
-  border-radius: 20px;
-  font-size: 14px;
-  color: #333;
-  min-width: 2px; /* Smallest size to maintain appearance */
-  width: auto;
-}
-
-
-
-    .book-container {
-        display: flex;
-        align-items: flex-start;
-        margin: 20px 0;
-        border-bottom: 1px solid #ccc;
-        padding-bottom: 20px;
-        max-width: 900px;
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
     }
 
-    .container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-    .book-image {
-        width: 150px;
-        height: 200px;
-        background-color: #f0f0f0;
-        text-align: center;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 1.1rem;
-        color: #888;
-        margin-right: 20px;
-    }
-
-    .book-info {
-        flex-grow: 1;
-    }
-
-    .book-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-    }
-
-    .book-author {
-        color: #666;
-        margin-bottom: 10px;
-        font-size: 0.9rem;
-    }
-
-    .add-book-container,
-    .edit-book-container {
-        display: none;
-        border: 1px solid #ccc;
-        padding: 20px;
-        margin-top: 20px;
-        border-radius: 8px;
-        background-color: #f9f9f9;
-    }
-
-
-
-    .image-upload {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 15px;
-    }
-
-    .image-upload-frame {
-        width: 150px;
-        height: 200px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border: 1px dashed #888;
-        background-color: #f0f0f0;
-        cursor: pointer;
-        font-size: 2rem;
-        color: #666;
+    header {
+        width: 100%;
+        height: 110px;
         position: relative;
+        overflow: hidden;
     }
 
-    .image-upload-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-}
-.upload-icon-container {
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-        opacity: 0;
-    transition: opacity 0.3s ease;
-    }
-
-    .upload-icon-container:hover {
-    opacity: 1;
-}
-
-
-    .upload-icon {
-    font-size: 2rem;
-    color: #666;
-}
-
-
-    .image-preview {
+    header img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        display: block;
+    }
+
+    nav {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 20px;
+        background-color: #444;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        margin: 0 15px;
+        padding: 8px 15px;
+        border-radius: 5px;
+    }
+
+    nav a:hover {
+        background-color: #666;
+    }
+
+    .nav-left {
+        flex: 1;
+    }
+
+    .nav-center {
+        flex: 2;
+        text-align: center;
+    }
+
+    .nav-right {
+        flex: 1;
+        text-align: right;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
+    .nav-center form {
+        display: flex;
+        justify-content: center;
+    }
+
+    .nav-center input[type="text"] {
+        padding: 10px;
+        width: 250px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .nav-center button {
+        padding: 6px 12px;
+        margin-left: 10px;
+        background-color: #666;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .nav-center button:hover {
+        background-color: #555;
+    }
+
+    .category-dropdown {
+        display: inline-block;
+    }
+
+    .category-dropdown select {
+        padding: 5px;
+        margin-top: 10px;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+<!--        footer {-->
+<!--            background-color: #333;-->
+<!--            color: white;-->
+<!--            text-align: center;-->
+<!--            padding: 10px;-->
+<!--            position: fixed;-->
+<!--            width: 100%;-->
+<!--            bottom: 0;-->
+<!--        }-->
+
+
+
+    section {
         display: none;
     }
 
-            .pagination-bar {
+    section:target {
+        display: block;
+    }
+
+    .nav-right img {
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+    }
+
+        .book-container {
+    display: flex;
+    align-items: flex-start;
+    margin: 20px 0;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    max-width: 900px;
+}
+
+.container {
+max-width: 900px;
+margin: 0 auto;
+}
+
+.book-image {
+    width: 100px;
+    height: 133px;
+    background-color: #f0f0f0;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #888;
+    margin-right: 20px;
+}
+
+
+<!--.book-container {-->
+<!--    display: flex;-->
+<!--    align-items: flex-start;-->
+<!--    margin: 20px 0;-->
+<!--    border-bottom: 1px solid #ccc;-->
+<!--    padding-bottom: 20px;-->
+<!--    max-width: 900px;-->
+<!--    position: relative; /* Required for positioning price */-->
+<!--}-->
+
+<!--.book-image {-->
+<!--    width: 100px;-->
+<!--    height: 133px;-->
+<!--    background-color: #f0f0f0;-->
+<!--    text-align: center;-->
+<!--    display: flex;-->
+<!--    justify-content: center;-->
+<!--    align-items: center;-->
+<!--    font-size: 1.1rem;-->
+<!--    color: #888;-->
+<!--    margin-right: 20px;-->
+<!--    position: relative;-->
+<!--}-->
+
+.book-container {
+display: flex;
+align-items: flex-start;
+margin: 20px 0;
+border-bottom: 1px solid #ccc;
+padding-bottom: 20px;
+max-width: 900px;
+position: relative; /* Required for positioning price */
+}
+
+.book-image {
+width: 100px;
+height: 133px;
+background-color: #f0f0f0;
+text-align: center;
+display: flex;
+justify-content: center;
+align-items: center;
+font-size: 1.1rem;
+color: #888;
+margin-right: 20px;
+position: relative;
+}
+
+.book-price {
+position: absolute;
+top: 0;
+right: 0;
+font-size: 1.6rem; /* Larger font size */
+font-weight: bold; /* Bold text */
+color: #444; /* Price color */
+background-color: #f9f9f9; /* Optional background for better visibility */
+padding: 5px 10px; /* Add padding for spacing */
+}
+
+<!--    .book-info {-->
+<!--        flex-grow: 1;-->
+<!--    }-->
+
+.book-title {
+    font-size: 1rem;
+    font-weight: bold;
+    max-width: 50ch;
+    word-wrap: break-word; /* Ensures long words are not split */
+    white-space: normal;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+.book-author {
+    color: #666;
+    margin-bottom: 10px;
+    font-size: 0.75rem;
+}
+
+.add-book-container,
+.edit-book-container {
+    display: none;
+    border: 1px solid #ccc;
+    padding: 20px;
     margin-top: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.image-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.image-upload-frame {
+    width: 75px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed #888;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    font-size: 2rem;
+    color: #666;
+    position: relative;
+}
+
+.image-upload-content {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+width: 100%;
+height: 100%;
+}
+.upload-icon-container {
+position: absolute;
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+transition: opacity 0.3s ease;
+}
+
+.upload-icon-container:hover {
+opacity: 1;
+}
+
+
+.upload-icon {
+font-size: 2rem;
+color: #666;
+}
+
+
+.image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+    }
+
+    .pagination-bar {
+text-align: center;
+margin-top: 20px;
 }
 
 .pagination-bar a {
-    display: inline-block;
-    margin: 0 5px;
-    padding: 5px 10px;
-    text-decoration: none;
-    color: #444;
-    background-color: #f0f0f0;
-    border-radius: 5px;
+display: inline-block;
+margin: 0 5px;
+padding: 5px 10px;
+text-decoration: none;
+color: #444;
+background-color: #f0f0f0;
+border-radius: 5px;
 }
 
-    .pagination-bar a:hover {
-    background-color: #ccc;
+.pagination-bar a:hover {
+background-color: #ccc;
 }
 
 .pagination-bar .active {
-    font-weight: bold;
-    background-color: #444;
-    color: white;
+font-weight: bold;
+background-color: #444;
+color: white;
 }
 
 .pagination-bar .prev,
 .pagination-bar .next {
-    font-weight: bold;
+font-weight: bold;
 }
 
 .pagination-bar .prev:hover,
 .pagination-bar .next:hover {
-    background-color: #ccc;
+background-color: #ccc;
 }
-
-
 
     footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 20px; /* Increased padding to give some space */
-    position: relative; /* Ensure footer is at the bottom of content */
-    width: 100%;
-    margin-top: 20px; /* Add some margin above footer */
+background-color: #333;
+color: white;
+text-align: center;
+padding: 20px; /* Increased padding to give some space */
+position: relative; /* Ensure footer is at the bottom of content */
+width: 100%;
+margin-top: 20px; /* Add some margin above footer */
 }
+
+
   </style>
   <script>
 
