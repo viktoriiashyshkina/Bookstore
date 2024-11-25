@@ -1,19 +1,44 @@
 package com.project.repository;
 
 import com.project.entity.BookEntity;
-import java.awt.print.Book;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookRepository extends JpaRepository<BookEntity, Long> {
-//  @Query("SELECT new com.project.entity.BookEntity(b.id, b.author, b.title, b.isbn, b.category, b.description, b.price, b.orderDetails, b.image, b.imageDataBase64) " +
-//      "FROM BookEntity b " +
-//      "WHERE UPPER(b.title) LIKE UPPER(CONCAT('%', :query, '%')) " +
-//      "OR UPPER(b.author) LIKE UPPER(CONCAT('%', :query, '%'))")
-  // Search books by title or author
-  List<BookEntity> findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCase(String query, String author);
 
+  // Search books by title or author
+  List<BookEntity> findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrCategoryIgnoreCaseOrDescriptionContainsIgnoreCaseOrIsbn(
+      String query, String author, String category, String description, String isbn);
+
+  // Filter by price range with pagination
+  Page<BookEntity> findByPriceBetween(Double minPrice, Double maxPrice, Pageable pageable);
+
+  // Sorting books by title in ascending order
+  Page<BookEntity> findAllByOrderByTitleAsc(Pageable pageable);
+
+  // Sorting books by title in descending order
+  Page<BookEntity> findAllByOrderByTitleDesc(Pageable pageable);
+
+  // Sorting books by price in ascending order
+  Page<BookEntity> findAllByOrderByPriceAsc(Pageable pageable);
+
+  // Sorting books by price in descending order
+  Page<BookEntity> findAllByOrderByPriceDesc(Pageable pageable);
+
+  // A simple findAll method that works with Pageable (handles dynamic sorting)
+  Page<BookEntity> findAll(Pageable pageable);
 }
+
+
+
+
+
+
+

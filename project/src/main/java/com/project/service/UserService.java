@@ -140,24 +140,6 @@ public class UserService implements UserDetailsService {
     return userRepository.findByUsername(username);
   }
 
-//  // Method to save a user, including creating an AccountEntity
-//  public void saveUser(String username, String email, String password, Role role) {
-////    User newUser = new User();
-////    newUser.setUsername(username);
-////    newUser.setEmail(email);
-////    newUser.setPassword(passwordEncoder.encode(password));  // Encrypt the password
-////    newUser.setRoles(Set.of(role));
-////
-////    // Create an AccountEntity and associate it with the user
-////    AccountEntity account = new AccountEntity();
-////    newUser.setAccount(account);  // Link the AccountEntity to the User
-//
-//    // Save the user, the account will be saved because of the bidirectional relationship
-//    userRepository.save(newUser);
-//
-//    System.out.println("User registered: " + newUser.getUsername());
-//  }
-
   public void saveUser(User user) {
     userRepository.save(user);
   }

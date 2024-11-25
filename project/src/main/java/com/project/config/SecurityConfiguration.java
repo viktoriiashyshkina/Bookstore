@@ -2,6 +2,7 @@ package com.project.config;
 
 
 import com.project.service.UserService;
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -101,7 +102,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/signup", "/home", "/login", "/searchResults").permitAll()
+                .requestMatchers("/signup", "/home_test","/home", "/login", "/searchResults", "/filterByPrice").permitAll()
                 .requestMatchers("/logged-in").authenticated()  // Restrict access to logged-in users
                 .requestMatchers("/profile").authenticated()
                 .requestMatchers("/logged-in/updateProfile").authenticated()
@@ -112,6 +113,22 @@ public class SecurityConfiguration {
                 .loginPage("/login")  // Custom login page
                 .defaultSuccessUrl("/logged-in")  // Redirect after successful login
                 .loginProcessingUrl("/process-login")  // Form action for login
+                .successHandler((request, response, authentication) -> {
+                  // Redirect based on roles
+                  authentication.getAuthorities().stream()
+                      .map(Object::toString)
+                      .forEach(authority -> {
+                        try {
+                          if ("ROLE_ADMIN".equals(authority)) {
+                            response.sendRedirect("/admin/dashboard");
+                          } else if ("ROLE_USER".equals(authority)) {
+                            response.sendRedirect("/logged-in");
+                          }
+                        } catch (IOException e) {
+                          e.printStackTrace();
+                        }
+                      });
+                })
                 .permitAll()
         )
         .logout(logout ->
