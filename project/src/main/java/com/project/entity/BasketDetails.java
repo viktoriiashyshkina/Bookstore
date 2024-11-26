@@ -1,5 +1,6 @@
 package com.project.entity;
 
+import com.project.service.BasketService;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,6 +29,9 @@ public class BasketDetails {
 
   @ManyToOne
   private BookEntity book;
+
+//  @ManyToOne
+//  private Basket basket;
 
 
 
