@@ -369,9 +369,8 @@
 </head>
 <body>
 
-<header>
-  <img th:src="@{/images/banner.jpg}" alt="Welcome to the Bookstore" src=""></header>
-
+  <header>
+    <img th:src="@{/images/banner.jpg}" alt="Welcome to the Bookstore" src=""></header>
 <nav>
   <div class="nav-left">
     <a th:href="@{/home}">Home</a>
@@ -401,42 +400,136 @@
     </a>
   </div>
 </nav>
-<!-- Search Results Section -->
-<section id="searchResults">
+  <section class="filter-section">
+    <h2>Filter Books</h2>
+  </section>
+    <form th:action="@{home/filter}" method="get" class="filter-form">
+
+      <!-- Category Dropdown -->
+      <div class="category-dropdown">
+        <label for="category">Category:</label>
+        <select id="category" name="category" onchange="this.form.submit()">
+          <option value="">Select Category</option>
+          <option value="Fiction" th:selected="${category == 'Fiction'}">Fiction</option>
+          <option value="Non-fiction" th:selected="${category == 'Non-fiction'}">Non-fiction</option>
+          <option value="Mystery" th:selected="${category == 'Mystery'}">Mystery</option>
+          <option value="Fantasy" th:selected="${category == 'Fantasy'}">Fantasy</option>
+        </select>
+      </div>
+
+      <!-- Autocomplete for Author -->
+      <div class="author-dropdown">
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" autocomplete="off" placeholder="Start typing author name...">
+        <div id="author-suggestions" class="autocomplete-suggestions"></div>
+      </div>
+
+      <!-- Price Range Filter -->
+      <div class="price-range">
+        <label for="minPrice">Min Price:</label>
+        <input type="number" id="minPrice" name="minPrice" step="0.01" value="${minPrice}" placeholder="Min Price">
+
+        <label for="maxPrice">Max Price:</label>
+        <input type="number" id="maxPrice" name="maxPrice" step="0.01" value="${maxPrice}" placeholder="Max Price">
+      </div>
+
+      <!-- Sorting Options -->
+      <div class="sorting-options">
+        <label for="sort">Sort By:</label>
+        <select id="sort" name="sort">
+          <option value="AtoZ" th:selected="${sort == 'AtoZ'}">A to Z</option>
+          <option value="ZtoA" th:selected="${sort == 'ZtoA'}">Z to A</option>
+          <option value="PriceLowToHigh" th:selected="${sort == 'PriceLowToHigh'}">Price: Low to High</option>
+          <option value="PriceHighToLow" th:selected="${sort == 'PriceHighToLow'}">Price: High to Low</option>
+        </select>
+      </div>
+
+      <button type="submit">Filter</button>
+    </form>
+
+  <section id="filterResults">
   <h2>Search Results</h2>
   <p>search results</p>
-</section>
-<!--<div th:if="${books != null and books.size() > 0}">
- <div id="showBooks" class="container">
-   <div th:each="book:${books}" class="book-container">
-     <!-- Book Image -->
-<!--   <div th:each="book : ${books}" class="book-container">
-     <div class="book-image" th:if="${book.image == null}">No picture</div>
-     <img th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" th:if="${book.image != null}" class="book-image" alt="Book Image"> -->
-<div id="showBooks" class="container">
-  <div th:each="book : ${books}" class="book-container">
-    <div class="book-image" th:if="${book.image == null}">No picture</div>
-    <img th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" th:if="${book.image != null}" class="book-image" alt="Book Image">
+  </section>
+  <!--<div th:if="${books != null and books.size() > 0}">
+   <div id="showBooks" class="container">
+     <div th:each="book:${books}" class="book-container">
+       <!-- Book Image -->
+  <!--   <div th:each="book : ${books}" class="book-container">
+       <div class="book-image" th:if="${book.image == null}">No picture</div>
+       <img th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" th:if="${book.image != null}" class="book-image" alt="Book Image"> -->
+  <div id="showBooks" class="container">
+    <div th:each="book : ${books}" class="book-container">
+      <div class="book-image" th:if="${book.image == null}">No picture</div>
+      <img th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" th:if="${book.image != null}" class="book-image" alt="Book Image">
 
-    <!-- Book Info -->
-    <div class="book-info">
-      <h3 th:text="${book.title}">Book Title</h3>
-      <p>by <span th:text="${book.author}">Author Name</span></p>
-      <p>Category: <span th:text="${book.category}">Category</span></p>
-      <p>ISBN: <span th:text="${book.isbn}">ISBN</span></p>
-      <p>Price: €<span th:text="${book.price}">Price</span></p>
+      <!-- Book Info -->
+      <div class="book-info">
+        <h3 th:text="${book.title}">Book Title</h3>
+        <p>by <span th:text="${book.author}">Author Name</span></p>
+        <p>Category: <span th:text="${book.category}">Category</span></p>
+        <p>ISBN: <span th:text="${book.isbn}">ISBN</span></p>
+        <p>Price: €<span th:text="${book.price}">Price</span></p>
+      </div>
     </div>
   </div>
-</div>
-<div th:if="${books == null or books.size() == 0}">
-  <p>No results found for your search.</p>
-</div>
-<form th:action="@{/bucket/add}" method="get">
-  <button type="submit" class="buy-button">Buy</button>
-</form>
+
+  <div th:if="${books == null or books.size() == 0}">
+    <p>No results found for your search.</p>
+  </div>
+  <form th:action="@{/bucket/add}" method="get">
+    <button type="submit" class="buy-button">Buy</button>
+  </form>
+
 
 <footer>
-  <p>&copy; 2024 Bookstore</p>
+  <p>&copy; 2024 Bookstore. All Rights Reserved.</p>
 </footer>
+
+<script>
+  // Autocomplete for author search
+  $('#author').on('input', function () {
+    var query = $(this).val();
+
+    if (query.length >= 2) { // Only search when input is 2 or more characters
+      $.ajax({
+        url: '/authors/suggestions',
+        type: 'GET',
+        data: { query: query },
+        success: function (data) {
+          var suggestions = $('#author-suggestions');
+          suggestions.empty();
+          if (data.length > 0) {
+            data.forEach(function (author) {
+              suggestions.append('<div>' + author + '</div>');
+            });
+            suggestions.show();
+          } else {
+            suggestions.hide();
+          }
+        }
+      });
+    } else {
+      $('#author-suggestions').hide();
+    }
+  });
+
+  // Fill the input field with the selected author
+  $(document).on('click', '#author-suggestions div', function () {
+    $('#author').val($(this).text());
+    $('#author-suggestions').hide();
+    $('form').submit(); // Submit the form after selecting an author
+  });
+
+  // Hide suggestions if the user clicks outside
+  $(document).click(function (e) {
+    if (!$(e.target).closest('#author').length) {
+      $('#author-suggestions').hide();
+    }
+  });
+</script>
+
 </body>
 </html>
+
+

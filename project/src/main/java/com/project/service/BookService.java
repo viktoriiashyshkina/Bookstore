@@ -25,14 +25,15 @@ public class BookService {
 
 
   // edit code later, please do NOT DELETE!!!
-/*  public Set<String> getAllBookCategories () {
-    List<BookEntity> bookList = getAllBooks();
-    TreeSet<String> sortedSetOfBookCategories = new TreeSet<>();
-    for (BookEntity book : bookList) {
-      sortedSetOfBookCategories.add(book.getCategory());
-    }
-    return sortedSetOfBookCategories;
-  }*/
+  /*public Set<String> getAllBookCategories () {
+  List<BookEntity> bookList = getAllBooks();
+  TreeSet<String> sortedSetOfBookCategories = new TreeSet<>();
+  for (BookEntity book : bookList) {
+    sortedSetOfBookCategories.add(book.getCategory());
+  }
+  return sortedSetOfBookCategories;
+}  */
+
 
   public void saveBookToDatabase (BookEntity book) {
     bookRepository.save(book);
@@ -42,8 +43,11 @@ public class BookService {
   // Search for books by title or author
   @Transactional(readOnly = true)
   public List<BookEntity> searchBooks(String query) {
-    return bookRepository.findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCase(query, query);
+    return bookRepository
+        .findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrCategoryIgnoreCaseOrDescriptionContainsIgnoreCaseOrIsbn(query, query,query,query, query);
   }
+
+
 
 
 
