@@ -51,6 +51,6 @@ public class HomeController {
     model.addAttribute("totalPages", books.getTotalPages());
     model.addAttribute("totalItems", books.getTotalElements());
 
-    return "index";
+    return "home_test";
   }
 }

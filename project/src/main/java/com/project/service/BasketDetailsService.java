@@ -13,6 +13,10 @@ public class BasketDetailsService {
     this.basketDetailsRepository = basketDetailsRepository;
   }
 
+  public BasketDetails getBaskedDetailsById (Long id) {
+    return basketDetailsRepository.findById(id).orElse(null);
+  }
+
 
   public void saveOrderToDatabase (BasketDetails incompleteOrder) {basketDetailsRepository.save(incompleteOrder);
   }

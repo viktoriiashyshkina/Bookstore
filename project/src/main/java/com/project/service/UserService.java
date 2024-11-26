@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 //@Service
 //public class UserService implements UserDetailsService {
@@ -136,27 +137,11 @@ public class UserService implements UserDetailsService {
   }
 
   // Find a user by username (not necessarily for authentication)
+  @Transactional
   public User findByUsername(String username) {
     return userRepository.findByUsername(username);
   }
 
-//  // Method to save a user, including creating an AccountEntity
-//  public void saveUser(String username, String email, String password, Role role) {
-////    User newUser = new User();
-////    newUser.setUsername(username);
-////    newUser.setEmail(email);
-////    newUser.setPassword(passwordEncoder.encode(password));  // Encrypt the password
-////    newUser.setRoles(Set.of(role));
-////
-////    // Create an AccountEntity and associate it with the user
-////    AccountEntity account = new AccountEntity();
-////    newUser.setAccount(account);  // Link the AccountEntity to the User
-//
-//    // Save the user, the account will be saved because of the bidirectional relationship
-//    userRepository.save(newUser);
-//
-//    System.out.println("User registered: " + newUser.getUsername());
-//  }
 
   public void saveUser(User user) {
     userRepository.save(user);

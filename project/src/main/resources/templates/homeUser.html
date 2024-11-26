@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookstore</title>
+    <style>
+        body {
+
+              font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      width: 100%;
+      height: 110px;
+      position: relative;
+      overflow: hidden;
+    }
+    header img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    nav {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background-color: #444;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      padding: 8px 15px;
+      border-radius: 5px;
+    }
+    nav a:hover {
+      background-color: #666;
+    }
+    .nav-left {
+      flex: 1;
+    }
+    .nav-center {
+      flex: 2;
+      text-align: center;
+    }
+    .nav-right {
+      flex: 1;
+      text-align: right;
+    }
+    .nav-center form {
+      display: flex;
+      justify-content: center;
+    }
+    .nav-center input[type="text"] {
+      padding: 10px;
+      width: 250px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .nav-center button {
+      padding: 6px 12px;
+      margin-left: 10px;
+      background-color: #666;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .nav-center button:hover {
+      background-color: #555;
+    }
+    .category-dropdown {
+      display: inline-block;
+    }
+    .category-dropdown select {
+      padding: 5px;
+      margin-top: 10px;
+    }
+    .main-content {
+      padding: 20px;
+    }
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+    section {
+      display: none;
+    }
+    section:target {
+      display: block;
+    }
+    form input {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    form button {
+      padding: 10px 20px;
+      background-color: #444;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: auto;
+      font-size: 14px;
+    }
+    form button:hover {
+      background-color: #333;
+    }
+    .form-container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #F9F9F9;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #basket p {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .basket-items {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .basket-items .item {
+      padding: 10px;
+      background-color: #EAEAEA;
+      margin: 5px;
+      border-radius: 5px;
+      width: 80%;
+      text-align: center;
+    }
+    .nav-right img {
+      width: 30px;
+      height: 30px;
+      vertical-align: middle;
+    }
+
+
+
+
+
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            width: 100%;  
+            height: 110px; 
+            position: relative; 
+            overflow: hidden;  
+        }
+
+        header img {
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            display: block; 
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #444;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            padding: 8px 15px;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background-color: #666;
+        }
+
+        .nav-left {
+            flex: 1;
+        }
+
+        .nav-center {
+            flex: 2;
+            text-align: center;
+        }
+
+        .nav-right {
+            flex: 1;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .nav-center form {
+            display: flex;
+            justify-content: center;
+        }
+
+        .nav-center input[type="text"] {
+            padding: 10px;
+            width: 250px; 
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .nav-center button {
+            padding: 6px 12px; 
+            margin-left: 10px;
+            background-color: #666;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px; 
+        }
+
+        .nav-center button:hover {
+            background-color: #555;
+        }
+
+        .category-dropdown {
+            display: inline-block;
+        }
+
+        .category-dropdown select {
+            padding: 5px;
+            margin-top: 10px;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+<!--        footer {-->
+<!--            background-color: #333;-->
+<!--            color: white;-->
+<!--            text-align: center;-->
+<!--            padding: 10px;-->
+<!--            position: fixed;-->
+<!--            width: 100%;-->
+<!--            bottom: 0;-->
+<!--        }-->
+
+
+
+        section {
+            display: none;
+        }
+
+        section:target {
+            display: block;
+        }
+
+        .nav-right img {
+            width: 30px; 
+            height: 30px;
+            vertical-align: middle;
+        }
+
+            .book-container {
+        display: flex;
+        align-items: flex-start;
+        margin: 20px 0;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 20px;
+        max-width: 900px;
+    }
+
+    .container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+    .book-image {
+        width: 100px;
+        height: 133px;
+        background-color: #f0f0f0;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.1rem;
+        color: #888;
+        margin-right: 20px;
+    }
+
+
+<!--.book-container {-->
+<!--    display: flex;-->
+<!--    align-items: flex-start;-->
+<!--    margin: 20px 0;-->
+<!--    border-bottom: 1px solid #ccc;-->
+<!--    padding-bottom: 20px;-->
+<!--    max-width: 900px;-->
+<!--    position: relative; /* Required for positioning price */-->
+<!--}-->
+
+<!--.book-image {-->
+<!--    width: 100px;-->
+<!--    height: 133px;-->
+<!--    background-color: #f0f0f0;-->
+<!--    text-align: center;-->
+<!--    display: flex;-->
+<!--    justify-content: center;-->
+<!--    align-items: center;-->
+<!--    font-size: 1.1rem;-->
+<!--    color: #888;-->
+<!--    margin-right: 20px;-->
+<!--    position: relative;-->
+<!--}-->
+
+.book-container {
+    display: flex;
+    align-items: flex-start;
+    margin: 20px 0;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+    max-width: 900px;
+    position: relative; /* Required for positioning price */
+}
+
+.book-image {
+    width: 100px;
+    height: 133px;
+    background-color: #f0f0f0;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.1rem;
+    color: #888;
+    margin-right: 20px;
+    position: relative;
+}
+
+    .book-price {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 1.6rem; /* Larger font size */
+    font-weight: bold; /* Bold text */
+    color: #444; /* Price color */
+    background-color: #f9f9f9; /* Optional background for better visibility */
+    padding: 5px 10px; /* Add padding for spacing */
+   }
+
+<!--    .book-info {-->
+<!--        flex-grow: 1;-->
+<!--    }-->
+
+    .book-title {
+        font-size: 1rem;
+        font-weight: bold;
+        max-width: 50ch;
+        word-wrap: break-word; /* Ensures long words are not split */
+        white-space: normal;
+        line-height: 1.5;
+        margin-bottom: 10px;
+}
+    .book-author {
+        color: #666;
+        margin-bottom: 10px;
+        font-size: 0.75rem;
+    }
+
+    .add-book-container,
+    .edit-book-container {
+        display: none;
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+    }
+
+    .image-upload {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .image-upload-frame {
+        width: 75px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px dashed #888;
+        background-color: #f0f0f0;
+        cursor: pointer;
+        font-size: 2rem;
+        color: #666;
+        position: relative;
+    }
+
+    .image-upload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.upload-icon-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+        opacity: 0;
+    transition: opacity 0.3s ease;
+    }
+
+    .upload-icon-container:hover {
+    opacity: 1;
+}
+
+
+    .upload-icon {
+    font-size: 2rem;
+    color: #666;
+}
+
+
+    .image-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: none;
+        }
+
+        .pagination-bar {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.pagination-bar a {
+    display: inline-block;
+    margin: 0 5px;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #444;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+.pagination-bar a:hover {
+    background-color: #ccc;
+}
+
+.pagination-bar .active {
+    font-weight: bold;
+    background-color: #444;
+    color: white;
+}
+
+.pagination-bar .prev,
+.pagination-bar .next {
+    font-weight: bold;
+}
+
+.pagination-bar .prev:hover,
+.pagination-bar .next:hover {
+    background-color: #ccc;
+}
+
+        footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px; /* Increased padding to give some space */
+    position: relative; /* Ensure footer is at the bottom of content */
+    width: 100%;
+    margin-top: 20px; /* Add some margin above footer */
+}
+
+  .add-to-basket {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 10px;
+    }
+
+    .quantity-input {
+        width: 60px;
+        margin-right: 10px;
+    }
+
+    .add-to-basket-button {
+        background-color: #666;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .add-to-basket-button:hover {
+        background-color: #555;
+    }
+
+
+    </style>
+</head>
+<body>
+
+
+<header>
+    <img src="../images/banner.jpg" alt="Welcome"></header>
+<nav>
+    <div class="nav-left">
+        <a href="#home">Home</a>
+        <div class="category-dropdown">
+            <select>
+                <option value="fiction">Fiction</option>
+                <option value="non-fiction">Non-fiction</option>
+                <option value="mystery">Mystery</option>
+                <option value="fantasy">Fantasy</option>
+            </select>
+        </div>
+    </div>
+    <div class="nav-center">
+        <form action="#searchResults" method="get">
+            <input type="text" name="search" placeholder="Search books..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <div class="nav-right">
+        <a href="#signup">Sign Up</a>
+        <a href="#login">Login</a>
+        <a href="#basket"><img src="../images/purchase.png" alt="Shopping Basket"> </a>
+    </div>
+</nav>
+<section id="signup">
+    <div class="form-container">
+        <h2>Sign Up</h2>
+        <form th:action="@{/signup/user}"  method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Sign Up</button>
+            <!-- Dropdown for role -->
+            <select name="role" required>
+                <option value="USER">User</option>
+            </select>
+
+        </form>
+    </div>
+</section>
+<section id="login">
+    <div class="form-container">
+        <h2>Login</h2>
+        <form th:action="@{/process-login}" method="post">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+
+            <select name="role" required>
+                <option value="USER">User</option>
+            </select>
+
+        </form>
+    </div>
+</section>
+
+
+
+<!--<section id="basket">-->
+<!--    <h2>Shopping Basket</h2>-->
+<!--    <p>Your shopping basket is currently empty.</p>-->
+<!--</section>-->
+<!--<a href="#" id="view-basket-link">Basket</a>-->
+
+<section id="basket">
+    <form th:action="@{/home/basket/view}" method="post" >
+    <h2>Shopping Basket</h2>
+
+    <div th:if="${basket != null and !basket.isEmpty()}">
+        <table>
+            <thead>
+            <tr>
+                <th>Book Name</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="detail : ${basket}">
+                <td th:text="${detail.book.name}">Book Name</td>
+                <td th:text="${detail.book.author}">Author</td>
+                <td th:text="${detail.book.isbn}">ISBN</td>
+                <td th:text="${detail.quantity}">Quantity</td>
+                <td th:text="${detail.book.price}">Unit Price</td>
+                <td th:text="${detail.quantity * detail.book.price}">Total Price</td>
+            </tr>
+            </tbody>
+        </table>
+        <div>
+            <p>Total Amount: <span th:text="${#numbers.formatDecimal(totalPrice, 1, 'POINT', 2, 'COMMA')}">0.00</span></p>
+        </div>
+    </div>
+
+    <div th:if="${basket == null || basket.isEmpty()}">
+        <p>Your shopping basket is currently empty.</p>
+    </div>
+    </form>
+</section>
+
+
+
+
+
+<section id="searchResults">
+    <h2>Search Results</h2>
+    <p>search results</p>
+</section>
+</div>
+
+
+
+
+
+
+<!--<header>-->
+<!--    <img th:src="@{/images/banner.jpg}" alt="Welcome to the Bookstore" src=""></header>-->
+
+<!--<nav>-->
+<!--    <div class="nav-left">-->
+<!--        <a th:href="@{/home}">Home</a>-->
+<!--        &lt;!&ndash; Category Dropdown &ndash;&gt;-->
+<!--        <div class="category-dropdown">-->
+<!--            <select onchange="window.location = this.value;">-->
+<!--                <option value="">Select Category</option>-->
+<!--                <option value="../category.html#fiction">Fiction</option>-->
+<!--                <option value="../category.html#non-fiction">Non-fiction</option>-->
+<!--                <option value="../category.html#mystery">Mystery</option>-->
+<!--                <option value="../category.html#fantasy">Fantasy</option>-->
+<!--            </select>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <div class="nav-center">-->
+<!--        <form action="/searchResults" method="get">-->
+<!--            <input type="text" name="query" placeholder="Search books..." required>-->
+<!--            <button type="submit">Search</button>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--    <div class="nav-right">-->
+<!--        <a href="/login#signup">Sign Up</a>-->
+<!--        <a href="/login#login">Login</a>-->
+<!--        <a href="/logged-in#account">My Account</a>-->
+<!--        <a href="/basket">-->
+<!--           <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">-->
+<!--        </a>-->
+<!--    </div>-->
+<!--</nav>-->
+
+<!--&lt;!&ndash; Search Results Section &ndash;&gt;-->
+<!--  <section id="searchResults">-->
+<!--    <h2>Search Results</h2>-->
+<!--    <p>search results</p>-->
+<!--</section>-->
+
+<div id="showBooks" class="container">
+    <div th:each="book : ${books}" class="book-container">
+        <form th:action="@{/home/addToBasket/{bookId}(bookId=${book.id})}" method="post">
+        <div class="book-image" th:if="${book.image == null}">No picture</div>
+        <img th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" th:if="${book.image != null}" class="book-image" alt="Book Image">
+        <div class="book-price"><span th:text="${book.price}">Price</span> €</div>
+        <div class="book-info">
+            <div class="book-title" th:text="${book.title}">Book Title</div>
+            <div class="book-author">by <span th:text="${book.author}">Author Name</span></div>
+            <p style="font-size: 0.75rem;">Category: <span th:text="${book.category}">Category</span></p>
+            <p style="font-size: 0.75rem;">ISBN: <span th:text="${book.isbn}">ISBN</span></p>
+<!--            <p>Price: $<span th:text="${book.price}">Price</span></p>-->
+
+
+<!--            <form th:action="@{/basket/add/{id}(id=${book.id})}" method="post">-->
+<!--            <div class="add-to-basket">-->
+<!--                <label for="quantity-${book.id}" style="font-size: 0.85rem;">Quantity:</label>-->
+<!--                <input id="quantity-${book.id}" type="number" name="quantity" value="1" min="1" class="quantity-input">-->
+<!--                <button type="button" class="add-to-basket-button">Add to Basket</button>-->
+<!--            </div>-->
+
+            <div class="add-to-basket">
+                <label for="quantity-${book.id}" style="font-size: 0.85rem;">Quantity:</label>
+                <input id="quantity-${book.id}" type="number" name="quantity" value="1" min="1" class="quantity-input">
+<!--                <form th:action="@{/addToBasket/{bookId}(bookId=${book.id})}" method="post">-->
+                    <button type="submit" class="add-to-basket-button">Add to Basket</button>
+<!--                </form>-->
+            </div>
+
+<!--            </form>-->
+
+
+
+        </div>
+        </form>
+    </div>
+</div>
+
+    <div class="pagination-bar">
+    <span th:if="${currentPage > 0}">
+        <a th:href="@{'?page=' + (${currentPage - 1}) + '&size=10'}" class="prev">Prev</a>
+    </span>
+
+        <!-- Loop through the total pages and create a link for each page -->
+        <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="@{'?page=' + ${pageNum} + '&size=10'}"
+           th:text="${pageNum + 1}"
+          th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>
+    </span>
+
+
+
+        <span th:if="${currentPage < totalPages - 1}">
+        <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10'}" class="next">Next</a>
+    </span>
+    </div>
+
+
+
+
+<!--<div class="pagination">-->
+<!--    <a href="?page=0&size=10" class="prev">Prev</a> &lt;!&ndash; Link to previous page &ndash;&gt;-->
+<!--    <span>Page <span th:text="${currentPage + 1}"></span> of <span th:text="${totalPages}"></span></span>-->
+<!--    <a href="?page=${currentPage + 1}&size=10" class="next">Next</a> &lt;!&ndash; Link to next page &ndash;&gt;-->
+<!--</div>-->
+
+
+
+<footer>
+    <p>&copy; 2024 Bookstore. All rights reserved.</p>
+</footer>
+
+</body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const showBooksDiv = document.getElementById("showBooks");
+        const navLinks = document.querySelectorAll("nav a");
+
+        function handleNavigation(event) {
+            const targetHref = event.target.getAttribute("href");
+
+            if (targetHref === "#home") {
+                showBooksDiv.style.display = "block";
+            } else {
+                showBooksDiv.style.display = "none";
+            }
+        }
+
+        navLinks.forEach(link => {
+            link.addEventListener("click", handleNavigation);
+        });
+
+        if (window.location.hash === "#home" || window.location.pathname === "/home") {
+            showBooksDiv.style.display = "block";
+        } else {
+            showBooksDiv.style.display = "none";
+        }
+    });
+</script>
+<!--<script>-->
+<!--    document.getElementById('view-basket-link').addEventListener('click', function (event) {-->
+<!--        event.preventDefault(); // Prevent default link behavior-->
+
+<!--        // Fetch basket data-->
+<!--        fetch('/basket/view', {-->
+<!--            method: 'POST',-->
+<!--            headers: {-->
+<!--                'Content-Type': 'application/json'-->
+<!--            }-->
+<!--        })-->
+<!--        .then(response => response.json())-->
+<!--        .then(data => {-->
+<!--            // Parse and populate the basket content-->
+<!--            const basketSection = document.getElementById('basket');-->
+<!--            const basketContent = document.getElementById('basket-content');-->
+
+<!--            if (data.basket && data.basket.length > 0) {-->
+<!--                let table = `-->
+<!--                    <table>-->
+<!--                        <thead>-->
+<!--                            <tr>-->
+<!--                                <th>Book Name</th>-->
+<!--                                <th>Author</th>-->
+<!--                                <th>ISBN</th>-->
+<!--                                <th>Quantity</th>-->
+<!--                                <th>Unit Price</th>-->
+<!--                                <th>Total Price</th>-->
+<!--                            </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                `;-->
+
+<!--                let totalAmount = 0;-->
+<!--                data.basket.forEach(detail => {-->
+<!--                    const totalPrice = detail.quantity * detail.book.price;-->
+<!--                    totalAmount += totalPrice;-->
+
+<!--                    table += `-->
+<!--                        <tr>-->
+<!--                            <td>${detail.book.name}</td>-->
+<!--                            <td>${detail.book.author}</td>-->
+<!--                            <td>${detail.book.isbn}</td>-->
+<!--                            <td>${detail.quantity}</td>-->
+<!--                            <td>${detail.book.price}</td>-->
+<!--                            <td>${totalPrice.toFixed(2)}</td>-->
+<!--                        </tr>-->
+<!--                    `;-->
+<!--                });-->
+
+<!--                table += `-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+<!--                    <div>-->
+<!--                        <p>Total Amount: ${totalAmount.toFixed(2)}</p>-->
+<!--                    </div>-->
+<!--                `;-->
+<!--                basketContent.innerHTML = table;-->
+<!--            } else {-->
+<!--                basketContent.innerHTML = '<p>Your shopping basket is currently empty.</p>';-->
+<!--            }-->
+
+<!--            // Display the basket section-->
+<!--            basketSection.style.display = 'block';-->
+<!--        })-->
+<!--        .catch(error => {-->
+<!--            console.error('Error fetching basket data:', error);-->
+<!--            document.getElementById('basket-content').innerHTML = '<p>Failed to load basket content.</p>';-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+</html>

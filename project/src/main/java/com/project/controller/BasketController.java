@@ -18,61 +18,61 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/basket")
+//@RequestMapping("/home/user")
 public class BasketController {
 
-  @Autowired
-  private BookRepository bookRepository;
-  private final BasketDetailsService incompleteOrderDetailsService;
+
+  private final BookRepository bookRepository;
+  private final BasketDetailsService basketDetailsService;
   private final BasketService basketService;
-  public BasketController(BasketDetailsService incompleteOrderDetailsService, BasketService basketService) {
-    this.incompleteOrderDetailsService = incompleteOrderDetailsService;
+
+  public BasketController(BookRepository bookRepository, BasketDetailsService basketDetailsService,
+      BasketService basketService) {
+    this.bookRepository = bookRepository;
+    this.basketDetailsService = basketDetailsService;
     this.basketService = basketService;
   }
 
 
   // Add book to basket
-  @PostMapping("/add/{bookId}")
-  public String addToBasket(@PathVariable Long bookId, @RequestParam int quantity, HttpSession session) {
-    BookEntity book = bookRepository.findById(bookId).orElse(null);
-    BasketDetails incompleteOrder = new BasketDetails();
-    incompleteOrder.setQuantity(quantity);
-    incompleteOrder.setBook(book);
-    incompleteOrderDetailsService.saveOrderToDatabase(incompleteOrder);
+//  @PostMapping("/add/{bookId}")
+//  public String addToBasket( @PathVariable("id") Long bookId, @RequestParam Integer quantity) {
+//    BookEntity book = bookRepository.findById(bookId).orElse(null);
+//    BasketDetails basketDetails = new BasketDetails();
+//    basketDetails.setQuantity(quantity);
+//    basketDetails.setBook(book);
+//    basketDetailsService.saveOrderToDatabase(basketDetails);
+//
+//    return "redirect:/home/user";
+//
+//  }
 
 
-
-
-    return "redirect:/basket";
-
-  }
-
-
-  @GetMapping
-  public String viewBasket (Model model) {
-    Basket basket=basketService.showBasket();
-    List<BasketDetails> basketDetails = basket.getBasketDetails();
-
-    model.addAttribute("basket", basketDetails);
-
-
-    return "basket";
-  }
-
-  // Remove book from basket
-  @PostMapping("/remove/{bookId}")
-  public String removeFromBasket(@PathVariable Long bookId, HttpSession session) {
-    List<BasketDetails> basket = (List<BasketDetails>) session.getAttribute("basket");
-
-    if (basket != null) {
-      System.out.println("Basket before removing: " + basket.size() + " items.");
-      basket.removeIf(orderDetail -> orderDetail.getBook().getId().equals(bookId));
-      session.setAttribute("basket", basket);
-      System.out.println("Basket after removing: " + basket.size() + " items.");
-    } else {
-      System.err.println("Attempt to remove from an empty basket.");
-    }
-
-    return "redirect:/basket";
-  }
+//  @GetMapping
+//  public String viewBasket (Model model) {
+//    Basket basket=basketService.showBasket();
+//    List<BasketDetails> basketDetails = basket.getBasketDetails();
+//
+//    model.addAttribute("basket", basketDetails);
+//
+//
+//    return "basket";
+//  }
+//
+//  // Remove book from basket
+//  @PostMapping("/remove/{bookId}")
+//  public String removeFromBasket(@PathVariable Long bookId, HttpSession session) {
+//    List<BasketDetails> basket = (List<BasketDetails>) session.getAttribute("basket");
+//
+//    if (basket != null) {
+//      System.out.println("Basket before removing: " + basket.size() + " items.");
+//      basket.removeIf(orderDetail -> orderDetail.getBook().getId().equals(bookId));
+//      session.setAttribute("basket", basket);
+//      System.out.println("Basket after removing: " + basket.size() + " items.");
+//    } else {
+//      System.err.println("Attempt to remove from an empty basket.");
+//    }
+//
+//    return "redirect:/basket";
+//  }
 }
