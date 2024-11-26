@@ -23,4 +23,5 @@ public class CategoryEntity {
   @ManyToOne
   private BookEntity book;
 
+  private String name;
 }

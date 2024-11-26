@@ -137,10 +137,14 @@
             <div class="category-dropdown">
                 <select onchange="window.location = this.value;">
                     <option value="">Select Category</option>
-                    <option value="#fiction">Fiction</option>
+                   <option value="#Fiction">Fiction</option>
                     <option value="#non-fiction">Non-fiction</option>
                     <option value="#mystery">Mystery</option>
                     <option value="#fantasy">Fantasy</option>
+                  <!--  <option value="/home?category=fiction" th:selected="${category == 'fiction'}">Fiction</option>
+                    <option value="/home?category=non-fiction" th:selected="${category == 'non-fiction'}">Non-fiction</option>
+                    <option value="/home?category=mystery" th:selected="${category == 'mystery'}">Mystery</option>
+                    <option value="/home?category=fantasy" th:selected="${category == 'fantasy'}">Fantasy</option> -->
                 </select>
             </div>
         </div>
