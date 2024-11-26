@@ -1,6 +1,7 @@
 package com.project.repository;
 
 import com.project.entity.BookEntity;
+import com.project.entity.CategoryEntity;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,8 +33,14 @@ public interface BookRepository extends JpaRepository<BookEntity, Long> {
   // Sorting books by price in descending order
   Page<BookEntity> findAllByOrderByPriceDesc(Pageable pageable);
 
-  // A simple findAll method that works with Pageable (handles dynamic sorting)
-  Page<BookEntity> findAll(Pageable pageable);
+//  // A simple findAll method that works with Pageable (handles dynamic sorting)
+//  Page<BookEntity> findAll(Pageable pageable);
+
+//// Custom query to filter books based on category
+//@Query("SELECT b FROM BookEntity b JOIN b.category c WHERE c = :category")
+//   Page<BookEntity> findByCategoryContainingIgnoreCase(@Param("category") String category, Pageable pageable);
+
+  List<BookEntity> findAllByCategoryContainsIgnoreCase(String category, Pageable pageable);
 }
 
 

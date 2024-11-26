@@ -1,7 +1,9 @@
 package com.project.service;
 
 import com.project.entity.BookEntity;
+import com.project.entity.CategoryEntity;
 import com.project.repository.BookRepository;
+import com.project.repository.CategoryRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +18,8 @@ public class FilterService {
   private BookRepository bookRepository;
 
   @Transactional(readOnly = true)
-  public Page<BookEntity> filterBooksByPriceRange(Double minPrice, Double maxPrice, org.springframework.data.domain.Pageable pageable) {
+  public Page<BookEntity> filterBooksByPriceRange(Double minPrice, Double maxPrice,
+      org.springframework.data.domain.Pageable pageable) {
     return bookRepository.findByPriceBetween(minPrice, maxPrice, pageable);
   }
 
@@ -47,4 +50,11 @@ public class FilterService {
   public Page<BookEntity> getAllBooks(Pageable pageable) {
     return bookRepository.findAll(pageable); // Default, no filtering
   }
+
+  @Transactional(readOnly = true)
+  public List<BookEntity> filterByCategory(String category) {
+    return bookRepository.findAllByCategoryContainsIgnoreCase(category, Pageable.unpaged());
+  }
 }
+
+

@@ -30,63 +30,22 @@ public class FilterController {
   @Autowired
   private FilterService filterService;
 
- @GetMapping("/filterByPriceRange")
- public String filterBookByPriceRange(
-     @RequestParam(defaultValue = "0") Double minPrice,
-     @RequestParam(defaultValue = "1000000") Double maxPrice,
-    @PageableDefault(size = 10) Pageable pageable,
-     Model model) {
+  @Autowired
+  private BookRepository bookRepository;
 
-
- Page<BookEntity> books = filterService.filterBooksByPriceRange(minPrice, maxPrice, pageable);
-
-
-   books.forEach(book -> {
-     if (book.getImage() != null && book.getImageDataBase64() == null) {
-       String base64Image = encodeImageToBase64(book.getImage());
-       book.setImageDataBase64(base64Image); // Populate Base64 data for the image
-     } else if (book.getImage() == null) {
-       book.setImageDataBase64(null); // Set to null explicitly if no image is present
-     }
-   });
-
-   model.addAttribute("books", books.getContent());
-   model.addAttribute("currentPage", books.getNumber());
-   model.addAttribute("totalPages", books.getTotalPages());
-   model.addAttribute("totalItems", books.getTotalElements());
-   model.addAttribute("minPrice", minPrice);
-   model.addAttribute("maxPrice", maxPrice);
-   return "home_test";
-
- }
-
-  @GetMapping("/filterByPrice")
-  public String filterBooksByPrice(
-      @RequestParam(defaultValue = "1") Double minPrice,
+  @GetMapping("/filterByPriceRange")
+  public String filterBookByPriceRange(
+      @RequestParam(defaultValue = "0") Double minPrice,
       @RequestParam(defaultValue = "1000000") Double maxPrice,
-      @RequestParam(defaultValue = "price") String sort,// 'sort' can be 'title', 'price', etc.
       Pageable pageable,
       Model model) {
 
-    Page<BookEntity> books;
-
-    switch (sort) {
-      case "price":
-        books = filterService.getBooksSortedByPrice(pageable);
-        break;
-      case "priceDesc":
-        books = filterService.getBooksSortedByPriceDesc(pageable);
-        break;
-      case "title":
-        books = filterService.getBooksSortedByTitle(pageable);
-        break;
-      case "titleDesc":
-        books = filterService.getBooksSortedByTitleDesc(pageable);
-        break;
-      default:
-        books = filterService.filterBooksByPriceRange(minPrice, maxPrice, pageable);
-    }
-
+    // Adjust pageable to handle sorting if needed
+    Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+        pageable.getSort());
+    // Fetch books within price range
+    Page<BookEntity> books = filterService.filterBooksByPriceRange(minPrice, maxPrice, pageRequest);
+    model.addAttribute("books", books);
     books.forEach(book -> {
       if (book.getImage() != null && book.getImageDataBase64() == null) {
         String base64Image = encodeImageToBase64(book.getImage());
@@ -95,7 +54,59 @@ public class FilterController {
         book.setImageDataBase64(null); // Set to null explicitly if no image is present
       }
     });
+    model.addAttribute("books", books.getContent());
+    model.addAttribute("minPrice", minPrice);
+    model.addAttribute("maxPrice", maxPrice);
+    model.addAttribute("currentPage", books.getNumber());
+    model.addAttribute("totalPages", books.getTotalPages());
+    model.addAttribute("totalItems", books.getTotalElements());
+    return "home_test";
 
+  }
+
+  @GetMapping("/filterByPrice")
+  public String filterBooksByPrice(
+      @RequestParam(defaultValue = "1") Double minPrice,
+      @RequestParam(defaultValue = "1000000") Double maxPrice,
+      @RequestParam(required = false, defaultValue = "price") String sort,
+      // 'sort' can be 'price', 'priceDesc', etc.
+      Pageable pageable,
+      Model model) {
+
+    Page<BookEntity> books;
+
+    // Determine sort order and filter books
+    Sort sortOrder;
+    switch (sort) {
+      case "priceDesc":
+        sortOrder = Sort.by(Sort.Order.desc("price"));
+        break;
+      default: // Default to ascending price
+        sortOrder = Sort.by(Sort.Order.asc("price"));
+        break;
+    }
+
+    // Update pageable with sort order
+    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
+
+    // Filter books based on the price range and sorting
+    if (minPrice != null && maxPrice != null && (minPrice > 0 || maxPrice < 1000000)) {
+      books = filterService.filterBooksByPriceRange(minPrice, maxPrice, pageable);
+    } else {
+      books = filterService.getBooksSortedByPrice(pageable);
+    }
+
+    // Populate Base64 image data for books
+    books.forEach(book -> {
+      if (book.getImage() != null && book.getImageDataBase64() == null) {
+        String base64Image = encodeImageToBase64(book.getImage());
+        book.setImageDataBase64(base64Image);
+      } else if (book.getImage() == null) {
+        book.setImageDataBase64(null);
+      }
+    });
+
+    // Add attributes to the model
     model.addAttribute("books", books.getContent());
     model.addAttribute("currentPage", books.getNumber());
     model.addAttribute("totalPages", books.getTotalPages());
@@ -116,19 +127,22 @@ public class FilterController {
       Pageable pageable,
       Model model) {
 
-    Page<BookEntity> books;
-
+    // Determine the sorting logic
+    Sort sortOrder;
     switch (sort) {
-      case "title":
-        books = filterService.getBooksSortedByTitle(pageable);
-        break;
       case "titleDesc":
-        books = filterService.getBooksSortedByTitleDesc(pageable);
+        sortOrder = Sort.by(Sort.Order.desc("title"));
         break;
+      case "titleAsc":
       default:
-        books = filterService.filterBooksByPriceRange(minPrice, maxPrice, pageable);
+        sortOrder = Sort.by(Sort.Order.asc("title"));
+        break;
     }
+    // Apply the sort to the pageable
+    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
 
+    // Fetch the sorted books
+    Page<BookEntity> books = filterService.getAllBooks(pageable); // Update method name if necessary
 
     books.forEach(book -> {
       if (book.getImage() != null && book.getImageDataBase64() == null) {
@@ -138,8 +152,6 @@ public class FilterController {
         book.setImageDataBase64(null); // Set to null explicitly if no image is present
       }
     });
-
-
     model.addAttribute("books", books.getContent());
     model.addAttribute("currentPage", books.getNumber());
     model.addAttribute("totalPages", books.getTotalPages());
@@ -155,126 +167,36 @@ public class FilterController {
   private String encodeImageToBase64(byte[] imageData) {
     return Base64.getEncoder().encodeToString(imageData);
   }
+
+  @GetMapping("/filterByCategory")
+  public String filterBooksByCategory(
+     @RequestParam String category, Model model) {
+    List<BookEntity> books = filterService.filterByCategory(category);
+
+    // Ensure image data is converted to Base64 for display
+    books.forEach(book -> {
+      if (book.getImage() != null && book.getImageDataBase64() == null) {
+        String base64Image = encodeImageToBase64(book.getImage());
+        book.setImageDataBase64(base64Image); // Populate Base64 data for the image
+      } else if (book.getImage() == null) {
+        book.setImageDataBase64(null); // Set to null explicitly if no image is present
+      }
+    });
+
+  // Add attributes to the model for rendering in the view
+    model.addAttribute("books", books);
+
+    return "home_test";
+
+
+}
 }
 
-//
-//    // Common handler for filtering and sorting
-//    @GetMapping("/filterBook")
-//    public String filterBooks(
-//        @RequestParam(defaultValue = "0") Double minPrice,
-//        @RequestParam(defaultValue = "1000000") Double maxPrice,
-//        @RequestParam(defaultValue = "price") String sort, // 'sort' can be 'price', 'priceDesc', 'title', etc.
-//        @PageableDefault(size = 10) Pageable pageable,
-//        Model model) {
-//
-//      Page<BookEntity> books;
-//
-//      // Select sorting and filtering logic based on 'sort'
-//      switch (sort) {
-//        case "price":
-//          books = filterService.getBooksSortedByPrice(pageable);
-//          break;
-//        case "priceDesc":
-//          books = filterService.getBooksSortedByPriceDesc(pageable);
-//          break;
-//        case "title":
-//          books = filterService.getBooksSortedByTitle(pageable);
-//          break;
-//        case "titleDesc":
-//          books = filterService.getBooksSortedByTitleDesc(pageable);
-//          break;
-//        default:
-//          books = filterService.filterBooksByPriceRange(minPrice, maxPrice, pageable);
-//      }
-//
-//      // Process and encode image data
-//      books.forEach(this::processBookImages);
-//
-//      // Add common model attributes
-//      addPaginationAttributes(model, books, minPrice, maxPrice, sort);
-//
-//      return "home_test";
-//    }
-//
-//    // Helper method to encode image data
-//    private void processBookImages(BookEntity book) {
-//      if (book.getImage() != null && book.getImageDataBase64() == null) {
-//        String base64Image = Base64.getEncoder().encodeToString(book.getImage());
-//        book.setImageDataBase64(base64Image);
-//      } else if (book.getImage() == null) {
-//        book.setImageDataBase64(null);
-//      }
-//    }
-//
-//    // Helper method to add pagination and filtering details to the model
-//    private void addPaginationAttributes(Model model, Page<BookEntity> books, Double minPrice, Double maxPrice, String sort) {
-//      model.addAttribute("books", books.getContent());
-//      model.addAttribute("currentPage", books.getNumber());
-//      model.addAttribute("totalPages", books.getTotalPages());
-//      model.addAttribute("totalItems", books.getTotalElements());
-//      model.addAttribute("minPrice", minPrice);
-//      model.addAttribute("maxPrice", maxPrice);
-//      model.addAttribute("sort", sort);
-//    }
- // }
 
-//  @GetMapping("/filterBooks")
-//  public String filterBooks(
-//      @RequestParam(defaultValue = "0") Double minPrice,
-//      @RequestParam(defaultValue = "1000000") Double maxPrice,
-//      @RequestParam(defaultValue = "price") String sort,
-//      Pageable pageable,
-//      Model model) {
-//
-//    Page<BookEntity> books;
-//
-//
-//    // Determine sorting direction and property
-//    Sort sortOrder;
-//    switch (sort) {
-//      case "priceDesc":
-//        sortOrder = Sort.by(Sort.Order.desc("price"));
-//        break;
-//      case "titleDesc":
-//        sortOrder = Sort.by(Sort.Order.desc("title"));
-//        break;
-//      case "title":
-//        sortOrder = Sort.by(Sort.Order.asc("title"));
-//        break;
-//      default: // Default to ascending price
-//        sortOrder = Sort.by(Sort.Order.asc("price"));
-//    }
-//
-//    Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
-//      books = filterService.filterBooksByPriceRange(minPrice, maxPrice, pageable);
-//
-//
-//   books.forEach(book -> {
-//     if (book.getImage() != null && book.getImageDataBase64() == null) {
-//       String base64Image = encodeImageToBase64(book.getImage());
-//       book.setImageDataBase64(base64Image); // Populate Base64 data for the image
-//     } else if (book.getImage() == null) {
-//       book.setImageDataBase64(null); // Set to null explicitly if no image is present
-//     }
-//   });
-//
-//    model.addAttribute("books", books.getContent());
-//    model.addAttribute("currentPage", books.getNumber());
-//    model.addAttribute("totalPages", books.getTotalPages());
-//    model.addAttribute("totalItems", books.getTotalElements());
-//    model.addAttribute("minPrice", minPrice);
-//    model.addAttribute("maxPrice", maxPrice);
-//    model.addAttribute("priceDesc", books.getContent().get(0).getTitle());
-//
-//    model.addAttribute("sort", sort);
-//
-//    return "home_test";
-//  }
-//
-//    private String encodeImageToBase64(byte[] imageData) {
-//    return Base64.getEncoder().encodeToString(imageData);
-//  }
-//}
+
+
+
+
 
 
 

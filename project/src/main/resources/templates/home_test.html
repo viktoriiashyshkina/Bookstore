@@ -360,21 +360,25 @@
     <a th:href="@{/home}">Home</a>
     <!-- Category Dropdown -->
     <div class="category-dropdown">
-      <select onchange="window.location = this.value;">
+      <label for="category-select">Filter by Category:</label>
+      <select id="category-select" onchange="window.location.href='?category=' + this.value;">
         <option value="">Select Category</option>
-        <option value="../filter#fiction">Fiction</option>
-        <option value="../category.html#non-fiction">Non-fiction</option>
-        <option value="../filter#mystery">Mystery</option>
-        <option value="../category.html#fantasy">Fantasy</option>
+        <option value="fiction" th:selected="${category == 'Fiction'}">Fiction</option>
+        <option value="non-fiction" th:selected="${category == 'non-fiction'}">Non-fiction</option>
+        <option value="mystery" th:selected="${category == 'mystery'}">Mystery</option>
+        <option value="fantasy" th:selected="${category == 'fantasy'}">Fantasy</option>
       </select>
     </div>
   </div>
+
+
   <div class="nav-center">
     <form action="/searchResults" method="get">
       <input type="text" name="query" placeholder="Search books..." required>
       <button type="submit">Search</button>
     </form>
   </div>
+
   <div class="nav-right">
     <a href="/login#signup">Sign Up</a>
     <a href="/login#login">Login</a>
@@ -383,12 +387,19 @@
       <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
     </a>
   </div>
+
 </nav>
 
 <!-- Search Results Section -->
 <section id="searchResults">
   <h2>Search Results</h2>
   <p>search results</p>
+</section>
+
+
+<section id="filterByCategory">
+  <h2> Filter results</h2>
+  <p>filter results section</p>
 </section>
 
 <div class="container">
@@ -403,18 +414,15 @@
     <button type="submit">Filter</button>
   </form>
 
+
   <form method="get" action="/filterByPriceRange">
     <label for="minPrice">Min Price:</label>
     <input type="number" name="minPrice" id="minPrice" value="${minPrice}" placeholder="Enter Min Price">
 
     <label for="maxPrice">Max Price:</label>
     <input type="number" name="maxPrice" id="maxPrice" value="${maxPrice}" placeholder="Enter Max Price">
-
-
     <button type="submit">Filter by Price Range</button>
   </form>
-
-  <!-- Filter by Price Form -->
   <!-- Filter by Title Form -->
   <form method="get" action="/filterByTitle">
     <label for="sort">Sort By:</label>
@@ -423,9 +431,11 @@
       <option value="titleDesc">Title (Z to A)</option>
     </select>
 
+
     <button type="submit">Filter</button>
   </form>
 
+  <!-- Filter Form -->
 
   <!-- Books Display Section -->
   <div id="showBooks" class="container">
@@ -447,31 +457,31 @@
 
 
 
-
-
-<!--<div class="pagination">-->
+  <!--<div class="pagination">-->
 <!--    <a href="?page=0&size=10" class="prev">Prev</a> &lt;!&ndash; Link to previous page &ndash;&gt;-->
 <!--    <span>Page <span th:text="${currentPage + 1}"></span> of <span th:text="${totalPages}"></span></span>-->
 <!--    <a href="?page=${currentPage + 1}&size=10" class="next">Next</a> &lt;!&ndash; Link to next page &ndash;&gt;-->
 <!--</div>-->
-<div class="pagination-bar">
+  <div class="pagination-bar">
+    <!-- Previous Page Link -->
     <span th:if="${currentPage > 0}">
-        <a th:href="@{'?page=' + (${currentPage - 1}) + '&size=10'}" class="prev">Prev</a>
+        <a th:href="@{'?page=' + (${currentPage - 1}) + '&size=10' + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&sort=' + ${sort}}" class="prev">Prev</a>
     </span>
 
-  <!-- Loop through the total pages and create a link for each page -->
-  <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
-        <a th:href="@{'?page=' + ${pageNum} + '&size=10'}"
+    <!-- Page Numbers -->
+    <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="@{'?page=' + ${pageNum} + '&size=10' + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&sort=' + ${sort}}"
            th:text="${pageNum + 1}"
            th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>
     </span>
 
-  <span th:if="${currentPage < totalPages - 1}">
-        <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10'}" class="next">Next</a>
+    <!-- Next Page Link -->
+    <span th:if="${currentPage < totalPages - 1}">
+        <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10' + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&sort=' + ${sort}}" class="next">Next</a>
     </span>
-</div>
-</div>
+  </div>
 
+</div>
 
 
 <footer>
