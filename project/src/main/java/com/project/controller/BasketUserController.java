@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.config.DynamicSchedulingConfig;
 import com.project.entity.AccountEntity;
 import com.project.entity.Basket;
 import com.project.entity.BasketDetails;
@@ -14,19 +15,15 @@ import com.project.service.BasketDetailsService;
 import com.project.service.BasketService;
 import com.project.service.HomeService;
 import com.project.service.UserService;
+import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/home/user")
-public class HomeUserController {
+public class BasketUserController {
 
   private final BookRepository bookRepository;
 
@@ -54,11 +51,13 @@ public class HomeUserController {
 
   private final UserService userService;
 
-  public HomeUserController(BookRepository bookRepository, HomeService homeService,
+  private final DynamicSchedulingConfig dynamicSchedulingConfig;
+
+  public BasketUserController(BookRepository bookRepository, HomeService homeService,
       BasketDetailsService basketDetailsService, BasketService basketService,
       AccountService accountService, BasketRepository basketRepository,
       BasketDetailsRepository basketDetailsRepository, AccountRepository accountRepository,
-      UserService userService) {
+      UserService userService, DynamicSchedulingConfig dynamicSchedulingConfig) {
     this.bookRepository = bookRepository;
     this.homeService = homeService;
     this.basketDetailsService = basketDetailsService;
@@ -68,6 +67,7 @@ public class HomeUserController {
     this.basketDetailsRepository = basketDetailsRepository;
     this.accountRepository = accountRepository;
     this.userService = userService;
+    this.dynamicSchedulingConfig = dynamicSchedulingConfig;
   }
 
 
@@ -99,32 +99,6 @@ public class HomeUserController {
 //  }
 
 //
-  @GetMapping
-  public String getHomeUserScreen(Model model, Pageable pageable) {
-
-    Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
-
-    Page<BookEntity> books = bookRepository.findAll(pageRequest);
-
-    //List<BookEntity> books = bookRepository.findAll();
-    model.addAttribute("books", books);
-
-    // Retrieve and set the image data for each book
-    for (BookEntity book : books.getContent()) {
-      byte[] imageData = book.getImage();
-      if (imageData != null) {
-        String imageDataBase64 = Base64.getEncoder().encodeToString(imageData);
-        book.setImageDataBase64(imageDataBase64);
-      }
-    }
-
-    model.addAttribute("books", books.getContent());
-    model.addAttribute("currentPage", books.getNumber());
-    model.addAttribute("totalPages", books.getTotalPages());
-    model.addAttribute("totalItems", books.getTotalElements());
-
-    return "homeUser";
-  }
 
 //  @PostMapping("/addToBasket/{bookId}")
 //  public String addToBasket(
@@ -178,7 +152,7 @@ public class HomeUserController {
 //  }
 
 
-//  @PostMapping("/addToBasket/{bookId}")
+//  @PostMapping("/home/user/addToBasket/{bookId}")
 //  public String addToBasket(
 //      @PathVariable("bookId") Long bookId,
 //      @RequestParam Integer quantity,
@@ -234,6 +208,93 @@ public class HomeUserController {
 //    model.addAttribute("success", "The item was successfully added to the basket");
 //    return "redirect:/home/user";
 //  }
+
+
+
+
+  @PostMapping("/addToBasket/{bookId}")
+  public String addToBasket(
+      @PathVariable("bookId") Long bookId,
+      @RequestParam Integer quantity,
+      Model model
+  ) {
+    // Find the book by its ID
+    BookEntity book = bookRepository.findById(bookId).orElse(null);
+    if (book == null) {
+      model.addAttribute("error", "Book not found");
+      return "redirect:/home/user";
+    }
+
+    // Retrieve the basket for the currently logged-in user
+    Basket basket = basketService.getBasketFromLoggedInUser();
+    if (basket == null) {
+      // If no basket exists, create a new one
+      basket = new Basket();
+      basket.setBasketDetails(new ArrayList<>());
+      basket.setAccountEntity(accountService.getLoggedInAccount());
+
+      // Associate the new basket with the user's account
+      String username = SecurityContextHolder.getContext().getAuthentication().getName();
+      User user = userService.findByUsername(username);
+      AccountEntity accountEntity = user.getAccount();
+      accountEntity.setBasket(basket);
+      basketService.saveBasketToDatabase(basket);
+      accountService.updateAccount(accountEntity);
+    }
+
+    // Check if the book is already in the basket
+    Optional<BasketDetails> existingDetail = basket.getBasketDetails().stream()
+        .filter(detail -> detail.getBook().getIsbn().equals(book.getIsbn()))
+        .findFirst();
+
+    if (existingDetail.isPresent()) {
+      // Update the quantity and refresh the timestamp
+      BasketDetails detail = existingDetail.get();
+      detail.setQuantity(detail.getQuantity() + quantity);
+      detail.setUpdatedAt(LocalDateTime.now());
+      basketDetailsService.saveOrderToDatabase(detail);
+    } else {
+      // Create a new BasketDetails item
+      BasketDetails newDetail = new BasketDetails();
+      newDetail.setBasket(basket);
+      newDetail.setBook(book);
+      newDetail.setQuantity(quantity);
+      newDetail.setUpdatedAt(LocalDateTime.now());
+      basketDetailsService.saveOrderToDatabase(newDetail);
+      basket.getBasketDetails().add(newDetail);
+      basketService.saveBasketToDatabase(basket);
+    }
+
+    Long basketId = basket.getId();
+    List<BasketDetails> basketDetailsList = basketDetailsRepository.findByBasketId(basketId);
+    BigDecimal totalAmount = basketService.calculateTotalAmount(basketDetailsList);
+    basket.setTotalAmount(totalAmount);
+    basketService.saveBasketToDatabase(basket);
+
+
+    resetExpirationTimeForAllItems(basket);
+    // Start the cleanup scheduler for this basket
+    dynamicSchedulingConfig.startBasketDetailsCleanupScheduler(basket.getId(), Duration.ofMinutes(1));
+
+    // Display success message and redirect
+    model.addAttribute("success", "The item was successfully added to the basket");
+    return "redirect:/home/user";
+  }
+
+
+  private void resetExpirationTimeForAllItems(Basket basket) {
+    // Set the expiration time to the most recent item's updated time
+    LocalDateTime latestUpdatedAt = basket.getBasketDetails().stream()
+        .map(BasketDetails::getUpdatedAt)
+        .max(LocalDateTime::compareTo)
+        .orElse(LocalDateTime.now()); // Default to current time if no items exist
+
+    // Update all BasketDetails with the latest expiration time
+    for (BasketDetails detail : basket.getBasketDetails()) {
+      detail.setUpdatedAt(latestUpdatedAt);
+      basketDetailsService.saveOrderToDatabase(detail); // Persist the updated BasketDetails
+    }
+  }
 
 
 

@@ -8,6 +8,7 @@ import com.project.repository.UserRepository;
 import java.util.List;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AccountService {
@@ -29,6 +30,7 @@ public class AccountService {
     return accountRepository.save(account); // Save and return the updated account entity
   }
 
+  @Transactional
   public AccountEntity getLoggedInAccount() {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
     User user = userRepository.findByUsername(username);
