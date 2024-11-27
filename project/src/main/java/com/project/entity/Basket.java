@@ -15,6 +15,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.math.*;
 
 @Entity
 @AllArgsConstructor
@@ -29,77 +30,15 @@ public class Basket {
     this.id = id;
   }
 
-  public String getDate() {
-    return Date;
-  }
 
-  public void setDate(String date) {
-    Date = date;
-  }
-
-  public Double getTotalAmount() {
+  public BigDecimal getTotalAmount() {
     return totalAmount;
   }
 
-  public void setTotalAmount(Double totalAmount) {
+  public void setTotalAmount(BigDecimal totalAmount) {
     this.totalAmount = totalAmount;
   }
 
-  public String getEmail() {
-    return email;
-  }
-
-  public void setEmail(String email) {
-    this.email = email;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public String getPhoneNumber() {
-    return phoneNumber;
-  }
-
-  public void setPhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
-  }
-
-  public int getZipCode() {
-    return zipCode;
-  }
-
-  public void setZipCode(int zipCode) {
-    this.zipCode = zipCode;
-  }
-
-  public String getAddress() {
-    return address;
-  }
-
-  public void setAddress(String address) {
-    this.address = address;
-  }
-
-  public String getBirthday() {
-    return birthday;
-  }
-
-  public void setBirthday(String birthday) {
-    this.birthday = birthday;
-  }
 
   public AccountEntity getAccountEntity() {
     return accountEntity;
@@ -122,25 +61,6 @@ public class Basket {
   @Column(name = "basket_id")
   private Long id;
 
-  private String Date;
-
-  private Double totalAmount;
-
-  private String email;
-
-  private String firstName;
-
-  private String lastName;
-
-  private String phoneNumber;
-
-  private int zipCode;
-
-  private String address;
-
-  private String birthday;
-
-
   @OneToOne
   @JoinColumn(name = "account_id")
   private AccountEntity accountEntity;
@@ -149,6 +69,10 @@ public class Basket {
  // @OneToMany
   @JoinColumn
   private List<BasketDetails> basketDetails;
+
+  private BigDecimal totalAmount;
+
+
 
 //  @OneToOne
 //  @JoinColumn(name = "order_id")

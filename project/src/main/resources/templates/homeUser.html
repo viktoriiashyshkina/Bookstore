@@ -696,7 +696,7 @@
 
 <div id="showBooks" class="container">
     <div th:each="book : ${books}" class="book-container">
-        <form th:action="@{/home/addToBasket/{bookId}(bookId=${book.id})}" method="post">
+        <form th:action="@{/home/user/addToBasket/{bookId}(bookId=${book.id})}" method="post">
         <div class="book-image" th:if="${book.image == null}">No picture</div>
         <img th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" th:if="${book.image != null}" class="book-image" alt="Book Image">
         <div class="book-price"><span th:text="${book.price}">Price</span> €</div>
