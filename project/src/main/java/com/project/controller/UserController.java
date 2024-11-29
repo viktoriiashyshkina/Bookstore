@@ -6,9 +6,18 @@ import com.project.entity.User;
 import com.project.service.AccountService;
 import com.project.service.UserService;
 import com.project.util.Role;
+import com.project.util.SecurityUtils;
 import java.util.Set;
 
+import javax.management.remote.JMXAuthenticator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,97 +33,76 @@ public class UserController {
   private final UserService userService;
   private final PasswordEncoder passwordEncoder;
   private final AccountService accountService;
+  private final AuthenticationManager authenticationManager;
 
-  public UserController(UserService userService, AuthenticationManager authenticationManager,
-      PasswordEncoder passwordEncoder, AccountService accountService) {
+  public UserController(UserService userService,
+      PasswordEncoder passwordEncoder, AccountService accountService,
+      AuthenticationManager authenticationManager) {
     this.userService = userService;
     this.passwordEncoder = passwordEncoder;
     this.accountService = accountService;
+
+    this.authenticationManager = authenticationManager;
   }
 
   @GetMapping("/signup")
   public String getSignUp(Model model) {
-    model.addAttribute("user", new User());
+    model.addAttribute("_csrf",
+        SecurityContextHolder.getContext().getAuthentication().getCredentials());
     return "signup";
   }
 
 
-//  @PostMapping("/signup/user")
-//  public String signup(@RequestParam String username,
-//      @RequestParam String email,
-//      @RequestParam String password,
-//      @RequestParam(defaultValue = "USER") String role,
-//      Model model) {
-//    try {
-//      // Convert role string to Role enum
-//      Role userRole = Role.valueOf(role.toUpperCase());
-//      userService.saveUser(username, email, password, userRole);
-//      model.addAttribute("message", "User registered successfully!");
-//      return "redirect:/logged-in";
-//    } catch (
-//        IllegalArgumentException e) {
-//      model.addAttribute("error", "Invalid role selected.");
-//      return "signup";
-//    } catch (
-//        Exception e) {
-//      model.addAttribute("error", e.getMessage());
-//      return "signup";
-//    }
-//  }
+  private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+  /**
+   * Handles user signup requests.
+   *
+   * @param username The username of the new user.
+   * @param email    The email of the new user.
+   * @param password The password of the new user.
+   * @param role     The role of the new user (default: USER).
+   * @param model    The Spring model to pass attributes to the view.
+   * @return A redirect or view name depending on the outcome.
+   */
   @PostMapping("/signup/user")
-  public String signup(@RequestParam String username,
+  public String signup(
+      @RequestParam String username,
       @RequestParam String email,
       @RequestParam String password,
       @RequestParam(defaultValue = "USER") String role,
       Model model) {
     try {
-      // Convert role string to Role enum
-      Role userRole = Role.valueOf(role.toUpperCase());
-      // Create the User entity
-      User newUser = new User();
-      newUser.setUsername(username);
-      newUser.setEmail(email);
-      newUser.setPassword(passwordEncoder.encode(password)); // Encrypt the password
-      newUser.setRoles(Set.of(userRole)); // Assign the role to the user
-
-      // Create an associated AccountEntity for the user
-      AccountEntity account = new AccountEntity();
-
-      // Link the account to the user
-      newUser.setAccount(account);
-      // Save the user along with the account
-      userService.saveUser(newUser);
-     // Optionally, you can save the account here if necessary
-      accountService.updateAccount(account);
+      // Attempt to save the user
+      userService.saveUser(username, email, password, Role.valueOf(role.toUpperCase()));
       model.addAttribute("message", "User registered successfully!");
-      return "redirect:/logged-in";
+
+      // Authenticate the user
+      UserDetails user = userService.loadUserByUsername(username);
+      Authentication authenticationToken = new UsernamePasswordAuthenticationToken(
+          username,
+          password,
+          user.getAuthorities()// Fetch roles as authorities
+      );
+      Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+      SecurityContextHolder.getContext().setAuthentication(authentication);
+      logger.info("New user signed up and authenticated: {}", username);
+//      logger.info("Redirecting to: /logged-in");
+      return "redirect:/logged-in"; // Redirect to login after successful signup
     } catch (IllegalArgumentException e) {
-      model.addAttribute("error", "Invalid role selected.");
-      return "signup";
+      model.addAttribute("error", "Invalid role or user already exists.");
+      logger.error("Error during signup: {}", e.getMessage());
     } catch (Exception e) {
-      model.addAttribute("error", e.getMessage());
-      return "signup";
+      model.addAttribute("error", "An unexpected error occurred: " + e.getMessage());
+      logger.error("Unexpected error during signup", e);
     }
+    return "signup"; // Return to signup page with error message
   }
 }
 
 
-//  @PostMapping("/login")
-//  public String login(@RequestParam String username, @RequestParam String password, @RequestParam Role role, Model model) {
-//    User user = userService.findByUsername(username);
-//    user.getPassword();
-//    return "redirect:/logged-in";
-//
-//  }
 
-//  @PreAuthorize("isAuthenticated()")
-//  @GetMapping("/logged-in")
-//  public String homePage(Model model) {
-//    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//    model.addAttribute("username", username);
-//    return "logged-in"; // Show home page
-//  }
 
 
 

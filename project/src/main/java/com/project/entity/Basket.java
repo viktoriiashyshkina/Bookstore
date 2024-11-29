@@ -73,7 +73,6 @@ public class Basket {
   private BigDecimal totalAmount;
 
 
-
 //  @OneToOne
 //  @JoinColumn(name = "order_id")
 //  private PaymentEntity payment;

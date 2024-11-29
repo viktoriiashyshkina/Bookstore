@@ -1,114 +1,35 @@
 package com.project.service;
 
-import com.project.config.PasswordEncoderConfig;
 import com.project.entity.AccountEntity;
 import com.project.entity.User;
-import com.project.exception.UserAlreadyExistsException;
 import com.project.repository.UserRepository;
 import com.project.util.Role;
-import java.util.Collection;
+import java.math.BigDecimal;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-//@Service
-//public class UserService implements UserDetailsService {
-//
-////private final UserRepository userRepository;
-////private final PasswordEncoder passwordEncoder;
-////
-////  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-////    this.userRepository = userRepository;
-////    this.passwordEncoder = passwordEncoder;
-////  }
-//  private final AccountService accountService;
-//
-//  @Autowired
-//  private UserRepository userRepository;
-//
-//  @Autowired
-//  private BCryptPasswordEncoder passwordEncoder;
-//
-//  public UserService(AccountService accountService) {
-//    this.accountService = accountService;
-//  }
-//
-//  @Override
-//  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//    User user = userRepository.findByUsername(username);
-//    if (user == null) {
-//      throw new UsernameNotFoundException("User not found");
-//    }
-//    System.out.println("User retrieved: " + user.getUsername());
-//    return new org.springframework.security.core.userdetails.User(
-//        user.getUsername(),
-//        user.getPassword(),
-//        mapRolesToAuthorities(user.getRoles())
-//    );
-//  }
-//
-//  private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles) {
-//    return roles.stream()
-//        .map(role -> new SimpleGrantedAuthority(
-//            "ROLE_" + role.name())) // Ensure the prefix "ROLE_" is added
-//        .collect(Collectors.toList());
-//  }
-//
-//
-//  public User findByUsername(String username) {
-//    return userRepository.findByUsername(username);
-//  }
-//
-////  public void saveUser(User user) {
-////    // Save user along with the associated AccountEntity
-////    userRepository.save(user);
-////    // Optionally, save the associated AccountEntity if needed
-////    accountService.updateAccount(user.getAccount());
-////  }
-//
-//
-//  public void saveUser(String username, String email, String password, Role role) {
-//    User newUser = new User();
-//    newUser.setUsername(username);
-//    newUser.setEmail(email);
-//    newUser.setPassword(passwordEncoder.encode(password));
-//    newUser.setRoles(Set.of(role));
-//
-//    // Create an AccountEntity and link it to the User
-//    AccountEntity account = new AccountEntity();
-//    newUser.setAccount(account);  // Link the account to the user
-//
-//    userRepository.save(newUser);
-//
-//    System.out.println(newUser.getUsername());
-//  }
-//}
-
-//  public void saveUser(User user) {
-//    user.setPassword(passwordEncoder.encode(user.getPassword()));
-//    user.setRoles(Set.of(Role.USER));
-//    userRepository.save(user);
-//
-//  }
 
 @Service
 public class UserService implements UserDetailsService {
 
   private final UserRepository userRepository;
-  private final BCryptPasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
   private final AccountService accountService;
+  private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
   @Autowired
-  public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, AccountService accountService) {
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AccountService accountService) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
     this.accountService = accountService;
@@ -121,20 +42,30 @@ public class UserService implements UserDetailsService {
     if (user == null) {
       throw new UsernameNotFoundException("User not found");
     }
-    System.out.println("User retrieved: " + user.getUsername());
+
+    Set<GrantedAuthority> authorities = user.getRoles().stream()
+        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name())) // Prefix "ROLE_"
+        .collect(Collectors.toSet());
+
+    logger.info("Loading user: {}", user.getUsername());
+    user.getRoles().forEach(role -> logger.info("Role: {}", role));
+
     return new org.springframework.security.core.userdetails.User(
         user.getUsername(),
         user.getPassword(),
-        mapRolesToAuthorities(user.getRoles())
+        authorities
     );
   }
 
-  // Helper method to map roles to authorities
-  private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles) {
-    return roles.stream()
-        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))  // Ensure the "ROLE_" prefix
-        .collect(Collectors.toList());
+
+  public boolean existsByUsername(String username) {
+    return userRepository.existsByUsername(username);
   }
+
+  public boolean existsByEmail(String email) {
+    return userRepository.existsByEmail(email);
+  }
+
 
   // Find a user by username (not necessarily for authentication)
   @Transactional
@@ -142,9 +73,55 @@ public class UserService implements UserDetailsService {
     return userRepository.findByUsername(username);
   }
 
-  public void saveUser(User user) {
-    userRepository.save(user);
+
+  public void saveUser(String username, String email, String password, Role role) {
+    // Validate inputs
+    if (userRepository.existsByUsername(username)) {
+      throw new IllegalArgumentException("Username already exists.");
+    }
+    if (userRepository.existsByEmail(email)) {
+      throw new IllegalArgumentException("Email already exists.");
+    }
+    if (role == null) {
+      throw new IllegalArgumentException("Role must not be null.");
+    }
+    // Create the user and associated account
+    User newUser = new User();
+    newUser.setUsername(username);
+    newUser.setEmail(email);
+    newUser.setPassword(passwordEncoder.encode(password));
+    newUser.setRoles(Set.of(role));
+
+    AccountEntity account = createAccountForUser(); // Decoupled account creation
+    newUser.setAccount(account);
+
+    // Save the user
+    userRepository.save(newUser);
+
+    // Log the action
+    logger.info("New user registered: {}", username);
   }
+
+  private AccountEntity createAccountForUser() {
+    return new AccountEntity();
+  }
+
+  public long getUserCount() {
+    return userRepository.count();
+  }
+
+  // Get the user's account balance
+  public BigDecimal getUserBalance(String username) {
+    User user = userRepository.findByUsername(username);
+    return user.getAccount().getBalance();
+  }
+
+  // Get the authenticated user's username
+  public String getAuthenticatedUsername() {
+    String username = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+    return username;
+  }
+
 }
 
 

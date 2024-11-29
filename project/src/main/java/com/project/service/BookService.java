@@ -38,13 +38,8 @@ public class BookService {
   public void saveBookToDatabase (BookEntity book) {
     bookRepository.save(book);
   }
-
-
-  // Search for books by title or author
-  @Transactional(readOnly = true)
-  public List<BookEntity> searchBooks(String query) {
-    return bookRepository
-        .findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrCategoryIgnoreCaseOrDescriptionContainsIgnoreCaseOrIsbn(query, query,query,query, query);
+  public long getBookCount() {
+    return bookRepository.count();
   }
 
 

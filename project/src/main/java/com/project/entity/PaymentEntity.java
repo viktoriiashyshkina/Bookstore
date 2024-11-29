@@ -1,6 +1,7 @@
 package com.project.entity;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,7 +15,7 @@ public class PaymentEntity {
   private String paymentMethod;
 
   @Column(nullable = false)
-  private double amount;
+  private BigDecimal amount;
 
   public Long getId() {
     return id;
@@ -32,11 +33,11 @@ public class PaymentEntity {
     this.paymentMethod = paymentMethod;
   }
 
-  public double getAmount() {
+  public BigDecimal getAmount() {
     return amount;
   }
 
-  public void setAmount(double amount) {
+  public void setAmount(BigDecimal amount) {
     this.amount = amount;
   }
 
@@ -67,7 +68,7 @@ public class PaymentEntity {
   @Column(nullable = false)
   private String status;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @OneToOne()
   @JoinColumn(name = "order_id", nullable = false)
   private OrderEntity order;
 

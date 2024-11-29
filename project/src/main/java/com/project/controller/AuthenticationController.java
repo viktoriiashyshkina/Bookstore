@@ -1,4 +1,5 @@
 package com.project.controller;
+import com.project.entity.User;
 import com.project.service.UserService;
 import com.project.util.SecurityUtils;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,12 @@ public class AuthenticationController {
   @GetMapping("/logged-in")
   public String loggedInPage(Model model) {
     String username = SecurityUtils.userIsAuthenticated();
+    // Fetch the User object based on the username
+    User user = userService.findByUsername(username);  // Make sure userService is correctly implemented
+
+    if (user != null) {
+      model.addAttribute("user", user);  // Add the user object to the model
+    }
     model.addAttribute("username", username);
     return "logged-in"; // The Thymeleaf template to render
   }

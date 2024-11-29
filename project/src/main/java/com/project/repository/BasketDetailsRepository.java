@@ -40,5 +40,4 @@ public interface BasketDetailsRepository extends JpaRepository<BasketDetails, Lo
 
   BasketDetails findByBookId(Long id);
 
-
 }

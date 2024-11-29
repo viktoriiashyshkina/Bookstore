@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,33 @@ public class AccountEntity {
   private Long id;
 
   private String username;
+  private String firstName;
+
+  private String lastName;
+
+  private String email;
+
+  private String password;
+
+  private int zipCode;
+
+  private String address;
+
+  private String birthday;
+
+  private String phoneNumber;
+
+  @Column(name = "balance")
+  private BigDecimal balance = BigDecimal.ZERO;
+
+  @OneToMany
+  @JoinColumn(name ="account_id")
+  private List<OrderEntity> orderList;
+
+  @OneToOne
+  @JoinColumn(name ="basket_id")
+  private Basket basket;
+
 
   public Long getId() {
     return id;
@@ -122,30 +150,13 @@ public class AccountEntity {
   public void setBasket(Basket basket) {
     this.basket = basket;
   }
+  public BigDecimal getBalance() {
+    return balance;
+  }
+  public void setBalance(BigDecimal balance) {
+    this.balance = balance;
+  }
 
-  private String firstName;
-
-  private String lastName;
-
-  private String email;
-
-  private String password;
-
-  private int zipCode;
-
-  private String address;
-
-  private String birthday;
-
-  private String phoneNumber;
-
-  @OneToMany
-  @JoinColumn(name ="account_id")
-  private List<OrderEntity> orderList;
-
-  @OneToOne
-  @JoinColumn(name ="basket_id")
-  private Basket basket;
 
 //  @OneToOne
 //  @JoinColumn(name = "account_id")
