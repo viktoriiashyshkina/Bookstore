@@ -591,7 +591,9 @@ p {
 
 
 <div id="showBooks" class="container">
+    <div class="book-container-wrapper">
     <div th:each="book : ${books}" class="book-container">
+        <form th:action="@{/home/user/addToBasket/{bookId}(bookId=${book.id})}" method="post">
         <div>
             <img th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" class="book-image" alt="Book Image">
         </div>
@@ -611,7 +613,7 @@ p {
 
           </div>
         </form>
-  
+    </div>
         </div>
 
 
