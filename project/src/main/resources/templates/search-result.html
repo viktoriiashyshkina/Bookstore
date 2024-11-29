@@ -435,6 +435,26 @@
   <button type="submit" class="buy-button">Buy</button>
 </form>
 
+<div class="pagination-bar">
+  <!-- Previous Page Link -->
+  <span th:if="${currentPage > 0}">
+      <a th:href="@{'/searchResults?query=' + ${query} + '&page=' + (${currentPage - 1}) + '&size=10'}" class="prev">Prev</a>
+  </span>
+
+  <!-- Page Numbers -->
+  <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
+      <a th:href="@{'/searchResults?query=' + ${query} + '&page=' + ${pageNum} + '&size=10'}"
+         th:text="${pageNum + 1}"
+         th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>
+  </span>
+
+  <!-- Next Page Link -->
+  <span th:if="${currentPage < totalPages - 1}">
+      <a th:href="@{'/searchResults?query=' + ${query} + '&page=' + (${currentPage + 1}) + '&size=10'}" class="next">Next</a>
+  </span>
+</div>
+
+
 <footer>
   <p>&copy; 2024 Bookstore</p>
 </footer>

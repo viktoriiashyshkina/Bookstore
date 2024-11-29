@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import java.math.BigDecimal;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,19 +29,21 @@ public class OrderEntity {
 
   private String Date;
 
-  private Double totalAmount;
+  private BigDecimal totalAmount;
 
 
   @ManyToOne
+  @JoinColumn(name = "acoount_id")
   private AccountEntity accountEntity;
 
   @OneToMany
-  @JoinColumn(name = "order_id")
+  @JoinColumn(name = "orderEntity")
   private List<OrderDetailsEntity> orderDetails;
 
   @OneToOne
   @JoinColumn(name = "order_id")
   private PaymentEntity payment;
+
 
 
 

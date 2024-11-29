@@ -15,8 +15,8 @@ import org.springframework.stereotype.Repository;
 public interface BookRepository extends JpaRepository<BookEntity, Long> {
 
   // Search books by title or author
-  List<BookEntity> findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrCategoryIgnoreCaseOrDescriptionContainsIgnoreCaseOrIsbn(
-      String query, String author, String category, String description, String isbn);
+  Page<BookEntity> findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrDescriptionContainsIgnoreCaseOrIsbn(
+      String query, String author, String category, String description, String isbn, Pageable pageable);
 
   // Filter by price range with pagination
   Page<BookEntity> findByPriceBetween(Double minPrice, Double maxPrice, Pageable pageable);

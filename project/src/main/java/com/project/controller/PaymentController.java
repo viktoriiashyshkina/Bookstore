@@ -40,11 +40,8 @@ public class PaymentController {
             model.addAttribute("paymentStatus", "Order not found for ID: " + orderId);
             return "paymentStatus"; // Show an error status
         }
-
         OrderEntity order = optionalOrder.get();
-
         PaymentEntity payment = paymentService.processPayment(order, paymentMethod, cardNumber, expirationDate, cvv);
-
         model.addAttribute("paymentStatus", payment.getStatus());
         return "paymentStatus";
     }

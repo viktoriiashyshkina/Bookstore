@@ -1,8 +1,11 @@
 package com.project.controller;
 
 import com.project.entity.BookEntity;
+import com.project.entity.User;
 import com.project.repository.BookRepository;
 import com.project.service.HomeService;
+import com.project.service.UserService;
+import java.security.Principal;
 import java.util.Base64;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -20,15 +23,27 @@ public class HomeController {
   private final BookRepository bookRepository;
 
   private final HomeService homeService;
+  private final UserService userService;
 
-  public HomeController(BookRepository bookRepository, HomeService homeService) {
+  public HomeController(BookRepository bookRepository, HomeService homeService,
+      UserService userService) {
     this.bookRepository = bookRepository;
     this.homeService = homeService;
+    this.userService = userService;
   }
 
 
   @GetMapping
-  public String getHomeScreen(Model model, Pageable pageable) {
+  public String getHomeScreen(Model model, Principal principal, Pageable pageable) {
+
+    if (principal != null) {
+      String username = principal.getName();
+      User user = userService.findByUsername(username);
+
+      if (user != null) {
+        model.addAttribute("user", user);  // Add the user object to the model
+      }
+    }
 
     Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
 

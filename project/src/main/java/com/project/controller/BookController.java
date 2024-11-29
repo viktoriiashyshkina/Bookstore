@@ -321,8 +321,6 @@ public class BookController {
 
 
 
-
-
   @GetMapping("/image/{id}")
   @ResponseBody
   public byte[] getImage(@PathVariable("id") Long id) {

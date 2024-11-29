@@ -150,7 +150,7 @@ public class BasketController {
 //  }
 
 
-  // Add book to basket
+ //  Add book to basket
 //  @PostMapping("/add/{bookId}")
 //  public String addToBasket( @PathVariable("id") Long bookId, @RequestParam Integer quantity) {
 //    BookEntity book = bookRepository.findById(bookId).orElse(null);
@@ -174,8 +174,8 @@ public class BasketController {
 //
 //    return "basket";
 //  }
-//
-//  // Remove book from basket
+
+  // Remove book from basket
 //  @PostMapping("/remove/{bookId}")
 //  public String removeFromBasket(@PathVariable Long bookId, HttpSession session) {
 //    List<BasketDetails> basket = (List<BasketDetails>) session.getAttribute("basket");

@@ -55,6 +55,14 @@ public class FilterService {
   public List<BookEntity> filterByCategory(String category) {
     return bookRepository.findAllByCategoryContainsIgnoreCase(category, Pageable.unpaged());
   }
+
+
+  // Search for books by title or author
+  @Transactional(readOnly = true)
+  public Page<BookEntity> searchBooks(String query, Pageable pageable) {
+    return bookRepository
+        .findByTitleContainingIgnoreCaseOrAuthorContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrDescriptionContainsIgnoreCaseOrIsbn(query, query,query,query, query, pageable);
+  }
 }
 
 

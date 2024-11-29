@@ -39,10 +39,11 @@ public class FilterController {
       @RequestParam(defaultValue = "1000000") Double maxPrice,
       Pageable pageable,
       Model model) {
+    Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
 
-    // Adjust pageable to handle sorting if needed
-    Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-        pageable.getSort());
+//    // Adjust pageable to handle sorting if needed
+//    Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+//        pageable.getSort());
     // Fetch books within price range
     Page<BookEntity> books = filterService.filterBooksByPriceRange(minPrice, maxPrice, pageRequest);
     model.addAttribute("books", books);
@@ -72,6 +73,7 @@ public class FilterController {
       // 'sort' can be 'price', 'priceDesc', etc.
       Pageable pageable,
       Model model) {
+    Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
 
     Page<BookEntity> books;
 
@@ -187,7 +189,6 @@ public class FilterController {
     model.addAttribute("books", books);
 
     return "home_test";
-
 
 }
 }
