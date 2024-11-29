@@ -122,39 +122,40 @@
 </nav>
 
 
-<section class="message-detail-section" style="padding: 20px; margin: 20px auto; width: 80%; background-color: rgba(255, 255, 255, 0.7); border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-    <h2 style="text-align: center; margin-bottom: 20px;">Message Detail</h2>
+<section class="message-detail-section" style="padding: 15px; margin: 30px auto; width: 60%; max-width: 800px; background-color: rgba(255, 255, 255, 0.7); border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <h2 style="text-align: center; margin-bottom: 15px; font-size: 1.8rem;">Message Detail</h2>
 
     <!-- Display the original message -->
-    <div class="message" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-        <p><strong th:text="${message.name}" style="font-weight: bold;"></strong></p>
-        <p th:text="${message.messageContent}"></p>
+    <div class="message" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); font-size: 0.9rem;">
+        <p><strong th:text="${message.name}" style="font-weight: bold; color: #333;"></strong></p>
+        <p th:text="${message.messageContent}" style="margin-top: 8px; color: #555;"></p>
     </div>
 
     <!-- Success or error message after posting a reply -->
-    <div th:if="${replySuccess}" class="alert alert-success" style="color: green; background-color: #e8f5e9; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+    <div th:if="${replySuccess}" class="alert alert-success" style="color: green; background-color: #e8f5e9; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 0.85rem;">
         <p>Your reply has been posted.</p>
     </div>
 
-    <div th:if="${replyError}" class="alert alert-danger" style="color: red; background-color: #fdecea; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+    <div th:if="${replyError}" class="alert alert-danger" style="color: red; background-color: #fdecea; padding: 10px; border-radius: 5px; margin-bottom: 15px; font-size: 0.85rem;">
         <p th:text="${replyError}"></p>
     </div>
 
     <!-- Form to post a new reply, placed above replies section -->
-    <h4 style="margin-bottom: 15px;">Post a Reply</h4>
+    <h4 style="margin-bottom: 10px; font-size: 1.2rem;">Post a Reply</h4>
     <form th:action="@{/forum/reply/{id}(id=${message.id})}" method="post" class="contact-form" style="display: block;">
-        <input type="text" name="name" placeholder="Your name" required style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
-        <textarea name="replyContent" placeholder="Your reply" required style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; resize: vertical;"></textarea>
-        <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Reply</button>
+        <input type="text" name="name" placeholder="Your name" required style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 0.85rem;">
+        <textarea name="replyContent" placeholder="Your reply" required style="width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; resize: vertical; font-size: 0.85rem;"></textarea>
+        <button type="submit" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.85rem;">Reply</button>
     </form>
 
     <!-- Display replies below the form -->
-    <h3 style="margin-top: 30px; margin-bottom: 15px;">Replies</h3>
-    <div th:each="reply : ${replies}" style="margin-bottom: 10px; background-color: rgba(240, 245, 220, 0.9); padding: 15px; border: 1px solid #ddd; border-radius: 5px;">
-        <p style="margin: 0;"><strong th:text="${reply.name}" style="color: #555; font-weight: bold;"></strong> replied at <span th:text="${reply.repliedAt}" style="font-style: italic;"></span>:</p>
-        <p th:text="${reply.replyContent}" style="margin-top: 10px;"></p>
+    <h3 style="margin-top: 20px; margin-bottom: 10px; font-size: 1.2rem;">Replies</h3>
+    <div th:each="reply : ${replies}" style="margin-bottom: 10px; background-color: rgba(240, 245, 220, 0.9); padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 0.85rem;">
+        <p style="margin: 0;"><strong th:text="${reply.name}" style="color: #555; font-weight: bold;"></strong> replied at <span th:text="${reply.repliedAt}" style="font-style: italic; color: #666;"></span>:</p>
+        <p th:text="${reply.replyContent}" style="margin-top: 8px; color: #555;"></p>
     </div>
 </section>
+
 
 <footer>
     <p>&copy; 2024 Bookstore. All rights reserved.</p>
