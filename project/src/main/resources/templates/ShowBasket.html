@@ -593,7 +593,7 @@ footer {
                 <!-- Book Details -->
                 <div class="book-info">
                     <div class="book-title" th:text="${detail.book.title}">Book Title</div>
-                    <div class="book-author">by <span th:text="${detail.book.author}">Author Name</span></div>
+                    <div th:each="author : ${detail.book.author}"class="book-author">by <span th:text="${author}">Author Name</span></div>
                     <p style="font-size: 0.75rem;">ISBN: <span th:text="${detail.book.isbn}">ISBN</span></p>
                     <div class="book-price" id="book-price-${detail.book.id}" th:text="${detail.book.price * detail.quantity} + ' €'">
                 </div>
