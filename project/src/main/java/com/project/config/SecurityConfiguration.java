@@ -46,6 +46,7 @@ public class SecurityConfiguration {
                 .requestMatchers("/logged-in/**", "/redeemGiftCard").authenticated()  // Restrict access to logged-in users
                 .requestMatchers("/profile").authenticated()
                 .requestMatchers("/logged-in/updateProfile").authenticated()
+                .requestMatchers("/home/basket/checkout").authenticated()
                 .requestMatchers("/books/**").permitAll()
         )
         .formLogin(formLogin ->

@@ -297,10 +297,8 @@
 </div>
 
 <!-- Display the user's account balance -->
-<div th:if="${user != null}" class="balance-section">
-  <p>Your account balance is: $<span th:text="${user.account.balance}">0.00</span></p>
-
-  <!-- Button to add money to account balance -->
+<div class="balance-section">
+  <p>Your account balance is: $<span th:text="${balance}">0.00</span></p> <!-- Display the updated balance -->
   <a href="/redeemGiftCard" class="add-money-btn">Add Money to Balance</a>
 </div>
 
@@ -319,4 +317,6 @@
 </footer>
 </body>
 </html>
+
+
 

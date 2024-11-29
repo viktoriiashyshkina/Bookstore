@@ -1,5 +1,6 @@
 package com.project.controller;
 
+import com.project.entity.AccountEntity;
 import com.project.entity.Basket;
 import com.project.entity.BasketDetails;
 import com.project.entity.BookEntity;
@@ -190,5 +191,19 @@ public class BasketController {
 //    }
 //
 //    return "redirect:/basket";
+//  }
+
+
+//  @GetMapping("/home/basket/checkout")
+//  public String checkoutBasket() {
+//    // Get the logged-in user's account ID
+//    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//    AccountEntity account = basketService.getBasketFromLoggedInUser().getAccountEntity();
+//    if (account == null) {
+//      return "redirect:/login";
+//    }
+//
+//    // Redirect to the order creation endpoint
+//    return "redirect:/order-create";
 //  }
 }
