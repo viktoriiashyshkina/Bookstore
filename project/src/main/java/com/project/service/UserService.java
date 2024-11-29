@@ -110,17 +110,33 @@ public class UserService implements UserDetailsService {
     return userRepository.count();
   }
 
-  // Get the user's account balance
   public BigDecimal getUserBalance(String username) {
     User user = userRepository.findByUsername(username);
-    return user.getAccount().getBalance();
+    if (user == null) {
+      throw new RuntimeException("User not found for username: " + username);
+    }
+
+    // Ensure balance is not null
+    AccountEntity account = user.getAccount();
+    if (account.getBalance() == null) {
+      return BigDecimal.ZERO;
+    }
+    return account.getBalance();
   }
 
-  // Get the authenticated user's username
-  public String getAuthenticatedUsername() {
-    String username = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-    return username;
+
+  public Long getAuthenticatedUserId() {
+    // Retrieve the authenticated username from the security context
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    // Fetch the custom User entity from the database using the username
+    User user = userRepository.findByUsername(username);
+
+    if (user == null) {
+      throw new RuntimeException("User not found for username: " + username);
+    }
+    return user.getId();
   }
+
 
 }
 

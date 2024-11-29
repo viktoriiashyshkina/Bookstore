@@ -557,7 +557,8 @@
     <!-- Check if the user is logged in -->
     <div th:if="${#authentication.principal != 'anonymousUser'}">
       <span>Welcome, <strong th:text="${#authentication.name}">User</strong>!</span>
-        <span>Your account balance is: $,<span th:text="${user.account.balance}">0.00</span></span>
+      <p>Your account balance is: $<span th:text="${balance}">0.00</span></p>
+
 
 
       <a href="/logged-in">My Account</a>

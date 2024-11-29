@@ -32,23 +32,21 @@ public class HomeController {
     this.userService = userService;
   }
 
-
   @GetMapping
   public String getHomeScreen(Model model, Principal principal, Pageable pageable) {
 
     if (principal != null) {
       String username = principal.getName();
-      User user = userService.findByUsername(username);
+     User user = userService.findByUsername(username);
 
       if (user != null) {
-        model.addAttribute("user", user);  // Add the user object to the model
+        model.addAttribute("user", user); // Add the user object to the model
+        model.addAttribute("balance", user.getAccount().getBalance());
       }
     }
 
     Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
-
     Page<BookEntity> books = bookRepository.findAll(pageRequest);
-
     //List<BookEntity> books = bookRepository.findAll();
     model.addAttribute("books", books);
 
@@ -60,12 +58,10 @@ public class HomeController {
         book.setImageDataBase64(imageDataBase64);
       }
     }
-
     model.addAttribute("books", books.getContent());
     model.addAttribute("currentPage", books.getNumber());
     model.addAttribute("totalPages", books.getTotalPages());
     model.addAttribute("totalItems", books.getTotalElements());
-
     return "home_test";
   }
 }

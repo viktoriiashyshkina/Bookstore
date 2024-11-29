@@ -1,4 +1,5 @@
 package com.project.controller;
+import com.project.entity.AccountEntity;
 import com.project.entity.User;
 import com.project.service.UserService;
 import com.project.util.SecurityUtils;
@@ -37,7 +38,12 @@ public class AuthenticationController {
     if (user != null) {
       model.addAttribute("user", user);  // Add the user object to the model
     }
+    AccountEntity accountEntity = new AccountEntity();
+    if (accountEntity == null) {
+      throw new RuntimeException("Account is null");
+    }
     model.addAttribute("username", username);
+    model.addAttribute("balance", user.getAccount().getBalance());
     return "logged-in"; // The Thymeleaf template to render
   }
 

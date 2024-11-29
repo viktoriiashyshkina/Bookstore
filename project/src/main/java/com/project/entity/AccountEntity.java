@@ -43,7 +43,7 @@ public class AccountEntity {
 
   private String phoneNumber;
 
-  @Column(name = "balance")
+  @Column(name = "balance", nullable = false)
   private BigDecimal balance = BigDecimal.ZERO;
 
   @OneToMany

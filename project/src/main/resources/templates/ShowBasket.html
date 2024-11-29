@@ -645,7 +645,12 @@ footer {
             <span class="summary-total" th:text="${basket.totalAmount+ 5.99} + '€' " ></span>
         </div>
 
-        <a  class="checkout-button">Checkout</a>
+        <!-- Checkout Button -->
+        <form th:action="@{/home/basket/checkout}" method="post">
+            <button type="submit" class="checkout-button">Checkout</button>
+        </form>
+
+<!--        <a  class="checkout-button">Checkout</a>-->
     </div>
 
 </div>

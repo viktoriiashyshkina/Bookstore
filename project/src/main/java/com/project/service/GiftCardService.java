@@ -1,10 +1,12 @@
 package com.project.service;
 
+import com.project.entity.AccountEntity;
 import com.project.entity.GiftCardEntity;
 import com.project.entity.User;
 import com.project.repository.AccountRepository;
 import com.project.repository.GiftCardRepository;
 import com.project.repository.UserRepository;
+import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,35 +22,41 @@ public class GiftCardService {
   @Autowired
   private UserRepository userRepository;
 
-  // Method to redeem the gift card and update the account balance using the username
-  public String redeemGiftCard(String cardCode, String username) {
-    // Fetch the gift card from the database using the cardCode
+  public String redeemGiftCard(String cardCode, Long userId) {
+    // Fetch the gift card using the card code
     GiftCardEntity giftCard = giftCardRepository.findByCardCode(cardCode)
-        .orElseThrow(() -> new RuntimeException("Gift Card not found"));
+        .orElseThrow(() -> new RuntimeException("Gift card not found"));
 
-    // Ensure that the gift card has not already been redeemed
+    // Check if the gift card has already been redeemed
     if (giftCard.isRedeemed()) {
-      throw new RuntimeException("This gift card has already been redeemed");
+      throw new RuntimeException("This gift card has already been redeemed.");
+    }
+    // Fetch the user's account using the userId
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new RuntimeException("User not found"));
+
+    AccountEntity account = user.getAccount();
+    if (account == null) {
+      throw new RuntimeException("Account not found for user");
     }
 
-    // Fetch the user's account using the username
-    User user = userRepository.findByUsername(username);
-
-    if (user == null) {
-      throw new RuntimeException("User not found");
+    // Ensure the balance is initialized if null
+    if (account.getBalance() == null) {
+      account.setBalance(BigDecimal.ZERO);
     }
 
-    // Add the gift card balance to the user's account balance
-    user.getAccount().setBalance(user.getAccount().getBalance().add(giftCard.getBalance()));
-    userRepository.save(user); // Save the updated user with the new balance
+    // Add the gift card balance to the account balance
+    account.setBalance(account.getBalance().add(giftCard.getBalance()));
+    accountRepository.save(account);
 
     // Mark the gift card as redeemed
     giftCard.setRedeemed(true);
-    giftCard.setAccountEntity(user.getAccount());
-    giftCardRepository.save(giftCard); // Save the updated gift card status
+    giftCard.setAccountEntity(account);
+    giftCardRepository.save(giftCard);
 
-    // Return the success message
-    return "Gift Card redeemed successfully! Your new balance is: " + user.getAccount().getBalance();
+    return "Gift card redeemed successfully! Your new balance is: " + account.getBalance();
   }
+
+
 }
 

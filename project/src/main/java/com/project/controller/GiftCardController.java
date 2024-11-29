@@ -1,13 +1,17 @@
 package com.project.controller;
 
 import com.project.entity.User;
+import com.project.repository.UserRepository;
 import com.project.service.AccountService;
 import com.project.service.GiftCardService;
 import com.project.service.UserService;
 import java.math.BigDecimal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class GiftCardController {
+
   @Autowired
   private UserService userService;
 
@@ -25,12 +30,15 @@ public class GiftCardController {
 
   @Autowired
   private GiftCardService giftCardService;
+  @Autowired
+  private UserRepository userRepository;
+  private static final Logger logger = LoggerFactory.getLogger(GiftCardController.class);
 
   // Method to display the add money page where the user enters gift card code
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/redeemGiftCard")
   public String showAddMoneyPage(Model model) {
-    // Optionally, pass additional information to the model
+
     return "redeem"; // This is the Thymeleaf template for adding money
   }
 
@@ -39,23 +47,28 @@ public class GiftCardController {
   @PostMapping("/redeemGiftCard")
   public String redeemGiftCard(@RequestParam String cardCode, Model model) {
     try {
-      // Get the username of the currently authenticated user
-      String username = userService.getAuthenticatedUsername(); // Get the authenticated user's username
-      String message = giftCardService.redeemGiftCard(cardCode, username); // Redeem the gift card using the username
+      Long userId = userService.getAuthenticatedUserId();
+      // Redeem the gift card and fetch the updated balance
+      String message = giftCardService.redeemGiftCard(cardCode, userId);
 
-      // Get the updated balance after redeeming the gift card
-      BigDecimal updatedBalance = userService.getUserBalance(username);
+      // Fetch the user from the database
+      User user = userRepository.findById(userId)
+          .orElseThrow(() -> new RuntimeException("User not found"));
 
-      // Add the message and updated balance to the model to display on the page
+      // Log the balance to verify it's being correctly passed
+      logger.info("Updated balance for user: " + user.getUsername() + " is " + user.getAccount().getBalance());
+      // Add attributes to the model
       model.addAttribute("message", message);
-      model.addAttribute("updatedBalance", updatedBalance);
-      return "logged-in"; // Return the logged-in page (or a page showing the result)
+      model.addAttribute("username", user.getUsername());
+      model.addAttribute("user", user);
+      model.addAttribute("balance", user.getAccount().getBalance());
+      return "logged-in"; // Redirect to the logged-in page
     } catch (Exception e) {
-      // If an error occurs (e.g., invalid card or already redeemed), show the error
       model.addAttribute("error", e.getMessage());
-      return "redeem"; // Show the error message on the add-money page
+      return "redeem"; // Show the error page
     }
   }
-
-
 }
+
+
+
