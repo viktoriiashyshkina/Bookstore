@@ -274,7 +274,7 @@ public class BasketUserController {
 
     resetExpirationTimeForAllItems(basket);
     // Start the cleanup scheduler for this basket
-    dynamicSchedulingConfig.startBasketDetailsCleanupScheduler(basket.getId(), Duration.ofMinutes(1));
+    dynamicSchedulingConfig.startBasketDetailsCleanupScheduler(basket.getId(), Duration.ofMinutes(5));
 
     // Display success message and redirect
     model.addAttribute("success", "The item was successfully added to the basket");
