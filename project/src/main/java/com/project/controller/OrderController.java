@@ -25,11 +25,11 @@ public class OrderController {
     this.orderService = orderService;
   }
 
-  @PostMapping("/create/{accountId}")
-  public ResponseEntity<OrderEntity> createOrder(@PathVariable Long accountId) {
-    OrderEntity order = orderService.createOrder(accountId);
-    return ResponseEntity.status(HttpStatus.CREATED).body(order);
-  }
+//  @PostMapping("/create/{accountId}")
+//  public ResponseEntity<OrderEntity> createOrder(@PathVariable Long accountId) {
+//    OrderEntity order = orderService.createOrder(accountId);
+//    return ResponseEntity.status(HttpStatus.CREATED).body(order);
+//  }
 
   @GetMapping("/{orderId}")
   public ResponseEntity<OrderEntity> getOrderDetails(@PathVariable Long orderId) {

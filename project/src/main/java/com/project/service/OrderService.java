@@ -43,40 +43,40 @@ public class OrderService {
     this.giftCardRepository = giftCardRepository;
   }
 
-  public OrderEntity createOrder(Long accountId) {
-    // Fetch the account
-    AccountEntity account = accountRepository.findById(accountId)
-        .orElseThrow(() -> new RuntimeException("Account not found"));
-
-    // Fetch the basket for the account
-    Basket basket = basketRepository.findByAccountEntity(account)
-        .orElseThrow(() -> new RuntimeException("Basket not found"));
-
-    // Create Order
-    OrderEntity order = new OrderEntity();
-    order.setAccountEntity(account);
-    order.setDate(LocalDate.now().toString());
-    order.setTotalAmount(basket.getTotalAmount());
-
-    // Add OrderDetails from Basket
-    List<OrderDetailsEntity> orderDetails = basket.getBasketDetails().stream().map(bd -> {
-      OrderDetailsEntity detail = new OrderDetailsEntity();
-      detail.setBook(bd.getBook());
-      detail.setQuantity(bd.getQuantity());
-      detail.setOrderEntity(order);
-      return detail;
-    }).collect(Collectors.toList());
-    order.setOrderDetails(orderDetails);
-
-    // Clear the basket
-    basket.getBasketDetails().clear();
-    basket.setTotalAmount(BigDecimal.ZERO);
-    basketRepository.save(basket);
-
-    // Save Order
-    orderRepository.save(order);
-    return order;
-}
+//  public OrderEntity createOrder(Long accountId) {
+//    // Fetch the account
+//    AccountEntity account = accountRepository.findById(accountId)
+//        .orElseThrow(() -> new RuntimeException("Account not found"));
+//
+//    // Fetch the basket for the account
+//    Basket basket = basketRepository.findByAccountEntity(account)
+//        .orElseThrow(() -> new RuntimeException("Basket not found"));
+//
+//    // Create Order
+//    OrderEntity order = new OrderEntity();
+//    order.setAccountEntity(account);
+//    order.setDate(LocalDate.now().toString());
+//    order.setTotalAmount(basket.getTotalAmount());
+//
+//    // Add OrderDetails from Basket
+//    List<OrderDetailsEntity> orderDetails = basket.getBasketDetails().stream().map(bd -> {
+//      OrderDetailsEntity detail = new OrderDetailsEntity();
+//      detail.setBook(bd.getBook());
+//      detail.setQuantity(bd.getQuantity());
+//      detail.setOrderEntity(order);
+//      return detail;
+//    }).collect(Collectors.toList());
+//    order.setOrderDetails(orderDetails);
+//
+//    // Clear the basket
+//    basket.getBasketDetails().clear();
+//    basket.setTotalAmount(BigDecimal.ZERO);
+//    basketRepository.save(basket);
+//
+//    // Save Order
+//    orderRepository.save(order);
+//    return order;
+//}
   public long getOrderCount() {
     return orderRepository.count();
   }
