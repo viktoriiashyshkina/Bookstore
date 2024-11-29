@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -102,28 +103,38 @@ public class HomeUserController {
   @GetMapping
   public String getHomeUserScreen(Model model, Pageable pageable) {
 
-    Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
+    if (!Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(),
+        "anonymousUser")) {
 
-    Page<BookEntity> books = bookRepository.findAll(pageRequest);
+      Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
 
-    //List<BookEntity> books = bookRepository.findAll();
-    model.addAttribute("books", books);
+      Page<BookEntity> books = bookRepository.findAll(pageRequest);
 
-    // Retrieve and set the image data for each book
-    for (BookEntity book : books.getContent()) {
-      byte[] imageData = book.getImage();
-      if (imageData != null) {
-        String imageDataBase64 = Base64.getEncoder().encodeToString(imageData);
-        book.setImageDataBase64(imageDataBase64);
+      //List<BookEntity> books = bookRepository.findAll();
+      model.addAttribute("books", books);
+
+      // Retrieve and set the image data for each book
+      for (BookEntity book : books.getContent()) {
+        byte[] imageData = book.getImage();
+        if (imageData != null) {
+          String imageDataBase64 = Base64.getEncoder().encodeToString(imageData);
+          book.setImageDataBase64(imageDataBase64);
+        }
       }
+
+      model.addAttribute("books", books.getContent());
+      model.addAttribute("currentPage", books.getNumber());
+      model.addAttribute("totalPages", books.getTotalPages());
+      model.addAttribute("totalItems", books.getTotalElements());
+
+      return "homeUser";
+    } else {
+
+      return "redirect:/login?authenticationError";
     }
 
-    model.addAttribute("books", books.getContent());
-    model.addAttribute("currentPage", books.getNumber());
-    model.addAttribute("totalPages", books.getTotalPages());
-    model.addAttribute("totalItems", books.getTotalElements());
 
-    return "homeUser";
+
   }
 
 //  @PostMapping("/addToBasket/{bookId}")
