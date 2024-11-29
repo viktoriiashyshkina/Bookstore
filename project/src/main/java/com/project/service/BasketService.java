@@ -66,6 +66,53 @@ public class BasketService {
   }
 
 
+  public void updateBasketDetails(Long bookId, int quantity) {
+    // Fetch the basket detail for the given book ID
+    BasketDetails detail = basketDetailsRepository.findByBookId(bookId);
+
+    if (detail != null) {
+      // Update quantity and total price
+      BigDecimal subtotalBeforeUpdate = detail.getBook().getPrice().multiply(
+          BigDecimal.valueOf(detail.getQuantity()));
+      detail.setQuantity(quantity);
+
+      //update totalAmount in the basket
+      Basket basket = basketRepository.findByBasketDetails(detail);
+      BigDecimal subtotalAfterUpdate = detail.getBook().getPrice().multiply(
+          BigDecimal.valueOf(quantity));
+      BigDecimal totalAmount = (basket.getTotalAmount().subtract(subtotalBeforeUpdate)).add(subtotalAfterUpdate);
+      basket.setTotalAmount(totalAmount);
+      basketRepository.save(basket);
+
+      // Save the updated detail back to the database
+      basketDetailsRepository.save(detail);
+    }
+  }
+
+
+  @Transactional
+  public void removeBasketDetail(BasketDetails detail) {
+    if (detail != null) {
+      BasketDetails managedDetail = basketDetailsRepository.findById(detail.getId()).orElse(null);
+      if (managedDetail != null) {
+        BigDecimal total = managedDetail.getBook().getPrice().multiply(
+            BigDecimal.valueOf(managedDetail.getQuantity()));
+            Basket basket = basketRepository.findByBasketDetails(managedDetail);
+            basket.setTotalAmount(basket.getTotalAmount().subtract(total));
+            basketRepository.save(basket);
+        basketDetailsRepository.forceDeleteById(managedDetail.getId());
+      } else {
+        System.out.println("Detail not found in the database");
+      }
+    } else {
+      System.out.println("Detail is null");
+    }
+  }
+
+
+
+
+
 //  @Transactional
 //  public void addBasketDetails(Long basketId, BasketDetails basketDetails) {
 //    // Retrieve the Basket entity by its ID

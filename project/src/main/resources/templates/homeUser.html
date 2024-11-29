@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bookstore</title>
     <style>
-        body {
-
-              font-family: Arial, sans-serif;
+body {
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
     }
+
+
     header {
       width: 100%;
       height: 110px;
@@ -46,10 +47,13 @@
       flex: 2;
       text-align: center;
     }
-    .nav-right {
-      flex: 1;
-      text-align: right;
-    }
+       .nav-right {
+            flex: 1;
+            text-align: right;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
     .nav-center form {
       display: flex;
       justify-content: center;
@@ -83,15 +87,7 @@
     .main-content {
       padding: 20px;
     }
-    footer {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      position: fixed;
-      width: 100%;
-      bottom: 0;
-    }
+
     section {
       display: none;
     }
@@ -159,46 +155,6 @@
 
 
 
-
-
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            width: 100%;  
-            height: 110px; 
-            position: relative; 
-            overflow: hidden;  
-        }
-
-        header img {
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            display: block; 
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 20px;
-            background-color: #444;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 15px;
-            padding: 8px 15px;
-            border-radius: 5px;
-        }
-
-        nav a:hover {
-            background-color: #666;
-        }
-
         .nav-left {
             flex: 1;
         }
@@ -256,17 +212,6 @@
             padding: 20px;
         }
 
-<!--        footer {-->
-<!--            background-color: #333;-->
-<!--            color: white;-->
-<!--            text-align: center;-->
-<!--            padding: 10px;-->
-<!--            position: fixed;-->
-<!--            width: 100%;-->
-<!--            bottom: 0;-->
-<!--        }-->
-
-
 
         section {
             display: none;
@@ -310,29 +255,6 @@
     }
 
 
-<!--.book-container {-->
-<!--    display: flex;-->
-<!--    align-items: flex-start;-->
-<!--    margin: 20px 0;-->
-<!--    border-bottom: 1px solid #ccc;-->
-<!--    padding-bottom: 20px;-->
-<!--    max-width: 900px;-->
-<!--    position: relative; /* Required for positioning price */-->
-<!--}-->
-
-<!--.book-image {-->
-<!--    width: 100px;-->
-<!--    height: 133px;-->
-<!--    background-color: #f0f0f0;-->
-<!--    text-align: center;-->
-<!--    display: flex;-->
-<!--    justify-content: center;-->
-<!--    align-items: center;-->
-<!--    font-size: 1.1rem;-->
-<!--    color: #888;-->
-<!--    margin-right: 20px;-->
-<!--    position: relative;-->
-<!--}-->
 
 .book-container {
     display: flex;
@@ -369,9 +291,6 @@
     padding: 5px 10px; /* Add padding for spacing */
    }
 
-<!--    .book-info {-->
-<!--        flex-grow: 1;-->
-<!--    }-->
 
     .book-title {
         font-size: 1rem;
@@ -502,6 +421,8 @@
     margin-top: 20px; /* Add some margin above footer */
 }
 
+
+
   .add-to-basket {
         position: absolute;
         right: 0;
@@ -531,6 +452,8 @@
     }
 
 
+
+
     </style>
 </head>
 <body>
@@ -540,15 +463,7 @@
     <img src="../images/banner.jpg" alt="Welcome"></header>
 <nav>
     <div class="nav-left">
-        <a href="#home">Home</a>
-        <div class="category-dropdown">
-            <select>
-                <option value="fiction">Fiction</option>
-                <option value="non-fiction">Non-fiction</option>
-                <option value="mystery">Mystery</option>
-                <option value="fantasy">Fantasy</option>
-            </select>
-        </div>
+        <a href="/home/user">Home</a>
     </div>
     <div class="nav-center">
         <form action="#searchResults" method="get">
@@ -559,9 +474,12 @@
     <div class="nav-right">
         <a href="#signup">Sign Up</a>
         <a href="#login">Login</a>
-        <a href="#basket"><img src="../images/purchase.png" alt="Shopping Basket"> </a>
+        <a href="/home/basket"><img src="../images/purchase.png" alt="Shopping Basket"> </a>
     </div>
 </nav>
+
+
+
 <section id="signup">
     <div class="form-container">
         <h2>Sign Up</h2>
@@ -578,6 +496,8 @@
         </form>
     </div>
 </section>
+
+
 <section id="login">
     <div class="form-container">
         <h2>Login</h2>
@@ -648,7 +568,6 @@
     <h2>Search Results</h2>
     <p>search results</p>
 </section>
-</div>
 
 
 
@@ -694,6 +613,8 @@
 <!--    <p>search results</p>-->
 <!--</section>-->
 
+
+
 <div id="showBooks" class="container">
     <div th:each="book : ${books}" class="book-container">
         <form th:action="@{/home/user/addToBasket/{bookId}(bookId=${book.id})}" method="post">
@@ -723,14 +644,9 @@
 <!--                </form>-->
             </div>
 
-<!--            </form>-->
-
-
-
-        </div>
+          </div>
         </form>
     </div>
-</div>
 
     <div class="pagination-bar">
     <span th:if="${currentPage > 0}">
@@ -741,7 +657,7 @@
         <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
         <a th:href="@{'?page=' + ${pageNum} + '&size=10'}"
            th:text="${pageNum + 1}"
-          th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>
+           th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>
     </span>
 
 
@@ -750,6 +666,11 @@
         <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10'}" class="next">Next</a>
     </span>
     </div>
+
+    </div>
+
+
+
 
 
 
@@ -765,6 +686,8 @@
 <footer>
     <p>&copy; 2024 Bookstore. All rights reserved.</p>
 </footer>
+
+
 
 </body>
 
@@ -787,7 +710,7 @@
             link.addEventListener("click", handleNavigation);
         });
 
-        if (window.location.hash === "#home" || window.location.pathname === "/home") {
+        if (window.location.hash === "#home" || window.location.pathname === "/home/user") {
             showBooksDiv.style.display = "block";
         } else {
             showBooksDiv.style.display = "none";
