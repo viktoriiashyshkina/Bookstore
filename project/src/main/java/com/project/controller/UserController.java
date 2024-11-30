@@ -7,6 +7,8 @@ import com.project.service.AccountService;
 import com.project.service.UserService;
 import com.project.util.Role;
 import com.project.util.SecurityUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Set;
 
 import javax.management.remote.JMXAuthenticator;
@@ -51,6 +53,17 @@ public class UserController {
         SecurityContextHolder.getContext().getAuthentication().getCredentials());
     return "signup";
   }
+
+
+//  @PostMapping("/login2")
+//  public String processModalLogin(@RequestParam("username") String username,
+//      @RequestParam("password") String password,
+//      @RequestParam("role") String role,
+//      HttpServletRequest request, HttpServletResponse response) {
+//    // Handle the modal login form submission
+//    // ...
+//    return "redirect:/"; // or any other appropriate redirect URL
+//  }
 
 
   private static final Logger logger = LoggerFactory.getLogger(UserController.class);

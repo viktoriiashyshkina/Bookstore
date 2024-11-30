@@ -587,42 +587,49 @@ function submitEditAuthor(bookId) {
 <body>
 
 <header>
-  <img src="../images/banner.jpg" alt="Welcome to the Bookstore">
-</header>
+  <img th:src="@{/images/banner.jpg}" alt="Welcome to the Bookstore" src=""></header>
 
 <nav>
   <div class="nav-left">
-    <a href="#home">Home</a>
-    <!-- Category Dropdown -->
-    <div class="category-dropdown">
-      <select onchange="window.location = this.value;">
-        <option value="">Select Category</option>
-        <option value="../category.html#fiction">Fiction</option>
-        <option value="../category.html#non-fiction">Non-fiction</option>
-        <option value="../category.html#mystery">Mystery</option>
-        <option value="../category.html#fantasy">Fantasy</option>
-      </select>
-    </div>
+    <a th:href="@{/home}">Home</a>
   </div>
+
+
   <div class="nav-center">
-    <form action="#searchResults" method="get">
-      <input type="text" name="search" placeholder="Search books..." required>
+    <form action="/searchResults" method="get">
+      <input type="text" name="query" placeholder="Search books..." required>
       <button type="submit">Search</button>
     </form>
   </div>
-  <div class="nav-right">
-    <a href="../signup.html#signup">Sign Up</a>
-    <a href="../signup.html#login">Login</a>
-    <a href="../signup.html#account">My Account</a>
-    <a href="../signup.html#basket"><img src="../images/purchase.png" alt="Shopping Basket"> </a>
-  </div>
-</nav>
 
-<!-- Search Results Section -->
-<section id="searchResults">
-  <h2>Search Results</h2>
-  <p>search results</p>
-</section>
+  <div class="nav-right">
+    <!-- Check if the user is logged in -->
+    <div th:if="${#authentication.principal != 'anonymousUser'}">
+      <span>Welcome, <strong th:text="${#authentication.name}">User</strong>!</span>
+      <p>Your account balance is: $<span th:text="${balance}">0.00</span></p>
+
+
+
+      <a href="/logged-in">My Account</a>
+      <a href="/logout">Logout</a>
+    </div>
+
+    <!-- Show Login/Sign Up buttons if the user is not logged in -->
+    <div th:if="${#authentication.principal == 'anonymousUser'}">
+      <a href="/login#signup">Sign Up</a>
+      <a href="/login#login">Login</a>
+    </div>
+
+
+
+    <!-- Shopping Basket Icon -->
+    <a href="/basket">
+      <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
+    </a>
+  </div>
+
+
+</nav>
 
 
 <div class="container">

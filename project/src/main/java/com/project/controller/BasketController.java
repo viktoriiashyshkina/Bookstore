@@ -41,7 +41,7 @@ public class BasketController {
   }
 
 
-  @GetMapping("/home/basket")
+  @GetMapping("/homeTest/basket")
   public String getBasket(Model model) {
 
     if (!Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(),
@@ -79,7 +79,7 @@ public class BasketController {
 
 
 
-  @PostMapping("/home/user/updateBasket/{bookId}")
+  @PostMapping("/homeTest/updateBasket/{bookId}")
   public String updateBasket(@PathVariable Long bookId, @RequestParam int quantity, Model model) {
     // Update the basket details for the specific book
     basketService.updateBasketDetails(bookId, quantity);
@@ -93,20 +93,13 @@ public class BasketController {
     return "redirect:/home/basket";
   }
 
-  @PostMapping("/home/user/removeFromBasket/{bookId}")
+  @PostMapping("/homeTest/removeFromBasket/{bookId}")
   public String removeFromBasket(@PathVariable Long bookId) {
     // Call service method to remove the item from the basket
     System.out.println("bookId: "+ bookId);
     List<BasketDetails> details = basketService.getBasketFromLoggedInUser()
         .getBasketDetails();
     BasketDetails detail = null;
-//    for (int i=0; i<details.size(); i++) {
-//      if (Objects.equals(details.get(i).getBook().getId(), bookId)) {
-//        detail = details.get(i);
-//        break;
-//      }
-//    }
-
     for (int i = 0; i < details.size(); i++) {
       if (Objects.equals(details.get(i).getBook().getId(), bookId)) {
         detail = details.get(i);
@@ -114,7 +107,6 @@ public class BasketController {
         break;
       }
     }
-
     if (detail == null) {
       System.out.println("No matching BasketDetails found for bookId: " + bookId);
     } else {
@@ -128,70 +120,12 @@ public class BasketController {
     //basketService.removeBasketDetail(detail);
 
     // Redirect back to the cart page to reflect the changes
-    return "redirect:/home/basket";
+    return "redirect:/homeTest/basket";
   }
 
 
-//    @PostMapping("/basket/view")
-//  public String viewBasket (Model model) {
-//    Basket basket=basketService.getBasketFromLoggedInUser();
-//    List<BasketDetails> basketDetails = basket.getBasketDetails();
-//      System.out.println("im here");
-//
-//      double totalPrice = basketDetails.stream()
-//          .mapToDouble(detail -> detail.getQuantity()*Double.valueOf(
-//              String.valueOf(detail.getBook().getPrice())))
-//          .sum();
-//
-//    model.addAttribute("basket", basketDetails);
-//      model.addAttribute("totalPrice", totalPrice);
-//
-//
-//    return "redirect:/home/user#basket";
-//  }
 
 
- //  Add book to basket
-//  @PostMapping("/add/{bookId}")
-//  public String addToBasket( @PathVariable("id") Long bookId, @RequestParam Integer quantity) {
-//    BookEntity book = bookRepository.findById(bookId).orElse(null);
-//    BasketDetails basketDetails = new BasketDetails();
-//    basketDetails.setQuantity(quantity);
-//    basketDetails.setBook(book);
-//    basketDetailsService.saveOrderToDatabase(basketDetails);
-//
-//    return "redirect:/home/user";
-//
-//  }
-
-
-//  @GetMapping
-//  public String viewBasket (Model model) {
-//    Basket basket=basketService.showBasket();
-//    List<BasketDetails> basketDetails = basket.getBasketDetails();
-//
-//    model.addAttribute("basket", basketDetails);
-//
-//
-//    return "basket";
-//  }
-
-  // Remove book from basket
-//  @PostMapping("/remove/{bookId}")
-//  public String removeFromBasket(@PathVariable Long bookId, HttpSession session) {
-//    List<BasketDetails> basket = (List<BasketDetails>) session.getAttribute("basket");
-//
-//    if (basket != null) {
-//      System.out.println("Basket before removing: " + basket.size() + " items.");
-//      basket.removeIf(orderDetail -> orderDetail.getBook().getId().equals(bookId));
-//      session.setAttribute("basket", basket);
-//      System.out.println("Basket after removing: " + basket.size() + " items.");
-//    } else {
-//      System.err.println("Attempt to remove from an empty basket.");
-//    }
-//
-//    return "redirect:/basket";
-//  }
 
 
 //  @GetMapping("/home/basket/checkout")

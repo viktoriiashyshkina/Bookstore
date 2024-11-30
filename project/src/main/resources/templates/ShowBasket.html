@@ -582,7 +582,7 @@ footer {
 <div  id="showBasket" class="container" >
     <div class="book-container-wrapper">
     <div th:each="detail : ${basketDetails}" class="book-container">
-        <form th:action="@{/home/user/updateBasket/{bookId}(bookId=${detail.book.id})}" method="post">
+        <form th:action="@{/homeTest/updateBasket/{bookId}(bookId=${detail.book.id})}" method="post">
             <div class="book-content">
                 <!-- Book Image -->
                 <div class="book-image-container">
@@ -612,7 +612,7 @@ footer {
 
                     <!-- Remove Button -->
                     <button type="submit"
-                            th:formaction="@{/home/user/removeFromBasket/{bookId}(bookId=${detail.book.id})}"
+                            th:formaction="@{/homeTest/removeFromBasket/{bookId}(bookId=${detail.book.id})}"
                             formmethod="post"
                             class="remove-button">
                         Remove
