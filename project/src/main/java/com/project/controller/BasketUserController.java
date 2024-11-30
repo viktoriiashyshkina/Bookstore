@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/home/user")
+@RequestMapping("/homeTest")
 public class BasketUserController {
 
   private final BookRepository bookRepository;
@@ -222,7 +222,7 @@ public class BasketUserController {
     BookEntity book = bookRepository.findById(bookId).orElse(null);
     if (book == null) {
       model.addAttribute("error", "Book not found");
-      return "redirect:/home/user";
+      return "redirect:/homeTest";
     }
 
     // Retrieve the basket for the currently logged-in user
@@ -278,7 +278,7 @@ public class BasketUserController {
 
     // Display success message and redirect
     model.addAttribute("success", "The item was successfully added to the basket");
-    return "redirect:/home/user";
+    return "redirect:/homeTest";
   }
 
 

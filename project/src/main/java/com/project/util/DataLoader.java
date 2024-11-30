@@ -23,7 +23,8 @@ import org.springframework.stereotype.Component;
       admin.setUsername("admin");
       admin.setEmail("admin@gmail.com");
       admin.setPassword(passwordEncoder.encode("admin"));
-      admin.setRoles(Set.of(Role.ADMIN));
+      admin.setRole(Role.ADMIN);
+      //admin.setRoles(Set.of(Role.ADMIN));
       userRepository.save(admin);
     }
   }

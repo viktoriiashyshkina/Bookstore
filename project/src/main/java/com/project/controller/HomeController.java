@@ -5,19 +5,23 @@ import com.project.entity.User;
 import com.project.repository.BookRepository;
 import com.project.service.HomeService;
 import com.project.service.UserService;
+import com.project.util.Role;
 import java.security.Principal;
 import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-//@RequestMapping("/home")
+//@RequestMapping("/homeTest")
 public class HomeController {
 
   private final BookRepository bookRepository;
@@ -33,17 +37,47 @@ public class HomeController {
   }
 
   @GetMapping
+  public String redirectToHome () {
+    return "redirect:/homeTest";
+  }
+
+
+
+  @GetMapping("/homeTest")
   public String getHomeScreen(Model model, Principal principal, Pageable pageable) {
 
-    if (principal != null) {
-      String username = principal.getName();
-     User user = userService.findByUsername(username);
 
-      if (user != null) {
-        model.addAttribute("user", user); // Add the user object to the model
+
+
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    Set<Role> role = null;
+    User user = null;
+    if (userService.findByUsername(username) != null) {
+      user = userService.findByUsername(username);
+      role = user.getRoles();
+      System.out.println("role: "+ role);
+      model.addAttribute("user", user);
+      if (role.contains(Role.ADMIN)) {
+        model.addAttribute("role", "admin");
+      } else {
+        model.addAttribute("role", "user");
         model.addAttribute("balance", user.getAccount().getBalance());
       }
+    } else {
+      model.addAttribute("user","null");
+      model.addAttribute("role", "null");
     }
+
+
+//    if (principal != null) {
+//      String username = principal.getName();
+//      User user = userService.findByUsername(username);
+//
+//      if (user != null) {
+//        model.addAttribute("user", user); // Add the user object to the model
+//        model.addAttribute("balance", user.getAccount().getBalance());
+//      }
+//    }
 
     Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
     Page<BookEntity> books = bookRepository.findAll(pageRequest);
@@ -62,6 +96,12 @@ public class HomeController {
     model.addAttribute("currentPage", books.getNumber());
     model.addAttribute("totalPages", books.getTotalPages());
     model.addAttribute("totalItems", books.getTotalElements());
-    return "home_test";
+
+
+    if (role==null || role.contains(Role.USER)) {
+      return "home_test";
+    } else {
+      return  "books";
+    }
   }
 }
