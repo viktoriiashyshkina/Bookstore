@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.savedrequest.NullRequestCache;
 
 
 @Configuration
@@ -68,7 +69,7 @@ public class SecurityConfiguration {
                           if ("ROLE_ADMIN".equals(authority)) {
                             response.sendRedirect("/admin/dashboard");
                           } else if ("ROLE_USER".equals(authority)) {
-                            response.sendRedirect("/homeTest");
+                            response.sendRedirect("/homeTest?success");
                           }
                         } catch (IOException e) {
                           e.printStackTrace();
@@ -81,7 +82,8 @@ public class SecurityConfiguration {
             logout
                 .logoutUrl("/homeTest/logout")  // URL for logging out
                 .logoutSuccessUrl("/homeTest")  // Redirect after successful logout
-        );
+        )
+    ;
 
 
     return http.build();

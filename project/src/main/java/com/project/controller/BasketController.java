@@ -72,7 +72,7 @@ public class BasketController {
 
 
     } else {
-      return "redirect:/login";
+      return "redirect:/homeTest?basketLoginError";
     }
     return "ShowBasket";
   }
