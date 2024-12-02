@@ -78,7 +78,7 @@ public class UserController {
    * @param model    The Spring model to pass attributes to the view.
    * @return A redirect or view name depending on the outcome.
    */
-  @PostMapping("/signup/user")
+  @PostMapping("/homeTest/signup")
   public String signup(
       @RequestParam String username,
       @RequestParam String email,
@@ -101,17 +101,27 @@ public class UserController {
 
       SecurityContextHolder.getContext().setAuthentication(authentication);
       logger.info("New user signed up and authenticated: {}", username);
+
+
 //      logger.info("Redirecting to: /logged-in");
-      return "redirect:/logged-in"; // Redirect to login after successful signup
+
+      return "redirect:/homeTest?signupSuccess"; // Redirect to login after successful signup
+
     } catch (IllegalArgumentException e) {
       model.addAttribute("error", "Invalid role or user already exists.");
       logger.error("Error during signup: {}", e.getMessage());
+      return "redirect:/homeTest?signupError";
     } catch (Exception e) {
       model.addAttribute("error", "An unexpected error occurred: " + e.getMessage());
       logger.error("Unexpected error during signup", e);
+      return "redirect:/homeTest?unexpectedError";
     }
-    return "signup"; // Return to signup page with error message
+    //return "signup"; // Return to signup page with error message
   }
+
+
+
+
 }
 
 

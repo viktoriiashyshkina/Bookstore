@@ -51,13 +51,6 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private Set<Role> roles = new HashSet<>();
 
-  @Column(name = "role")
-  @Enumerated(EnumType.STRING)
-  private Role role;
-
-
-
-
 
   @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @JoinColumn(name = "account_id", referencedColumnName = "account_id")

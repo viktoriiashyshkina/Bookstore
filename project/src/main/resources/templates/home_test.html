@@ -42,7 +42,8 @@
       background-color: #666;
     }
     .nav-left {
-      flex: 1;
+     display: flex;
+     align-items: center;
     }
     .nav-center {
       flex: 2;
@@ -536,6 +537,17 @@
     font-weight: bold;
 }
 
+.text-button {
+  all: unset; /* Resets all button-specific styles */
+  color: white; /* Makes the text white */
+  cursor: pointer; /* Indicates it's clickable */
+}
+
+.text-button:hover {
+  text-decoration: underline; /* Optional: adds an underline on hover */
+}
+
+
 
 
 
@@ -574,8 +586,15 @@
 
     <!-- Show Login/Sign Up buttons if the user is not logged in -->
     <div th:if="${#authentication.principal == 'anonymousUser'}">
-      <a href="/signup">Sign Up</a>
-      <a href="/login">Login</a>
+<!--      <a href="/signup">Sign Up</a>-->
+      <button type="button" data-bs-toggle="modal" data-bs-target="#signupModal" class="text-button" style="margin-right: 20px;">
+        Sign Up
+      </button>
+
+      <button type="button" data-bs-toggle="modal" data-bs-target="#loginModal" class="text-button">
+        Login
+      </button>
+
     </div>
 
 
@@ -588,6 +607,142 @@
 
 
 </nav>
+
+<div th:if="${param.success}" class="alert alert-success" role="alert">
+  Logged in  successfully
+</div>
+
+
+
+<div  class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <form th:action="@{/homeTest/process-login-modal}" method="post" class="needs-validation" novalidate>
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 900px;">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="loginModalLabel">Login to Proceed</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- Modal Body -->
+        <div th:if="${param.signupSuccess}" class="alert alert-success" role="alert">
+          Signed up successfully
+        </div>
+        <div th:if="${param.basketLoginError}" class="alert alert-danger" role="alert">
+          You need to be logged in to see the basket
+        </div>
+        <div class="modal-body">
+          <div class="form-container">
+            <h2 class="text-center">Login</h2>
+            <!-- Username -->
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  class="form-control"
+                  placeholder="Enter your username"
+                  required>
+            </div>
+            <!-- Password -->
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="form-control"
+                  placeholder="Enter your password"
+                  required>
+            </div>
+            <!-- Role -->
+            <div class="mb-3">
+              <label for="role" class="form-label">Role</label>
+              <select id="role" name="role" class="form-select" required>
+                <option value="USER">User</option>
+                <option value="ADMIN">Admin</option>
+              </select>
+            </div>
+            <!-- Submit Button -->
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary btn-lg">Login</button>
+            </div>
+            <!-- Signup Link -->
+            <div class="text-center mt-3">
+              <p>If you do not have an account yet,
+                <a href="#" class="text-decoration-underline" data-bs-toggle="modal" data-bs-target="#signupModal">Signup</a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<!-- Signup Modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+  <form th:action="@{/homeTest/signup}" method="post">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 900px;">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="signupModalLabel">Create an Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- Modal Body -->
+        <div th:if="${param.signupError}" class="alert alert-danger" role="alert">
+          User already exists
+        </div>
+        <div class="modal-body">
+          <div class="form-container">
+            <h2 class="text-center">Signup</h2>
+            <!-- Username -->
+            <div class="mb-3">
+              <input
+                  type="text"
+                  name="username"
+                  class="form-control"
+                  placeholder="Username"
+                  required>
+            </div>
+            <!-- Email -->
+            <div class="mb-3">
+              <input
+                  type="email"
+                  name="email"
+                  class="form-control"
+                  placeholder="Email"
+                  required>
+            </div>
+            <!-- Role -->
+            <div class="mb-3">
+              <select name="role" class="form-select" required>
+                <option value="USER">User</option>
+              </select>
+            </div>
+            <!-- Password -->
+            <div class="mb-3">
+              <input
+                  type="password"
+                  name="password"
+                  class="form-control"
+                  placeholder="Password"
+                  required>
+            </div>
+            <!-- Submit Button -->
+            <div class="text-center">
+              <button type="submit" class="btn btn-success btn-lg">Signup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
 
 <!--<section id="signup">-->
 <!--  <div class="form-container">-->
@@ -739,7 +894,8 @@
               <div class="add-to-basket">
                 <label for="quantity-${book.id}">Quantity:</label>
                 <input id="quantity-${book.id}" type="number" name="quantity" value="1" min="1" class="quantity-input">
-                <button  type="button" class="btn btn-primary add-to-basket-button" data-bs-toggle="modal" th:data-bs-target="|#loginModal-${book.id}|">
+<!--                <button  type="button" class="btn btn-primary add-to-basket-button" data-bs-toggle="modal" th:data-bs-target="|#loginModal-${book.id}|">-->
+                  <button  type="button" class="btn btn-primary add-to-basket-button" data-bs-toggle="modal" data-bs-target="#loginModal">
                   Add to Basket
                 </button>
 
@@ -748,59 +904,60 @@
 
 
               <!-- Modal, should only open if there no logged in user!-->
-              <div  class="modal fade" th:id="|loginModal-${book.id}|" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-                <form th:action="@{/homeTest/process-login-modal}" method="post" class="needs-validation" novalidate>
-                  <div class="modal-dialog modal-dialog-centered" style="max-width: 900px;">
-                    <div class="modal-content">
-                      <!-- Modal Header -->
-                      <div class="modal-header bg-success text-white">
-                        <h5 class="modal-title" id="loginModalLabel">Login to Proceed</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <!-- Modal Body -->
-                      <div class="modal-body">
-                        <div class="form-container">
-                          <h2 class="text-center">Login</h2>
-                          <!-- Username -->
-                          <div class="mb-3">
-                            <label for="username" class="form-label">Username</label>
-                            <input
-                                type="text"
-                                id="username"
-                                name="username"
-                                class="form-control"
-                                placeholder="Enter your username"
-                                required>
-                          </div>
-                          <!-- Password -->
-                          <div class="mb-3">
-                            <label for="password" class="form-label">Password</label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                class="form-control"
-                                placeholder="Enter your password"
-                                required>
-                          </div>
-                          <!-- Role -->
-                          <div class="mb-3">
-                            <label for="role" class="form-label">Role</label>
-                            <select id="role" name="role" class="form-select" required>
-                              <option value="USER">User</option>
-                              <option value="ADMIN">Admin</option>
-                            </select>
-                          </div>
-                          <!-- Submit Button -->
-                          <div class="text-center">
-                            <button type="submit" class="btn btn-primary btn-lg">Login</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
+<!--              <div  class="modal fade" th:id="|loginModal-${book.id}|" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">-->
+<!--                <form th:action="@{/homeTest/process-login-modal}" method="post" class="needs-validation" novalidate>-->
+<!--                  <div class="modal-dialog modal-dialog-centered" style="max-width: 900px;">-->
+<!--                    <div class="modal-content">-->
+<!--                      &lt;!&ndash; Modal Header &ndash;&gt;-->
+<!--                      <div class="modal-header bg-success text-white">-->
+<!--                        <h5 class="modal-title" id="loginModalLabel">Login to Proceed</h5>-->
+<!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
+<!--                      </div>-->
+<!--                      &lt;!&ndash; Modal Body &ndash;&gt;-->
+<!--                      <div class="modal-body">-->
+<!--                        <div class="form-container">-->
+<!--                          <h2 class="text-center">Login</h2>-->
+<!--                          &lt;!&ndash; Username &ndash;&gt;-->
+<!--                          <div class="mb-3">-->
+<!--                            <label for="username" class="form-label">Username</label>-->
+<!--                            <input-->
+<!--                                type="text"-->
+<!--                                id="username"-->
+<!--                                name="username"-->
+<!--                                class="form-control"-->
+<!--                                placeholder="Enter your username"-->
+<!--                                required>-->
+<!--                          </div>-->
+<!--                          &lt;!&ndash; Password &ndash;&gt;-->
+<!--                          <div class="mb-3">-->
+<!--                            <label for="password" class="form-label">Password</label>-->
+<!--                            <input-->
+<!--                                type="password"-->
+<!--                                id="password"-->
+<!--                                name="password"-->
+<!--                                class="form-control"-->
+<!--                                placeholder="Enter your password"-->
+<!--                                required>-->
+<!--                          </div>-->
+<!--                          &lt;!&ndash; Role &ndash;&gt;-->
+<!--                          <div class="mb-3">-->
+<!--                            <label for="role" class="form-label">Role</label>-->
+<!--                            <select id="role" name="role" class="form-select" required>-->
+<!--                              <option value="USER">User</option>-->
+<!--                              <option value="ADMIN">Admin</option>-->
+<!--                            </select>-->
+<!--                          </div>-->
+<!--                          &lt;!&ndash; Submit Button &ndash;&gt;-->
+<!--                          <div class="text-center">-->
+<!--                            <button type="submit" class="btn btn-primary btn-lg">Login</button>-->
+<!--                          </div>-->
+<!--                        </div>-->
+<!--                      </div>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </form>-->
+<!--              </div>-->
+
 
 
 
@@ -855,6 +1012,44 @@
 function goToHomepage() {
     window.location.href = '/';
 }
+
+
+document.addEventListener('DOMContentLoaded', function () {
+  // Check if the URL contains the desired query parameters
+  const params = new URLSearchParams(window.location.search);
+
+  // Show the login modal if 'signupSuccess' parameter exists
+  if (params.has('signupSuccess')) {
+    const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+    loginModal.show();
+  }
+
+    if (params.has('basketLoginError')) {
+    const loginModal = new bootstrap.Modal(document.getElementById('loginModal'));
+    loginModal.show();
+  }
+
+  // Show the signup modal if 'signupError' parameter exists
+  if (params.has('signupError')) {
+    const signupModal = new bootstrap.Modal(document.getElementById('signupModal'));
+    signupModal.show();
+  }
+
+
+});
+
+  document.addEventListener("DOMContentLoaded", function() {
+    var alerts = document.getElementsByClassName("alert");
+    Array.from(alerts).forEach(function(alert) {
+      setTimeout(function() {
+        alert.style.display = "none";
+      }, 10000);
+    });
+  });
+
+
+
+
 
 </script>
 </html>
