@@ -22,43 +22,45 @@
 //  public void run(String... args) throws Exception {
 //    // Create gift cards
 //    GiftCardEntity giftCard1 = GiftCardEntity.builder()
-//        .cardCode("GC12356")
+//        .cardCode("GC123456")
 //        .balance(new BigDecimal("50.00"))
 //        .redeemed(false)
 //        .build();
 //
 //    GiftCardEntity giftCard2 = GiftCardEntity.builder()
-//        .cardCode("GC67896")
+//        .cardCode("GC67585")
 //        .balance(new BigDecimal("100.00"))
 //        .redeemed(false)
 //        .build();
 //
 //    GiftCardEntity giftCard3 = GiftCardEntity.builder()
-//        .cardCode("GC11247")
+//        .cardCode("GC11757")
 //        .balance(new BigDecimal("20.00"))
 //        .redeemed(false)
 //        .build();
 //
 //    GiftCardEntity giftCard4 = GiftCardEntity.builder()
-//        .cardCode("GC44532")
+//        .cardCode("GC445587")
 //        .balance(new BigDecimal("75.00"))
 //        .redeemed(false)
 //        .build();
 //
 //    GiftCardEntity giftCard5 = GiftCardEntity.builder()
-//        .cardCode("GC78989")
+//        .cardCode("GC78568")
 //        .balance(new BigDecimal("150.00"))
 //        .redeemed(false)
 //        .build();
 //
 //    GiftCardEntity giftCard6 = GiftCardEntity.builder()
-//        .cardCode("GC23485")
+//        .cardCode("GC23257")
 //        .balance(new BigDecimal("200.00"))
 //        .redeemed(false)
 //        .build();
 //
 //    // Save the gift cards to the database
-//    giftCardRepository.saveAll(List.of(giftCard1, giftCard2, giftCard3, giftCard4, giftCard5, giftCard6));
+//    giftCardRepository.saveAll(
+//        List.of(giftCard1, giftCard2, giftCard3, giftCard4, giftCard5, giftCard6));
 //  }
+//}
 
 

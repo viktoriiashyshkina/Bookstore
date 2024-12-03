@@ -10,5 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
 
   List<OrderEntity> findByAccountEntity(AccountEntity accountEntity);
-
+  // Fetch the top 10 orders ordered by order date in descending order
+  List<OrderEntity> findTop10ByOrderByIdDesc();
 }

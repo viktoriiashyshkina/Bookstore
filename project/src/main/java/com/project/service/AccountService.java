@@ -4,7 +4,6 @@ import com.project.entity.AccountEntity;
 import com.project.entity.User;
 import com.project.repository.AccountRepository;
 import com.project.repository.UserRepository;
-import java.math.BigDecimal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountService {
 
   private final AccountRepository accountRepository;
-
   private final UserRepository userRepository;
 
   public AccountService(AccountRepository accountRepository, UserRepository userRepository) {
@@ -34,6 +32,10 @@ public class AccountService {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
     User user = userRepository.findByUsername(username);
     return user.getAccount();
+  }
+
+  public AccountEntity saveAccount(AccountEntity account) {
+    return accountRepository.save(account);
   }
 
 

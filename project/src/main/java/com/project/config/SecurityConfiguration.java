@@ -49,11 +49,15 @@ public class SecurityConfiguration {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/signup", "/home_test","/home", "/login", "/searchResults", "/filterByPrice","/").permitAll()
-                .requestMatchers("/logged-in/**", "/redeemGiftCard").authenticated()  // Restrict access to logged-in users
+                .requestMatchers("/logged-in/", "/redeemGiftCard").authenticated()  // Restrict access to logged-in users
                 .requestMatchers("/profile").authenticated()
                 .requestMatchers("/logged-in/updateProfile").authenticated()
-                .requestMatchers("/home/basket/checkout").authenticated()
+                .requestMatchers("/homeTest/basket/checkout").authenticated()
+                .requestMatchers("/homeTest/payment").authenticated()
+                .requestMatchers("/homeTest/basket/pay").authenticated()
+                .requestMatchers("/homeTest/purchase-history").authenticated()
                 .requestMatchers("/books/**").permitAll()
+
         )
         .formLogin(formLogin ->
             formLogin
@@ -99,11 +103,13 @@ public class SecurityConfiguration {
                 .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/signup", "/home_test","/home", "/login", "/searchResults", "/filterByPrice","/").permitAll()
+                .requestMatchers("/signup","/home", "/login", "/searchResults", "/filterByPrice","/").permitAll()
                 .requestMatchers("/logged-in/**", "/redeemGiftCard").authenticated()  // Restrict access to logged-in users
                 .requestMatchers("/profile").authenticated()
                 .requestMatchers("/logged-in/updateProfile").authenticated()
                 .requestMatchers("/home/basket/checkout").authenticated()
+                .requestMatchers("/home/payment").authenticated()
+                .requestMatchers("/home/basket/pay").authenticated()
                 .requestMatchers("/books/**").permitAll()
         )
 
@@ -142,42 +148,6 @@ public class SecurityConfiguration {
     return http.build();
 
   }
-
-
-
-
-
-  // @Bean
-//  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//    http
-//        .authorizeRequests(authorizeRequests ->
-//            authorizeRequests
-//                .requestMatchers("/images/**", "/css/**", "/js/**").permitAll()
-//                .requestMatchers("/admin/**").hasRole("ADMIN")
-//                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-//                .requestMatchers("/signup", "/home", "/login", "/searchResults").permitAll()
-//                .requestMatchers("/logged-in").authenticated()
-//                .requestMatchers("/profile").authenticated()
-//                .requestMatchers("/logged-in/updateProfile").authenticated()
-//                .requestMatchers("/signup/**").permitAll()
-//                .requestMatchers("/books/**").permitAll()
-//        )
-//        .formLogin(formLogin ->
-//            formLogin
-//                .loginPage("/login")
-//                .defaultSuccessUrl("/logged-in")
-//                .loginProcessingUrl("/process-login")
-//
-//
-//        )
-//        .logout(logout ->
-//            logout
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/")
-//        );
-//
-//    return http.build();
-//  }
 
 
 }

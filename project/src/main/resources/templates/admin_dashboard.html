@@ -148,9 +148,9 @@
     <tbody>
     <tr th:each="order : ${recentOrders}">
       <td th:text="${order.id}"></td>
-      <td th:text="${order.customer.name}"></td>
-      <td th:text="${order.orderDate}"></td>
-      <td th:text="${order.total}"></td>
+      <td th:text="${order.accountEntity}"></td>
+      <td th:text="${order.Date}"></td>
+      <td th:text="${order.totalAmount}"></td>
     </tr>
     </tbody>
   </table>

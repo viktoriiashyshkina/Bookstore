@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class SearchController {
 
-  private final BookService bookService;
+
   private final FilterService filterService;
 
-  public SearchController(BookService bookService, FilterService filterService) {
-    this.bookService = bookService;
+  public SearchController(FilterService filterService) {
     this.filterService = filterService;
   }
 
@@ -47,7 +46,6 @@ public class SearchController {
 
       return "search-result";
   }
-
   // Helper method to encode image data to Base64
   private String encodeImageToBase64(byte[] imageData) {
     return Base64.getEncoder().encodeToString(imageData);

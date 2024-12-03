@@ -11,10 +11,7 @@ import jakarta.persistence.OneToOne;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-import lombok.ToString.Exclude;
 
 @Entity
 @NoArgsConstructor
@@ -46,8 +43,9 @@ public class AccountEntity {
   @Column(name = "balance", nullable = false)
   private BigDecimal balance = BigDecimal.ZERO;
 
-  @OneToMany
-  @JoinColumn(name ="account_id")
+//  @OneToMany
+//  @JoinColumn(name ="account_id")
+@OneToMany(mappedBy = "accountEntity")
   private List<OrderEntity> orderList;
 
   @OneToOne
