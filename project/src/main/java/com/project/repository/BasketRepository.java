@@ -14,4 +14,5 @@ public interface BasketRepository extends JpaRepository<Basket, Long> {
 //  Basket findByAccountNumber(String accountNumber);
   Optional<Basket> findByAccountEntity(AccountEntity accountEntity);
 
+ // Optional<Object> findByAccount(AccountEntity attr0);
 }

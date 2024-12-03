@@ -102,22 +102,28 @@
     <img th:src="@{images/banner.jpg}" alt="Welcome"></header>
 <nav>
     <div class="nav-left">
-        <a th:href="@{/home}">Home</a>
-        <a th:href="@{/profile}">My Profile</a>
-        <a th:href="@{/orders}">My Orders</a>
-    </div>
-    <div class="nav-center">
-        <form th:action="@{searchResults}" method="get">
-            <input type="text" name="search" placeholder="Search books..." required>
-            <button type="submit">Search</button>
-        </form>
+        <a th:href="@{/homeTest}">Home</a>
+        <a th:href="@{/forum}">Forum</a>
     </div>
 
     <div class="nav-right">
-        <span>Welcome, <strong th:text="${username}">User</strong></span>
-        <a th:href="@{/basket}"><img th:src="@{images/purchase.png}" alt="Shopping Basket"></a>
-        <a th:href="@{/logout}">Logout</a>
+        <div th:if="${#authentication.principal == 'anonymousUser'}">
+            <button type="button" data-bs-toggle="modal" data-bs-target="#signupModal"
+                    style="background: none; border: none; color: white; text-decoration: none; font-size: 16px; cursor: pointer; padding: 0; margin-right: 20px;"
+                    onmouseover="this.style.textDecoration='underline'"
+                    onmouseout="this.style.textDecoration='none'">
+                Sign Up
+            </button>
+
+            <button type="button" data-bs-toggle="modal" data-bs-target="#loginModal"
+                    style="background: none; border: none; color: white; text-decoration: none; font-size: 16px; cursor: pointer; padding: 0;"
+                    onmouseover="this.style.textDecoration='underline'"
+                    onmouseout="this.style.textDecoration='none'">
+                Login
+            </button>
+        </div>
     </div>
+
 </nav>
 <!--Forum-->
 <section class="forum-section" style="width: 60%; max-width: 800px; background-color: rgba(255, 255, 255, 0.7); padding: 15px; margin: 30px auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">

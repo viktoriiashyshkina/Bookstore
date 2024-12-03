@@ -38,6 +38,8 @@ public class GiftCardController {
   @PreAuthorize("isAuthenticated()")
   @GetMapping("/redeemGiftCard")
   public String showAddMoneyPage(Model model) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    User user = userService.findByUsername(username);
 
     return "redeem"; // This is the Thymeleaf template for adding money
   }

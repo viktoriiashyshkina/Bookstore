@@ -1,8 +1,10 @@
 package com.project.controller;
 
+import com.project.entity.OrderEntity;
 import com.project.service.BookService;
 import com.project.service.OrderService;
 import com.project.service.UserService;
+
 import com.project.util.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +13,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +27,14 @@ public class AdminController {
   private final BookService bookService;
   private final OrderService orderService;
 
+
   private final AuthenticationManager authenticationManager;
+
   public AdminController(UserService userService, BookService bookService,
       OrderService orderService, AuthenticationManager authenticationManager) {
     this.userService = userService;
     this.bookService = bookService;
+
     this.orderService = orderService;
     this.authenticationManager = authenticationManager;
   }
@@ -42,16 +48,20 @@ public class AdminController {
     long bookCount = bookService.getBookCount();
     long orderCount = orderService.getOrderCount();
 
-//    // Fetch the most recent orders
-//    List<Order> recentOrders = orderService.getRecentOrders(5); // Get the last 5 orders
+//    // Fetch recent orders, e.g., the last 10 orders
+    List<OrderEntity> recentOrders = orderService.getRecentOrders();
+
+    // Add recent orders to the model
+    model.addAttribute("recentOrders", recentOrders);
 
     // Add attributes to the model
     model.addAttribute("userCount", userCount);
     model.addAttribute("bookCount", bookCount);
     model.addAttribute("orderCount", orderCount);
-//    model.addAttribute("recentOrders", recentOrders);
+    model.addAttribute("recentOrders", recentOrders);
     return "admin_dashboard"; // Thymeleaf template for the admin dashboard
   }
+
 
   private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -96,7 +106,6 @@ public class AdminController {
     }
     //return "signup"; // Return to signup page with error message
   }
-
 
 
 }

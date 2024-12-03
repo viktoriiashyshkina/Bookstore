@@ -3,6 +3,7 @@ import com.project.entity.AccountEntity;
 import com.project.entity.User;
 import com.project.service.UserService;
 import com.project.util.SecurityUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,9 +32,10 @@ public class AuthenticationController {
 
   @GetMapping("/logged-in")
   public String loggedInPage(Model model) {
-    String username = SecurityUtils.userIsAuthenticated();
-    // Fetch the User object based on the username
-    User user = userService.findByUsername(username);  // Make sure userService is correctly implemented
+
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    User user = userService.findByUsername(username);
+
 
     if (user != null) {
       model.addAttribute("user", user);  // Add the user object to the model
@@ -42,7 +44,7 @@ public class AuthenticationController {
     if (accountEntity == null) {
       throw new RuntimeException("Account is null");
     }
-    model.addAttribute("username", username);
+    model.addAttribute("name", username);
     model.addAttribute("balance", user.getAccount().getBalance());
     return "logged-in"; // The Thymeleaf template to render
   }

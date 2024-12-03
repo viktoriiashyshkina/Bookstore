@@ -222,10 +222,11 @@
   <img th:src="@{/images/banner.jpg}" alt="Welcome to the Bookstore" src="">
 </header>
 
+
 <!-- Navigation Bar -->
 <nav>
   <div class="nav-left">
-    <a th:href="@{/home}">Home</a>
+    <a th:href="@{/homeTest}">Home</a>
     <div class="category-dropdown">
       <label for="category-select">Filter by Category:</label>
       <select id="category-select" onchange="window.location.href='?category=' + this.value;">
@@ -265,7 +266,9 @@
 <main>
   <div>
     <h2>Order Details</h2>
-    <p th:text="'Order Total: $' + ${order.totalAmount}"></p>
+    <p th:if="${order != null}" th:text="'Order Total: $' + ${order.totalAmount}"></p>
+    <p th:if="${order == null}">Order details not available.</p>
+
     <h3>Items:</h3>
     <ul>
       <li th:each="item : ${order.orderDetails}">
@@ -279,25 +282,26 @@
   <div>
     <h3>Shipping Information</h3>
     <div class="shipping-info">
+      <!-- Profile Incomplete Logic -->
       <p th:if="${not complete}">
         <span class="profile-incomplete">Your profile is incomplete. Please update your profile.</span>
         <button th:onclick="window.location.href='/profile/updateProfile'" type="button">Update Profile</button>
       </p>
 
+      <!-- Display User's Shipping Information -->
       <p th:if="${complete}">
-        <span th:text="'Name: ' + ${user.firstName} + ' ' + ${user.lastName}"></span><br />
-        <span th:text="'Address: ' + ${user.address}"></span><br />
-        <span th:text="'Phone: ' + ${user.phoneNumber}"></span><br />
-        <span th:text="'Email: ' + ${user.email}"></span>
+        <span th:text="'Name: ' + ${account.firstName} + ' ' + ${account.lastName}"></span><br />
+        <span th:text="'Address: ' + ${account.address}"></span><br />
+        <span th:text="'Phone: ' + ${account.phoneNumber}"></span><br />
+        <span th:text="'Email: ' + ${account.email}"></span>
       </p>
     </div>
   </div>
 
-  <div class="continue-btn" th:if="${complete}">
-    <button th:onclick="window.location.href='/payment'" type="button">Continue to Payment</button>
-  </div>
+  <!-- Continue to Payment Button -->
+<!--  <div class="continue-btn" th:if="${complete}">-->
+<!--    <button th:onclick="window.location.href='/payment'" type="button">Continue to Payment</button>-->
+<!--  </div>-->
 </main>
 </body>
 </html>
-
-
