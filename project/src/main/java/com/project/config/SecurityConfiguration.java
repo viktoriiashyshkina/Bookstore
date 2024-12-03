@@ -109,7 +109,7 @@ public class SecurityConfiguration {
 
         .formLogin(formLogin ->
             formLogin
-                .loginPage("/login")  // Custom login page
+                .loginPage("/admin")  // Custom login page
                 .defaultSuccessUrl("/logged-in", true)  // Redirect after successful login
                 .loginProcessingUrl("/process-login")  // Form action for login
                 .successHandler((request, response, authentication) -> {

@@ -4,12 +4,16 @@ import static org.springframework.http.ResponseEntity.accepted;
 import static org.springframework.http.ResponseEntity.ok;
 
 import com.project.entity.BookEntity;
+import com.project.entity.User;
 import com.project.repository.BookRepository;
 import com.project.service.BookService;
 import com.project.service.FilterService;
+import com.project.service.UserService;
+import com.project.util.Role;
 import java.awt.print.Book;
 import java.util.Base64;
 import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,12 +38,37 @@ public class FilterController {
   @Autowired
   private BookRepository bookRepository;
 
-  @GetMapping("/filterByPriceRange")
+
+  @Autowired
+  private UserService userService;
+
+  @GetMapping("/homeTest/filterByPriceRange")
   public String filterBookByPriceRange(
       @RequestParam(defaultValue = "0") Double minPrice,
       @RequestParam(defaultValue = "1000000") Double maxPrice,
       Pageable pageable,
       Model model) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    Set<Role> role = null;
+    User user = null;
+    if (userService.findByUsername(username) != null) {
+      user = userService.findByUsername(username);
+      role = user.getRoles();
+      System.out.println("role: "+ role);
+      model.addAttribute("user", user);
+      if (role.contains(Role.ADMIN)) {
+        model.addAttribute("role", "admin");
+      } else {
+        model.addAttribute("role", "user");
+        model.addAttribute("balance", user.getAccount().getBalance());
+      }
+    } else {
+      model.addAttribute("user","null");
+      model.addAttribute("role", "null");
+    }
+
+
+
     Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
 
 //    // Adjust pageable to handle sorting if needed
@@ -61,11 +91,16 @@ public class FilterController {
     model.addAttribute("currentPage", books.getNumber());
     model.addAttribute("totalPages", books.getTotalPages());
     model.addAttribute("totalItems", books.getTotalElements());
-    return "home_test";
+
+    if (role==null || role.contains(Role.USER)) {
+      return "home_test";
+    } else {
+      return  "books";
+    }
 
   }
 
-  @GetMapping("/filterByPrice")
+  @GetMapping("/homeTest/filterByPrice")
   public String filterBooksByPrice(
       @RequestParam(defaultValue = "1") Double minPrice,
       @RequestParam(defaultValue = "1000000") Double maxPrice,
@@ -73,6 +108,27 @@ public class FilterController {
       // 'sort' can be 'price', 'priceDesc', etc.
       Pageable pageable,
       Model model) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    Set<Role> role = null;
+    User user = null;
+    if (userService.findByUsername(username) != null) {
+      user = userService.findByUsername(username);
+      role = user.getRoles();
+      System.out.println("role: "+ role);
+      model.addAttribute("user", user);
+      if (role.contains(Role.ADMIN)) {
+        model.addAttribute("role", "admin");
+      } else {
+        model.addAttribute("role", "user");
+        model.addAttribute("balance", user.getAccount().getBalance());
+      }
+    } else {
+      model.addAttribute("user","null");
+      model.addAttribute("role", "null");
+    }
+
+
+
     Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
 
     Page<BookEntity> books;
@@ -108,6 +164,7 @@ public class FilterController {
       }
     });
 
+
     // Add attributes to the model
     model.addAttribute("books", books.getContent());
     model.addAttribute("currentPage", books.getNumber());
@@ -117,17 +174,39 @@ public class FilterController {
     model.addAttribute("maxPrice", maxPrice);
     model.addAttribute("sort", sort);
 
-    return "home_test";
+    if (role==null || role.contains(Role.USER)) {
+      return "home_test";
+    } else {
+      return  "books";
+    }
   }
 
 
-  @GetMapping("/filterByTitle")
+  @GetMapping("/homeTest/filterByTitle")
   public String filterBooksByTitle(
       @RequestParam(defaultValue = "1") Double minPrice,
       @RequestParam(defaultValue = "1000000") Double maxPrice,
       @RequestParam(defaultValue = "title") String sort,// 'sort' can be 'title', 'price', etc.
       Pageable pageable,
       Model model) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    Set<Role> role = null;
+    User user = null;
+    if (userService.findByUsername(username) != null) {
+      user = userService.findByUsername(username);
+      role = user.getRoles();
+      System.out.println("role: "+ role);
+      model.addAttribute("user", user);
+      if (role.contains(Role.ADMIN)) {
+        model.addAttribute("role", "admin");
+      } else {
+        model.addAttribute("role", "user");
+        model.addAttribute("balance", user.getAccount().getBalance());
+      }
+    } else {
+      model.addAttribute("user","null");
+      model.addAttribute("role", "null");
+    }
 
     // Determine the sorting logic
     Sort sortOrder;
@@ -162,7 +241,11 @@ public class FilterController {
     model.addAttribute("maxPrice", maxPrice);
     model.addAttribute("sort", sort);
 
-    return "home_test";
+    if (role==null || role.contains(Role.USER)) {
+      return "home_test";
+    } else {
+      return  "books";
+    }
   }
 
   // Helper method to encode image data to Base64
@@ -170,7 +253,7 @@ public class FilterController {
     return Base64.getEncoder().encodeToString(imageData);
   }
 
-  @GetMapping("/filterByCategory")
+  @GetMapping("/homeTest/filterByCategory")
   public String filterBooksByCategory(
      @RequestParam String category, Model model) {
     List<BookEntity> books = filterService.filterByCategory(category);
