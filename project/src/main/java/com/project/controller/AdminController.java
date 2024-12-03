@@ -1,9 +1,10 @@
 package com.project.controller;
 
+import com.project.entity.OrderEntity;
 import com.project.service.BookService;
 import com.project.service.OrderService;
 import com.project.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +15,12 @@ public class AdminController {
   private final UserService userService;
   private final BookService bookService;
   private final OrderService orderService;
+
   public AdminController(UserService userService, BookService bookService,
       OrderService orderService) {
     this.userService = userService;
     this.bookService = bookService;
+
     this.orderService = orderService;
   }
 
@@ -30,17 +33,18 @@ public class AdminController {
     long bookCount = bookService.getBookCount();
     long orderCount = orderService.getOrderCount();
 
-//    // Fetch the most recent orders
-//    List<Order> recentOrders = orderService.getRecentOrders(5); // Get the last 5 orders
+//    // Fetch recent orders, e.g., the last 10 orders
+    List<OrderEntity> recentOrders = orderService.getRecentOrders();
+
+    // Add recent orders to the model
+    model.addAttribute("recentOrders", recentOrders);
 
     // Add attributes to the model
     model.addAttribute("userCount", userCount);
     model.addAttribute("bookCount", bookCount);
     model.addAttribute("orderCount", orderCount);
-//    model.addAttribute("recentOrders", recentOrders);
+    model.addAttribute("recentOrders", recentOrders);
     return "admin_dashboard"; // Thymeleaf template for the admin dashboard
   }
-
-
 
 }

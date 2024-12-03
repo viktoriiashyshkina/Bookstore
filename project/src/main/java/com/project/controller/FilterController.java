@@ -1,13 +1,9 @@
 package com.project.controller;
 
-import static org.springframework.http.ResponseEntity.accepted;
-import static org.springframework.http.ResponseEntity.ok;
-
 import com.project.entity.BookEntity;
 import com.project.repository.BookRepository;
-import com.project.service.BookService;
+
 import com.project.service.FilterService;
-import java.awt.print.Book;
 import java.util.Base64;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +11,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+
 
 @Controller
 public class FilterController {
@@ -41,10 +34,6 @@ public class FilterController {
       Model model) {
     Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
 
-//    // Adjust pageable to handle sorting if needed
-//    Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
-//        pageable.getSort());
-    // Fetch books within price range
     Page<BookEntity> books = filterService.filterBooksByPriceRange(minPrice, maxPrice, pageRequest);
     model.addAttribute("books", books);
     books.forEach(book -> {

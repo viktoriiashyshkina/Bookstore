@@ -2,6 +2,7 @@ package com.project.service;
 
 import com.project.entity.AccountEntity;
 import com.project.entity.User;
+import com.project.repository.AccountRepository;
 import com.project.repository.UserRepository;
 import com.project.util.Role;
 import java.math.BigDecimal;
@@ -25,14 +26,16 @@ public class UserService implements UserDetailsService {
 
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
-  private final AccountService accountService;
+  private final AccountRepository accountRepository;
   private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
+
   @Autowired
-  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AccountService accountService) {
+  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AccountService accountService,
+      AccountRepository accountRepository) {
     this.userRepository = userRepository;
     this.passwordEncoder = passwordEncoder;
-    this.accountService = accountService;
+    this.accountRepository = accountRepository;
   }
 
   // Method to load user by username for authentication
@@ -124,7 +127,7 @@ public class UserService implements UserDetailsService {
     return account.getBalance();
   }
 
-
+@Transactional
   public Long getAuthenticatedUserId() {
     // Retrieve the authenticated username from the security context
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -135,6 +138,25 @@ public class UserService implements UserDetailsService {
       throw new RuntimeException("User not found for username: " + username);
     }
     return user.getId();
+  }
+
+
+  public void deductBalance(User user, BigDecimal amount) {
+      // Ensure account and balance are not null
+      if (user.getAccount() == null || user.getAccount().getBalance() == null) {
+        throw new IllegalArgumentException("Account or balance cannot be null");
+      }
+
+      // Deduct the amount using BigDecimal.subtract()
+      BigDecimal updatedBalance = user.getAccount().getBalance().subtract(amount);
+
+      // Ensure the updated balance is not negative
+      if (updatedBalance.compareTo(BigDecimal.ZERO) < 0) {
+        throw new IllegalArgumentException("Insufficient balance for deduction");
+      }
+      // Update the balance and save the user
+      user.getAccount().setBalance(updatedBalance);
+      userRepository.save(user);
   }
 
 

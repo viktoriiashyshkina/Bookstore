@@ -174,9 +174,12 @@
     nav {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 10px 20px;
       background-color: #444;
+      color: white;
     }
+
     nav a {
       color: white;
       text-decoration: none;
@@ -184,19 +187,79 @@
       padding: 8px 15px;
       border-radius: 5px;
     }
+
     nav a:hover {
       background-color: #666;
     }
+
     .nav-left {
+      display: flex;
+      align-items: center;
       flex: 1;
     }
+
     .nav-center {
       flex: 2;
-      text-align: center;
+      display: flex;
+      justify-content: center;
     }
+
+    .nav-center .search-bar {
+      padding: 8px;
+      width: 60%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .nav-center .search-button {
+      padding: 8px 15px;
+      border: none;
+      background-color: #666;
+      color: white;
+      border-radius: 5px;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+
+    .nav-center .search-button:hover {
+      background-color: #555;
+    }
+
     .nav-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
       flex: 1;
-      text-align: right;
+    }
+
+    .welcome-message {
+      margin-right: 15px;
+      font-weight: bold;
+    }
+
+    .balance-info {
+      margin-right: 15px;
+      font-weight: bold;
+      color: #FFD700; /* Gold color for balance */
+    }
+
+    .nav-right img {
+      width: 30px;
+      height: 30px;
+      margin: 0 10px;
+    }
+
+    .logout-button {
+      background-color: #dc3545; /* Bootstrap danger color */
+      padding: 8px 15px;
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      margin-left: 10px;
+    }
+
+    .logout-button:hover {
+      background-color: #c82333;
     }
     .welcome-message {
       padding: 20px;
@@ -274,8 +337,8 @@
 </header>
 <nav>
   <div class="nav-left">
-    <a th:href="@{/home}">Home</a>
-    <a th:href="@{/profile}">My Profile</a>
+    <a th:href="@{/homeTest}">Home</a>
+    <a th:href="@{/logged-in/profile}">My Profile</a>
     <a th:href="@{/orders}">My Orders</a>
   </div>
   <div class="nav-center">
@@ -284,16 +347,23 @@
       <button type="submit">Search</button>
     </form>
   </div>
+
+
+  <div class="nav-right">
+      <!-- Check if the user is logged in -->
+      <div th:if="${#authentication.principal != 'anonymousUser'}">
+        <span>Welcome, <strong th:text="${#authentication.name}">User</strong>!</span>
+        <p>Your account balance is: $<span th:text="${balance}">0.00</span></p>
+
+      <a th:href="@{/homeTest/basket}"><img th:src="@{images/purchase.png}" alt="Shopping Basket"></a>
+       <a th:href="@{/logout}">Logout</a>
+      </div>
+  </div>
 </nav>
 
-<div class="nav-right">
-  <span>Welcome, <strong th:text="${username}">User</strong></span>
-  <a th:href="@{/basket}"><img th:src="@{images/purchase.png}" alt="Shopping Basket"></a>
-  <a th:href="@{/logout}">Logout</a>
-</div>
 
-<div class="welcome-message">
-  Welcome back, <strong th:text="${username}">User</strong>! Explore your favorite books.
+<div class="welcome-message" th:if="${#authentication.principal != 'anonymousUser'}">
+  Welcome back, <strong th:text="${#authentication.name}">User</strong>! Explore your favorite books.
 </div>
 
 <!-- Display the user's account balance -->
@@ -307,7 +377,7 @@
   <p>Here, you can access your profile, browse books, and manage your orders.</p>
   <div class="button-container">
     <a th:href="@{/logged-in/profile}">View Profile</a>
-    <a th:href="@{/orders}">View Orders</a>
+    <a th:href="@{/homeTest/purchase-history}">View Orders</a>
     <a th:href="@{/favorites}">Favorites</a>
   </div>
 </section>
