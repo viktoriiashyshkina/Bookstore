@@ -5,6 +5,16 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
   <style>
 
+
+    <form method="get" action="/homeTest/filterByPriceRange">
+      <label for="minPrice">Price Range from:</label>
+      <input type="number" name="minPrice" id="minPrice" value="${minPrice}" placeholder="Enter Min Price">
+
+      <label for="maxPrice">to:</label>
+      <input type="number" name="maxPrice" id="maxPrice" value="${maxPrice}" placeholder="Enter Max Price">
+      <button type="submit">Filter by Price Range</button>
+    </form>
+
 #authorDisplayContainer
   #categoryDisplayContainer {
   display: flex;

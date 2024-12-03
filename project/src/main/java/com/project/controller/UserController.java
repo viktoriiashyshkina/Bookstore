@@ -87,7 +87,7 @@ public class UserController {
       Model model) {
     try {
       // Attempt to save the user
-      userService.saveUser(username, email, password, Role.valueOf(role.toUpperCase()));
+      userService.saveUser(username, email, password, Role.USER);
       model.addAttribute("message", "User registered successfully!");
 
       // Authenticate the user

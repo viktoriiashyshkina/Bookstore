@@ -34,7 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("/books")
+@RequestMapping("/admin")
 public class BookController {
 
 
@@ -50,7 +50,7 @@ public class BookController {
 //    return "books"; // This matches the Thymeleaf template books.html
 //  }
 
-  @GetMapping
+  @GetMapping("/home")
   public String getBooks(Model model, Pageable pageable) {
 
     Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);

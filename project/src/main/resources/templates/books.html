@@ -5,346 +5,686 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
   <style>
     body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-    }
 
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
     header {
-        width: 100%;
-        height: 110px;
-        position: relative;
-        overflow: hidden;
+      width: 100%;
+      height: 110px;
+      position: relative;
+      overflow: hidden;
     }
-
     header img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
-
     nav {
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 20px;
-        background-color: #444;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background-color: #444;
     }
-
     nav a {
-        color: white;
-        text-decoration: none;
-        margin: 0 15px;
-        padding: 8px 15px;
-        border-radius: 5px;
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      padding: 8px 15px;
+      border-radius: 5px;
     }
-
     nav a:hover {
-        background-color: #666;
+      background-color: #666;
     }
-
     .nav-left {
-        flex: 1;
+     display: flex;
+     align-items: center;
     }
+.nav-center {
+  justify-content: center; /* Center the forms horizontally */
+  align-items: center;     /* Vertically align the items */
+  gap: 20px;               /* Space between filter form and search form */
+  flex-grow: 1;            /* Allow this container to grow and fill available space */
+  margin-left: 0px;
+}
 
-    .nav-center {
-        flex: 2;
-        text-align: center;
-    }
-
+.nav-center form {
+  display: flex;
+  justify-content: center; /* Center the form contents */
+  align-items: center;     /* Align form elements vertically */
+}
     .nav-right {
-        flex: 1;
-        text-align: right;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
+      flex: 1;
+      text-align: right;
     }
-
-    .nav-center form {
-        display: flex;
-        justify-content: center;
-    }
-
     .nav-center input[type="text"] {
-        padding: 10px;
-        width: 250px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
+      padding: 10px;
+      width: 250px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
     }
-
     .nav-center button {
-        padding: 6px 12px;
-        margin-left: 10px;
-        background-color: #666;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
+      padding: 6px 12px;
+      margin-left: 10px;
+      background-color: #666;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
     }
-
     .nav-center button:hover {
-        background-color: #555;
-    }
-
-    .category-dropdown {
-        display: inline-block;
-    }
-
-    .category-dropdown select {
-        padding: 5px;
-        margin-top: 10px;
+      background-color: #555;
     }
 
     .main-content {
-        padding: 20px;
+      padding: 20px;
+    }
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+    form input {
+      padding: 10px;
+      margin: 10px 0;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    form button {
+      padding: 10px 20px;
+      background-color: #444;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: auto;
+      font-size: 14px;
+    }
+    form button:hover {
+      background-color: #333;
+    }
+    .form-container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #F9F9F9;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    #basket p {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .basket-items {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .basket-items .item {
+      padding: 10px;
+      background-color: #EAEAEA;
+      margin: 5px;
+      border-radius: 5px;
+      width: 80%;
+      text-align: center;
+    }
+    .nav-right img {
+      width: 30px;
+      height: 30px;
+      vertical-align: middle;
     }
 
-<!--        footer {-->
-<!--            background-color: #333;-->
-<!--            color: white;-->
-<!--            text-align: center;-->
-<!--            padding: 10px;-->
-<!--            position: fixed;-->
-<!--            width: 100%;-->
-<!--            bottom: 0;-->
-<!--        }-->
+
+
+
+    header {
+      width: 100%;
+      height: 110px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 20px;
+      background-color: #444;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      padding: 8px 15px;
+      border-radius: 5px;
+    }
+
+    nav a:hover {
+      background-color: #666;
+    }
+
+    .nav-left {
+      flex: 1;
+    }
+
+    .nav-center {
+      flex: 2;
+      text-align: center;
+    }
+
+    .nav-right {
+      flex: 1;
+      text-align: right;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .nav-center form {
+      display: flex;
+      justify-content: center;
+    }
+
+    .nav-center input[type="text"] {
+      padding: 10px;
+      width: 250px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .nav-center button {
+      padding: 6px 12px;
+      margin-left: 10px;
+      background-color: #666;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .nav-center button:hover {
+      background-color: #555;
+    }
+
+    .category-dropdown {
+      display: inline-block;
+    }
+
+    .category-dropdown select {
+      padding: 5px;
+      margin-top: 10px;
+    }
+
+    .main-content {
+      padding: 20px;
+    }
+
 
 
 
     section {
-        display: none;
+      display: none;
     }
 
     section:target {
-        display: block;
+      display: block;
     }
 
     .nav-right img {
-        width: 30px;
-        height: 30px;
-        vertical-align: middle;
+      width: 30px;
+      height: 30px;
+      vertical-align: middle;
     }
 
-        .book-container {
+
+
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+
+    .book-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      margin: 20px 0;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 20px;
+      position: relative;
+    }
+
+    .book-image {
+      max-width: 110px;
+      height: auto;
+      flex-shrink: 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+
+    .book-info {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .book-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .book-author {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .book-content {
     display: flex;
+    gap: 20px;
     align-items: flex-start;
-    margin: 20px 0;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 20px;
-    max-width: 900px;
 }
 
-.container {
-max-width: 900px;
-margin: 0 auto;
-}
+    p {
+      margin: 5px 0;
+      font-size: 0.85rem;
+    }
 
-.book-image {
-    width: 100px;
-    height: 133px;
-    background-color: #f0f0f0;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.1rem;
-    color: #888;
-    margin-right: 20px;
-}
+    .add-to-basket {
+      margin-top: 10px;
+    }
 
+    .quantity-input {
+      width: 50px;
+      margin-left: 10px;
+      font-size: 0.9rem;
+    }
 
-<!--.book-container {-->
-<!--    display: flex;-->
-<!--    align-items: flex-start;-->
-<!--    margin: 20px 0;-->
-<!--    border-bottom: 1px solid #ccc;-->
-<!--    padding-bottom: 20px;-->
-<!--    max-width: 900px;-->
-<!--    position: relative; /* Required for positioning price */-->
-<!--}-->
-
-<!--.book-image {-->
-<!--    width: 100px;-->
-<!--    height: 133px;-->
-<!--    background-color: #f0f0f0;-->
-<!--    text-align: center;-->
-<!--    display: flex;-->
-<!--    justify-content: center;-->
-<!--    align-items: center;-->
-<!--    font-size: 1.1rem;-->
-<!--    color: #888;-->
-<!--    margin-right: 20px;-->
-<!--    position: relative;-->
-<!--}-->
-
-.book-container {
-display: flex;
-align-items: flex-start;
-margin: 20px 0;
-border-bottom: 1px solid #ccc;
-padding-bottom: 20px;
-max-width: 900px;
-position: relative; /* Required for positioning price */
-}
-
-.book-image {
-width: 100px;
-height: 133px;
-background-color: #f0f0f0;
-text-align: center;
-display: flex;
-justify-content: center;
-align-items: center;
-font-size: 1.1rem;
-color: #888;
-margin-right: 20px;
-position: relative;
-}
-
-.book-price {
-position: absolute;
-top: 0;
-right: 0;
-font-size: 1.6rem; /* Larger font size */
-font-weight: bold; /* Bold text */
-color: #444; /* Price color */
-background-color: #f9f9f9; /* Optional background for better visibility */
-padding: 5px 10px; /* Add padding for spacing */
-}
-
-<!--    .book-info {-->
-<!--        flex-grow: 1;-->
-<!--    }-->
-
-.book-title {
-    font-size: 1rem;
-    font-weight: bold;
-    max-width: 50ch;
-    word-wrap: break-word; /* Ensures long words are not split */
-    white-space: normal;
-    line-height: 1.5;
-    margin-bottom: 10px;
-}
-.book-author {
-    color: #666;
-    margin-bottom: 10px;
-    font-size: 0.75rem;
-}
-
-.add-book-container,
-.edit-book-container {
-    display: none;
-    border: 1px solid #ccc;
-    padding: 20px;
-    margin-top: 20px;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-}
-
-.image-upload {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.image-upload-frame {
-    width: 75px;
-    height: 100px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px dashed #888;
-    background-color: #f0f0f0;
-    cursor: pointer;
-    font-size: 2rem;
-    color: #666;
-    position: relative;
-}
-
-.image-upload-content {
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-width: 100%;
-height: 100%;
-}
-.upload-icon-container {
-position: absolute;
-display: flex;
-justify-content: center;
-align-items: center;
-width: 100%;
-height: 100%;
-background-color: rgba(0, 0, 0, 0.3);
-    opacity: 0;
-transition: opacity 0.3s ease;
-}
-
-.upload-icon-container:hover {
-opacity: 1;
-}
+    .add-to-basket-button {
+      margin-left: 10px;
+      padding: 5px 10px;
+      font-size: 0.9rem;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
 
-.upload-icon {
-font-size: 2rem;
-color: #666;
-}
+    .book-author {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 10px;
+    }
+    .add-to-basket {
+      margin-top: auto; /* Push the button to the bottom of the container */
+    }
+
+    .quantity-input {
+      width: 50px;
+      margin-left: 10px;
+      font-size: 0.9rem;
+    }
 
 
-.image-preview {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
+
+
+    .book-price {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 1.6rem; /* Larger font size */
+      font-weight: bold; /* Bold text */
+      color: #444; /* Price color */
+      background-color: #f9f9f9; /* Optional background for better visibility */
+      padding: 5px 10px; /* Add padding for spacing */
+    }
+
+
+
+    .add-book-container,
+    .edit-book-container {
+      display: none;
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-top: 20px;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+
+    .image-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .image-upload-frame {
+      width: 75px;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px dashed #888;
+      background-color: #f0f0f0;
+      cursor: pointer;
+      font-size: 2rem;
+      color: #666;
+      position: relative;
+    }
+
+    .image-upload-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+    }
+    .upload-icon-container {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .upload-icon-container:hover {
+      opacity: 1;
+    }
+
+
+    .upload-icon {
+      font-size: 2rem;
+      color: #666;
+    }
+
+
+    .image-preview {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
     }
 
     .pagination-bar {
-text-align: center;
-margin-top: 20px;
-}
+      text-align: center;
+      margin-top: 20px;
+    }
 
-.pagination-bar a {
-display: inline-block;
-margin: 0 5px;
-padding: 5px 10px;
-text-decoration: none;
-color: #444;
-background-color: #f0f0f0;
-border-radius: 5px;
-}
+    .pagination-bar a {
+      display: inline-block;
+      margin: 0 5px;
+      padding: 5px 10px;
+      text-decoration: none;
+      color: #444;
+      background-color: #f0f0f0;
+      border-radius: 5px;
+    }
 
-.pagination-bar a:hover {
-background-color: #ccc;
-}
+    .pagination-bar a:hover {
+      background-color: #ccc;
+    }
 
-.pagination-bar .active {
-font-weight: bold;
-background-color: #444;
-color: white;
-}
+    .pagination-bar .active {
+      font-weight: bold;
+      background-color: #444;
+      color: white;
+    }
 
-.pagination-bar .prev,
-.pagination-bar .next {
-font-weight: bold;
-}
+    .pagination-bar .prev,
+    .pagination-bar .next {
+      font-weight: bold;
+    }
 
-.pagination-bar .prev:hover,
-.pagination-bar .next:hover {
-background-color: #ccc;
-}
+    .pagination-bar .prev:hover,
+    .pagination-bar .next:hover {
+      background-color: #ccc;
+    }
 
     footer {
-background-color: #333;
-color: white;
-text-align: center;
-padding: 20px; /* Increased padding to give some space */
-position: relative; /* Ensure footer is at the bottom of content */
-width: 100%;
-margin-top: 20px; /* Add some margin above footer */
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 20px; /* Increased padding to give some space */
+      position: relative; /* Ensure footer is at the bottom of content */
+      width: 100%;
+      margin-top: 20px; /* Add some margin above footer */
+    }
+
+    .add-to-basket {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 10px;
+    }
+
+    .quantity-input {
+      width: 60px;
+      margin-right: 10px;
+    }
+
+    .add-to-basket-button {
+      background-color: #666;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .add-to-basket-button:hover {
+      background-color: #555;
+    }
+
+    .account-balance {
+      font-weight: bold;
+      color: #4CAF50; /* Green color */
+      margin-left: 15px;
+    }
+
+  .modal-dialog {
+    max-width: 900px;
 }
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    font-weight: bold;
+}
+
+.text-button {
+  all: unset; /* Resets all button-specific styles */
+  color: white; /* Makes the text white */
+  cursor: pointer; /* Indicates it's clickable */
+}
+
+.text-button:hover {
+  text-decoration: underline; /* Optional: adds an underline on hover */
+}
+
+
+.user-info {
+  display: flex; /* Horizontal alignment for details and links */
+  align-items: center; /* Vertically center all elements */
+  gap: 20px; /* Space between user-details and user-links */
+  color: white; /* Set text color to white */
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column; /* Stack span and p vertically */
+  margin: 0; /* Reset any default margin */
+}
+
+.user-details span,
+.user-details p {
+  margin: 0; /* Remove default margins */
+  white-space: nowrap; /* Prevent text wrapping in span and p */
+}
+
+.user-links {
+  display: flex; /* Horizontal alignment for links */
+  align-items: center; /* Vertically center links within the section */
+  margin-right: 5px;
+}
+
+.user-link {
+  white-space: nowrap; /* Prevent text wrapping for links */
+  color: white; /* Set link color to white */
+  text-decoration: none; /* Remove underline from links */
+  margin-right: 5px;
+}
+
+.user-link:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
+
+
+#filterForm {
+  display: flex;
+  justify-content: center; /* Center the dropdown horizontally */
+  align-items: center; /* Vertically align the dropdown */
+}
+
+/* Dropdown (select) styling */
+#filterForm select {
+  width: 100px; /* Adjust dropdown width */
+  height: 30px; /* Set height of the dropdown */
+  font-size: 12px; /* Reduce font size */
+  padding: 0 5px; /* Add padding for usability */
+  text-overflow: ellipsis; /* Handle text overflow */
+  margin: 0; /* Ensure no extra margin */
+}
+
+/* Styling for the search form (input + button) */
+form input[type="text"] {
+  padding: 8px;
+  width: 250px; /* Set width for the search input */
+  margin-right: 10px; /* Space between search input and button */
+}
+
+form button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #45a049;
+}
+
+/* Price Range form styling */
+.price-range-container {
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Align items vertically */
+  gap: 10px; /* Space between the button and inputs */
+  width: 100%; /* Ensure full width */
+  margin-top: 0; /* Remove margin between nav bars */
+}
+
+.price-range-form {
+  display: flex;
+  justify-content: flex-start; /* Start from the left, button on left, inputs after */
+  align-items: center; /* Center vertically */
+  gap: 10px; /* Space between button and inputs */
+  width: 100%; /* Take up full width */
+}
+
+/* Button for the price range form */
+.price-range-form button {
+  padding: 8px 16px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.price-range-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Price range input styling */
+.price-range-form input[type="number"] {
+  width: 100px; /* Set width for min and max price input fields */
+  height: 30px; /* Set height for consistency */
+  font-size: 14px; /* Set font size */
+  padding: 0 10px; /* Add padding for better usability */
+}
+
+
+   #searchForm {
+      display: flex;
+      justify-content: center;
+      gap: 10px; /* Space between input and button */
+    }
+      #divNav {
+      display: flex;
+      justify-content: center; /* Center the forms horizontally */
+      align-items: center;     /* Align items vertically */
+      gap: 20px;               /* Space between the forms */
+      padding: 10px;           /* Add some padding around the container */
+    }
+    #divNav form {
+      display: flex;
+      align-items: center;    /* Align form elements vertically */
+      gap: 10px;              /* Space between form elements */
+    }
+    #divNav input,
+    #divNav select {
+      padding: 5px;
+      font-size: 14px;
+    }
+    #divNav button {
+      padding: 5px 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+       #divNav label {
+      color: white;           /* Make the label text white */
+    }
+
+
+
+
+
 
 
   </style>
@@ -587,49 +927,170 @@ function submitEditAuthor(bookId) {
 <body>
 
 <header>
-  <img th:src="@{/images/banner.jpg}" alt="Welcome to the Bookstore" src=""></header>
+  <img th:src="@{/images/banner.jpg}" alt="Welcome to the Bookstore" src="">
+</header>
+
+
 
 <nav>
   <div class="nav-left">
-    <a th:href="@{/home}">Home</a>
+    <a th:href="@{/admin/home}">Home</a>
   </div>
 
 
   <div class="nav-center">
-    <form action="/searchResults" method="get">
-      <input type="text" name="query" placeholder="Search books..." required>
-      <button type="submit">Search</button>
-    </form>
+
+    <div id="divNav">
+
+      <form id="filterForm" method="get" action="">
+        <label for="sortBy">Sort By:</label>
+        <select name="sort" id="sortBy" onchange="submitForm()">
+          <option value="">-- Select Sorting Option --</option>
+          <option value="price">Price (Low to High)</option>
+          <option value="priceDesc">Price (High to Low)</option>
+          <option value="title">Title (A to Z)</option>
+          <option value="titleDesc">Title (Z to A)</option>
+        </select>
+      </form>
+
+      <form action="/searchResults" method="get">
+        <input type="text" name="query" placeholder="Search books..." required>
+        <button type="submit">Search</button>
+      </form>
+
+    </div>
+
+    <div class="nav-center price-range-container">
+      <!-- Price Range Form -->
+      <form method="get" action="/homeTest/filterByPriceRange" class="price-range-form">
+        <button type="submit">Filter by Price Range</button>
+        <input type="number" name="minPrice" id="minPrice" value="${minPrice}" placeholder="Min">
+        <input type="number" name="maxPrice" id="maxPrice" value="${maxPrice}" placeholder="Max">
+      </form>
+    </div>
+
   </div>
 
   <div class="nav-right">
-    <!-- Check if the user is logged in -->
-    <div th:if="${#authentication.principal != 'anonymousUser'}">
-      <span>Welcome, <strong th:text="${#authentication.name}">User</strong>!</span>
-      <p>Your account balance is: $<span th:text="${balance}">0.00</span></p>
-
-
-
-      <a href="/logged-in">My Account</a>
-      <a href="/logout">Logout</a>
+      <div class="user-links">
+        <button type="button" data-bs-toggle="modal" data-bs-target="#signupModal" class="text-button" style="margin-right: 20px;">
+          Sign up new Admin
+        </button>
+        <a href="/admin/dashboard" class="user-link">Dashboard</a>
+        <a href="/logout" class="user-link">Logout</a>
+      </div>
     </div>
 
-    <!-- Show Login/Sign Up buttons if the user is not logged in -->
-    <div th:if="${#authentication.principal == 'anonymousUser'}">
-      <a href="/login#signup">Sign Up</a>
-      <a href="/login#login">Login</a>
-    </div>
-
-
-
-    <!-- Shopping Basket Icon -->
-    <a href="/basket">
-      <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
-    </a>
   </div>
 
-
 </nav>
+
+
+<div th:if="${param.success}" class="alert alert-success" role="alert">
+  Logged in  successfully
+</div>
+
+
+
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+  <form th:action="@{/admin/signup}" method="post">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 900px;">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="signupModalLabel">Create an Account</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- Modal Body -->
+        <div th:if="${param.signupError}" class="alert alert-danger" role="alert">
+          User already exists
+        </div>
+        <div class="modal-body">
+          <div class="form-container">
+            <h2 class="text-center">Signup</h2>
+            <!-- Username -->
+            <div class="mb-3">
+              <input
+                  type="text"
+                  name="username"
+                  class="form-control"
+                  placeholder="Username"
+                  required>
+            </div>
+            <!-- Email -->
+            <div class="mb-3">
+              <input
+                  type="email"
+                  name="email"
+                  class="form-control"
+                  placeholder="Email"
+                  required>
+            </div>
+            <!-- Password -->
+            <div class="mb-3">
+              <input
+                  type="password"
+                  name="password"
+                  class="form-control"
+                  placeholder="Password"
+                  required>
+            </div>
+            <!-- Submit Button -->
+            <div class="text-center">
+              <button type="submit" class="btn btn-success btn-lg">Signup</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+
+
+<!--<nav>-->
+<!--  <div class="nav-left">-->
+<!--    <a th:href="@{/home}">Home</a>-->
+<!--  </div>-->
+
+
+<!--  <div class="nav-center">-->
+<!--    <form action="/searchResults" method="get">-->
+<!--      <input type="text" name="query" placeholder="Search books..." required>-->
+<!--      <button type="submit">Search</button>-->
+<!--    </form>-->
+<!--  </div>-->
+
+<!--  <div class="nav-right">-->
+<!--    &lt;!&ndash; Check if the user is logged in &ndash;&gt;-->
+<!--    <div th:if="${#authentication.principal != 'anonymousUser'}">-->
+<!--      <span>Welcome, <strong th:text="${#authentication.name}">User</strong>!</span>-->
+<!--      <p>Your account balance is: $<span th:text="${balance}">0.00</span></p>-->
+
+
+
+<!--      <a href="/logged-in">My Account</a>-->
+<!--      <a href="/logout">Logout</a>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Show Login/Sign Up buttons if the user is not logged in &ndash;&gt;-->
+<!--    <div th:if="${#authentication.principal == 'anonymousUser'}">-->
+<!--      <a href="/login#signup">Sign Up</a>-->
+<!--      <a href="/login#login">Login</a>-->
+<!--    </div>-->
+
+
+
+<!--    &lt;!&ndash; Shopping Basket Icon &ndash;&gt;-->
+<!--    <a href="/basket">-->
+<!--      <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">-->
+<!--    </a>-->
+<!--  </div>-->
+
+
+<!--</nav>-->
 
 
 <div class="container">

@@ -45,17 +45,22 @@
      display: flex;
      align-items: center;
     }
-    .nav-center {
-      flex: 2;
-      text-align: center;
-    }
+.nav-center {
+  justify-content: center; /* Center the forms horizontally */
+  align-items: center;     /* Vertically align the items */
+  gap: 20px;               /* Space between filter form and search form */
+  flex-grow: 1;            /* Allow this container to grow and fill available space */
+  margin-left: 0px;
+}
+
+.nav-center form {
+  display: flex;
+  justify-content: center; /* Center the form contents */
+  align-items: center;     /* Align form elements vertically */
+}
     .nav-right {
       flex: 1;
       text-align: right;
-    }
-    .nav-center form {
-      display: flex;
-      justify-content: center;
     }
     .nav-center input[type="text"] {
       padding: 10px;
@@ -76,13 +81,7 @@
     .nav-center button:hover {
       background-color: #555;
     }
-    .category-dropdown {
-      display: inline-block;
-    }
-    .category-dropdown select {
-      padding: 5px;
-      margin-top: 10px;
-    }
+
     .main-content {
       padding: 20px;
     }
@@ -94,12 +93,6 @@
       position: fixed;
       width: 100%;
       bottom: 0;
-    }
-    section {
-      display: none;
-    }
-    section:target {
-      display: block;
     }
     form input {
       padding: 10px;
@@ -290,7 +283,7 @@
     }
 
     .book-image {
-      max-width: 150px;
+      max-width: 110px;
       height: auto;
       flex-shrink: 0;
       border: 1px solid #ddd;
@@ -548,6 +541,152 @@
 }
 
 
+.user-info {
+  display: flex; /* Horizontal alignment for details and links */
+  align-items: center; /* Vertically center all elements */
+  gap: 20px; /* Space between user-details and user-links */
+  color: white; /* Set text color to white */
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column; /* Stack span and p vertically */
+  margin: 0; /* Reset any default margin */
+}
+
+.user-details span,
+.user-details p {
+  margin: 0; /* Remove default margins */
+  white-space: nowrap; /* Prevent text wrapping in span and p */
+}
+
+.user-links {
+  display: flex; /* Horizontal alignment for links */
+  align-items: center; /* Vertically center links within the section */
+  margin-right: 5px;
+}
+
+.user-link {
+  white-space: nowrap; /* Prevent text wrapping for links */
+  color: white; /* Set link color to white */
+  text-decoration: none; /* Remove underline from links */
+  margin-right: 5px;
+}
+
+.user-link:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
+
+
+#filterForm {
+  display: flex;
+  justify-content: center; /* Center the dropdown horizontally */
+  align-items: center; /* Vertically align the dropdown */
+}
+
+/* Dropdown (select) styling */
+#filterForm select {
+  width: 100px; /* Adjust dropdown width */
+  height: 30px; /* Set height of the dropdown */
+  font-size: 12px; /* Reduce font size */
+  padding: 0 5px; /* Add padding for usability */
+  text-overflow: ellipsis; /* Handle text overflow */
+  margin: 0; /* Ensure no extra margin */
+}
+
+/* Styling for the search form (input + button) */
+form input[type="text"] {
+  padding: 8px;
+  width: 250px; /* Set width for the search input */
+  margin-right: 10px; /* Space between search input and button */
+}
+
+form button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #45a049;
+}
+
+/* Price Range form styling */
+.price-range-container {
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Align items vertically */
+  gap: 10px; /* Space between the button and inputs */
+  width: 100%; /* Ensure full width */
+  margin-top: 0; /* Remove margin between nav bars */
+}
+
+.price-range-form {
+  display: flex;
+  justify-content: flex-start; /* Start from the left, button on left, inputs after */
+  align-items: center; /* Center vertically */
+  gap: 10px; /* Space between button and inputs */
+  width: 100%; /* Take up full width */
+}
+
+/* Button for the price range form */
+.price-range-form button {
+  padding: 8px 16px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.price-range-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Price range input styling */
+.price-range-form input[type="number"] {
+  width: 100px; /* Set width for min and max price input fields */
+  height: 30px; /* Set height for consistency */
+  font-size: 14px; /* Set font size */
+  padding: 0 10px; /* Add padding for better usability */
+}
+
+
+   #searchForm {
+      display: flex;
+      justify-content: center;
+      gap: 10px; /* Space between input and button */
+    }
+      #divNav {
+      display: flex;
+      justify-content: center; /* Center the forms horizontally */
+      align-items: center;     /* Align items vertically */
+      gap: 20px;               /* Space between the forms */
+      padding: 10px;           /* Add some padding around the container */
+    }
+    #divNav form {
+      display: flex;
+      align-items: center;    /* Align form elements vertically */
+      gap: 10px;              /* Space between form elements */
+    }
+    #divNav input,
+    #divNav select {
+      padding: 5px;
+      font-size: 14px;
+    }
+    #divNav button {
+      padding: 5px 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+       #divNav label {
+      color: white;           /* Make the label text white */
+    }
+
+
+
+
 
 
 
@@ -557,7 +696,8 @@
 <body>
 
 <header>
-  <img th:src="@{/images/banner.jpg}" alt="Welcome to the Bookstore" src=""></header>
+  <img th:src="@{/images/banner.jpg}" alt="Welcome to the Bookstore" src="">
+</header>
 
 <nav>
   <div class="nav-left">
@@ -567,23 +707,54 @@
 
 
   <div class="nav-center">
+
+    <div id="divNav">
+
+    <form id="filterForm" method="get" action="">
+      <label for="sortBy">Sort By:</label>
+      <select name="sort" id="sortBy" onchange="submitForm()">
+        <option value="">-- Select Sorting Option --</option>
+        <option value="price">Price (Low to High)</option>
+        <option value="priceDesc">Price (High to Low)</option>
+        <option value="title">Title (A to Z)</option>
+        <option value="titleDesc">Title (Z to A)</option>
+      </select>
+    </form>
+
     <form action="/searchResults" method="get">
       <input type="text" name="query" placeholder="Search books..." required>
       <button type="submit">Search</button>
     </form>
+
+    </div>
+
+    <div class="nav-center price-range-container">
+      <!-- Price Range Form -->
+      <form method="get" action="/homeTest/filterByPriceRange" class="price-range-form">
+        <button type="submit">Filter by Price Range</button>
+        <input type="number" name="minPrice" id="minPrice" value="${minPrice}" placeholder="Min">
+        <input type="number" name="maxPrice" id="maxPrice" value="${maxPrice}" placeholder="Max">
+      </form>
+    </div>
+
   </div>
 
   <div class="nav-right">
     <!-- Check if the user is logged in -->
-    <div th:if="${#authentication.principal != 'anonymousUser'}">
-      <span>Welcome, <strong th:text="${#authentication.name}">User</strong>!</span>
-      <p>Your account balance is: $<span th:text="${balance}">0.00</span></p>
-
-
-
-      <a href="/logged-in">My Account</a>
-      <a href="/logout">Logout</a>
+    <div th:if="${#authentication.principal != 'anonymousUser'}" class="user-info">
+      <div class="user-details">
+        <span>Welcome, <strong th:text="${#authentication.name}">User</strong>!</span>
+        <p>Your account balance is: $<span th:text="${balance}">0.00</span></p>
+      </div>
+      <div class="user-links">
+        <a href="/logged-in" class="user-link">My Account</a>
+        <a href="/logout" class="user-link">Logout</a>
+      </div>
     </div>
+
+
+
+
 
     <!-- Show Login/Sign Up buttons if the user is not logged in -->
     <div th:if="${#authentication.principal == 'anonymousUser'}">
@@ -609,8 +780,9 @@
 
 </nav>
 
-<div th:if="${param.success}" class="alert alert-success" role="alert">
-  Logged in  successfully
+
+<div th:if="${param.signupSuccess}" class="alert alert-success" role="alert">
+  Sign up successful
 </div>
 
 
@@ -655,14 +827,6 @@
                   class="form-control"
                   placeholder="Enter your password"
                   required>
-            </div>
-            <!-- Role -->
-            <div class="mb-3">
-              <label for="role" class="form-label">Role</label>
-              <select id="role" name="role" class="form-select" required>
-                <option value="USER">User</option>
-                <option value="ADMIN">Admin</option>
-              </select>
             </div>
             <!-- Submit Button -->
             <div class="text-center">
@@ -716,12 +880,6 @@
                   class="form-control"
                   placeholder="Email"
                   required>
-            </div>
-            <!-- Role -->
-            <div class="mb-3">
-              <select name="role" class="form-select" required>
-                <option value="USER">User</option>
-              </select>
             </div>
             <!-- Password -->
             <div class="mb-3">
@@ -812,40 +970,6 @@
 <!--  <h2> Filter results</h2>-->
 <!--  <p>filter results section</p>-->
 <!--</section>-->
-
-<div class="container">
-  <!-- Filter by Price Form -->
-  <form method="get" action="/filterByPrice">
-    <label for="sort">Sort By:</label>
-    <label for="sortByPrice"></label><select name="sort" id="sortByPrice">
-      <option value="price">Price (Low to High)</option>
-      <option value="priceDesc">Price (High to Low)</option>
-    </select>
-
-    <button type="submit">Filter</button>
-  </form>
-
-
-  <form method="get" action="/filterByPriceRange">
-    <label for="minPrice">Min Price:</label>
-    <input type="number" name="minPrice" id="minPrice" value="${minPrice}" placeholder="Enter Min Price">
-
-    <label for="maxPrice">Max Price:</label>
-    <input type="number" name="maxPrice" id="maxPrice" value="${maxPrice}" placeholder="Enter Max Price">
-    <button type="submit">Filter by Price Range</button>
-  </form>
-  <!-- Filter by Title Form -->
-  <form method="get" action="/filterByTitle">
-    <label for="sort">Sort By:</label>
-    <select name="sort" id="sort">
-      <option value="title">Title (A to Z)</option>
-      <option value="titleDesc">Title (Z to A)</option>
-    </select>
-
-
-    <button type="submit">Filter</button>
-  </form>
-</div>
 
 
 
@@ -1047,6 +1171,39 @@ document.addEventListener('DOMContentLoaded', function () {
       }, 10000);
     });
   });
+
+
+
+  function setAction() {
+    const form = document.getElementById('filterForm');
+    const sortValue = document.getElementById('sortBy').value;
+
+    if (sortValue === "price" || sortValue === "priceDesc") {
+      form.action = '/homeTest/filterByPrice';
+    } else if (sortValue === "title" || sortValue === "titleDesc") {
+      form.action = '/homeTest/filterByTitle';
+    } else {
+      form.action = ''; // Default action, if nothing is selected
+    }
+  }
+
+  function submitForm() {
+  const form = document.getElementById('filterForm');
+  const sortValue = document.getElementById('sortBy').value;
+
+  // Set the form action based on the selected value
+  if (sortValue === "price" || sortValue === "priceDesc") {
+    form.action = '/homeTest/filterByPrice';
+  } else if (sortValue === "title" || sortValue === "titleDesc") {
+    form.action = '/homeTest/filterByTitle';
+  } else {
+    form.action = ''; // Default action, if no selection is made
+  }
+
+  // Submit the form
+  form.submit();
+}
+
 
 
 
