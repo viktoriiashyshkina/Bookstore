@@ -96,30 +96,30 @@ public class PaymentController {
         // Fetch the basket and validate
         Basket basket = basketService.getBasketFromLoggedInUser();
         if (basket == null || basket.getBasketDetails().isEmpty()) {
-            model.addAttribute("message", "Your basket is empty!");
-            return "error";
+            model.addAttribute("error", "Your basket is empty!");
+            return "payment";
         }
 
         // Calculate total amount from the basket
         BigDecimal totalAmount = basket.getTotalAmount().add(DELIVERY_COST);
         if (totalAmount == null || totalAmount.compareTo(BigDecimal.ZERO) <= 0) {
-            model.addAttribute("message", "Your basket total is invalid. Please check your basket.");
-            return "error"; // Return an error page
+            model.addAttribute("error", "Your basket total is invalid. Please check your basket.");
+            return "payment"; // Return an error page
         }
 
         // Check if the user's profile is complete
         if (account.getFirstName()==null || account.getLastName()==null || account.getPhoneNumber()==null
             ||account.getAddress()==null) {
-            model.addAttribute("message", "Please complete your profile before paying.");
-            return "error"; // Return an error page
+            model.addAttribute("error", "Please complete your profile before paying.");
+            return "payment"; // Return an error page
         }
 
         if (user.getAccount().getBalance().compareTo(basket.getTotalAmount()) < 0) {
             logger.error("Insufficient balance for user: " + user.getUsername() +
                 ", Balance: " + user.getAccount().getBalance() +
                 ", Required: " + basket.getTotalAmount());
-            model.addAttribute("message", "Insufficient balance. Please add money.");
-            return "error";
+            model.addAttribute("error", "Insufficient balance. Please add money.");
+            return "payment";
         }
 
         // Deduct the total amount from the user's balance

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -53,27 +52,6 @@
       flex: 2;
       display: flex;
       justify-content: center;
-    }
-
-    .nav-center .search-bar {
-      padding: 8px;
-      width: 60%;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .nav-center .search-button {
-      padding: 8px 15px;
-      border: none;
-      background-color: #666;
-      color: white;
-      border-radius: 5px;
-      margin-left: 5px;
-      cursor: pointer;
-    }
-
-    .nav-center .search-button:hover {
-      background-color: #555;
     }
 
     .nav-right {
@@ -134,19 +112,15 @@
       width: 100%;
       bottom: 0;
     }
-    .nav-right img {
-      width: 30px;
-      height: 30px;
-      vertical-align: middle;
-    }
     .button-container {
-      text-align: center;
+      display: flex;
+      justify-content: center; /* Center horizontally */
+      gap: 20px; /* Space between buttons */
       margin-top: 20px;
     }
     .button-container a {
       display: inline-block;
       padding: 10px 20px;
-      margin: 5px;
       color: white;
       background-color: #444;
       border: none;
@@ -180,44 +154,35 @@
     .add-money-btn:hover {
       background-color: #218838;
     }
-
-
-
-.user-info {
-  display: flex; /* Horizontal alignment for details and links */
-  align-items: center; /* Vertically center all elements */
-  gap: 20px; /* Space between user-details and user-links */
-  color: white; /* Set text color to white */
-}
-
-.user-details {
-  display: flex;
-  flex-direction: column; /* Stack span and p vertically */
-  margin: 0; /* Reset any default margin */
-}
-
-.user-details span,
-.user-details p {
-  margin: 0; /* Remove default margins */
-  white-space: nowrap; /* Prevent text wrapping in span and p */
-}
-
-.user-links {
-  display: flex; /* Horizontal alignment for links */
-  align-items: center; /* Vertically center links within the section */
-  margin-right: 5px;
-}
-
-.user-link {
-  white-space: nowrap; /* Prevent text wrapping for links */
-  color: white; /* Set link color to white */
-  text-decoration: none; /* Remove underline from links */
-  margin-right: 5px;
-}
-
-.user-link:hover {
-  text-decoration: underline; /* Add underline on hover */
-}
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: white;
+    }
+    .user-details {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+    }
+    .user-details span,
+    .user-details p {
+      margin: 0;
+      white-space: nowrap;
+    }
+    .user-links {
+      display: flex;
+      align-items: center;
+    }
+    .user-link {
+      white-space: nowrap;
+      color: white;
+      text-decoration: none;
+      margin-right: 5px;
+    }
+    .user-link:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -230,13 +195,9 @@
     <a th:href="@{/homeTest}">Home</a>
     <a th:href="@{/forum}">Forum</a>
     <a th:href="@{/logged-in/profile}">My Profile</a>
-    <a th:href="@{/orders}">My Orders</a>
+    <a th:href="@{/homeTest/purchase-history}">My Orders</a>
   </div>
-
-
-
   <div class="nav-right">
-    <!-- Check if the user is logged in -->
     <div th:if="${#authentication.principal != 'anonymousUser'}" class="user-info">
       <div class="user-details">
         <span>Welcome, <strong th:text="${#authentication.name}">User</strong>!</span>
@@ -247,25 +208,19 @@
         <a href="/logout" class="user-link">Logout</a>
       </div>
     </div>
-
-
-    <!-- Shopping Basket Icon -->
     <a href="/homeTest/basket">
       <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
     </a>
   </div>
-
-
 </nav>
 
 <div class="welcome-message" th:if="${#authentication.principal != 'anonymousUser'}">
   Welcome back, <strong th:text="${#authentication.name}">User</strong>!
 </div>
 
-<!-- Display the user's account balance -->
 <div class="balance-section">
-  <p>Your account balance is: $<span th:text="${balance}">0.00</span></p> <!-- Display the updated balance -->
-  <a href="/redeemGiftCard" class="add-money-btn">Add Money your Account</a>
+  <p>Your account balance is: $<span th:text="${balance}">0.00</span></p>
+  <a href="/redeemGiftCard" class="add-money-btn">Add Money to your Account</a>
 </div>
 
 <section class="content">
@@ -273,13 +228,41 @@
   <div class="button-container">
     <a th:href="@{/logged-in/profile}">View Profile</a>
     <a th:href="@{/homeTest/purchase-history}">View Orders</a>
-    <a th:href="@{/favorites}">Favorites</a>
+  </div>
+  <!-- Delete Account Button -->
+  <div class="button-container">
+    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">
+      Delete Account
+    </button>
   </div>
 </section>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteAccountModalLabel">Delete Account</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete your account? This action cannot be undone.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <form action="/homeTest/logged-in/delete-account" method="post" class="d-inline">
+          <button type="submit" class="btn btn-danger">Yes, Delete Account</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer>
   <p>&copy; 2024 Bookstore. All rights reserved.</p>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 

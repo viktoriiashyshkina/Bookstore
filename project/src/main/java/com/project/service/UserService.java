@@ -113,20 +113,6 @@ public class UserService implements UserDetailsService {
     return userRepository.count();
   }
 
-  public BigDecimal getUserBalance(String username) {
-    User user = userRepository.findByUsername(username);
-    if (user == null) {
-      throw new RuntimeException("User not found for username: " + username);
-    }
-
-    // Ensure balance is not null
-    AccountEntity account = user.getAccount();
-    if (account.getBalance() == null) {
-      return BigDecimal.ZERO;
-    }
-    return account.getBalance();
-  }
-
 @Transactional
   public Long getAuthenticatedUserId() {
     // Retrieve the authenticated username from the security context
@@ -158,6 +144,30 @@ public class UserService implements UserDetailsService {
       user.getAccount().setBalance(updatedBalance);
       userRepository.save(user);
   }
+
+  @Transactional
+  public void deleteAccountAndProfile(String username) {
+    // Find the user by username
+    User user = userRepository.findByUsername(username);
+    if (user == null) {
+      throw new UsernameNotFoundException("User not found for username: " + username);
+    }
+
+    // Log the deletion action
+    logger.info("Deleting account and profile for user: {}", username);
+
+    // Delete associated account if exists
+    AccountEntity account = user.getAccount();
+    if (account != null) {
+      accountRepository.delete(account);
+      logger.info("Deleted associated account for user: {}", username);
+    }
+
+    // Delete the user
+    userRepository.delete(user);
+    logger.info("Deleted user profile for user: {}", username);
+  }
+
 
 
 }

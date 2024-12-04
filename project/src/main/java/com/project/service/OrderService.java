@@ -31,10 +31,12 @@ public class OrderService {
     return orderRepository.findByAccountEntity(user.getAccount()); // Assumes you have an order repository
   }
 
+  @Transactional
   public long getOrderCount() {
     return orderRepository.count();
   }
 
+  @Transactional
   public List<OrderEntity> getRecentOrders() {
     return orderRepository.findTop10ByOrderByIdDesc();  // Assumes OrderEntity has a field 'orderDate'
   }

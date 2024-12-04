@@ -48,7 +48,7 @@ public class AdminController {
     long bookCount = bookService.getBookCount();
     long orderCount = orderService.getOrderCount();
 
-//    // Fetch recent orders, e.g., the last 10 orders
+////    // Fetch recent orders, e.g., the last 10 orders
     List<OrderEntity> recentOrders = orderService.getRecentOrders();
 
     // Add recent orders to the model
