@@ -222,7 +222,7 @@ public class BasketUserController {
     BookEntity book = bookRepository.findById(bookId).orElse(null);
     if (book == null) {
       model.addAttribute("error", "Book not found");
-      return "redirect:/homeTest";
+      return "redirect:/homeTest?bookNotFoundError";
     }
 
     // Retrieve the basket for the currently logged-in user
@@ -277,8 +277,8 @@ public class BasketUserController {
     dynamicSchedulingConfig.startBasketDetailsCleanupScheduler(basket.getId(), Duration.ofMinutes(5));
 
     // Display success message and redirect
-    model.addAttribute("success", "The item was successfully added to the basket");
-    return "redirect:/homeTest";
+    //model.addAttribute("successfullyAddedToBasket", "true");
+    return "redirect:/homeTest?successfullyAddedToBasket";
   }
 
 

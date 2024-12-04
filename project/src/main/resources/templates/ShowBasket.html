@@ -40,19 +40,25 @@
       background-color: #666;
     }
     .nav-left {
-      flex: 1;
+     display: flex;
+     align-items: center;
     }
-    .nav-center {
-      flex: 2;
-      text-align: center;
-    }
+.nav-center {
+  justify-content: center; /* Center the forms horizontally */
+  align-items: center;     /* Vertically align the items */
+  gap: 20px;               /* Space between filter form and search form */
+  flex-grow: 1;            /* Allow this container to grow and fill available space */
+  margin-left: 0px;
+}
+
+.nav-center form {
+  display: flex;
+  justify-content: center; /* Center the form contents */
+  align-items: center;     /* Align form elements vertically */
+}
     .nav-right {
       flex: 1;
       text-align: right;
-    }
-    .nav-center form {
-      display: flex;
-      justify-content: center;
     }
     .nav-center input[type="text"] {
       padding: 10px;
@@ -73,23 +79,12 @@
     .nav-center button:hover {
       background-color: #555;
     }
-    .category-dropdown {
-      display: inline-block;
-    }
-    .category-dropdown select {
-      padding: 5px;
-      margin-top: 10px;
-    }
+
     .main-content {
       padding: 20px;
     }
 
-    section {
-      display: none;
-    }
-    section:target {
-      display: block;
-    }
+
     form input {
       padding: 10px;
       margin: 10px 0;
@@ -535,6 +530,151 @@ footer {
     }
 
 
+    .user-info {
+  display: flex; /* Horizontal alignment for details and links */
+  align-items: center; /* Vertically center all elements */
+  gap: 20px; /* Space between user-details and user-links */
+  color: white; /* Set text color to white */
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column; /* Stack span and p vertically */
+  margin: 0; /* Reset any default margin */
+}
+
+.user-details span,
+.user-details p {
+  margin: 0; /* Remove default margins */
+  white-space: nowrap; /* Prevent text wrapping in span and p */
+}
+
+.user-links {
+  display: flex; /* Horizontal alignment for links */
+  align-items: center; /* Vertically center links within the section */
+  margin-right: 5px;
+}
+
+.user-link {
+  white-space: nowrap; /* Prevent text wrapping for links */
+  color: white; /* Set link color to white */
+  text-decoration: none; /* Remove underline from links */
+  margin-right: 5px;
+}
+
+.user-link:hover {
+  text-decoration: underline; /* Add underline on hover */
+}
+
+
+#filterForm {
+  display: flex;
+  justify-content: center; /* Center the dropdown horizontally */
+  align-items: center; /* Vertically align the dropdown */
+}
+
+/* Dropdown (select) styling */
+#filterForm select {
+  width: 100px; /* Adjust dropdown width */
+  height: 30px; /* Set height of the dropdown */
+  font-size: 12px; /* Reduce font size */
+  padding: 0 5px; /* Add padding for usability */
+  text-overflow: ellipsis; /* Handle text overflow */
+  margin: 0; /* Ensure no extra margin */
+}
+
+/* Styling for the search form (input + button) */
+form input[type="text"] {
+  padding: 8px;
+  width: 250px; /* Set width for the search input */
+  margin-right: 10px; /* Space between search input and button */
+}
+
+form button {
+  padding: 8px 16px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+form button:hover {
+  background-color: #45a049;
+}
+
+/* Price Range form styling */
+.price-range-container {
+  display: flex;
+  justify-content: center; /* Center items horizontally */
+  align-items: center; /* Align items vertically */
+  gap: 10px; /* Space between the button and inputs */
+  width: 100%; /* Ensure full width */
+  margin-top: 0; /* Remove margin between nav bars */
+}
+
+.price-range-form {
+  display: flex;
+  justify-content: flex-start; /* Start from the left, button on left, inputs after */
+  align-items: center; /* Center vertically */
+  gap: 10px; /* Space between button and inputs */
+  width: 100%; /* Take up full width */
+}
+
+/* Button for the price range form */
+.price-range-form button {
+  padding: 8px 16px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.price-range-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Price range input styling */
+.price-range-form input[type="number"] {
+  width: 100px; /* Set width for min and max price input fields */
+  height: 30px; /* Set height for consistency */
+  font-size: 14px; /* Set font size */
+  padding: 0 10px; /* Add padding for better usability */
+}
+
+
+   #searchForm {
+      display: flex;
+      justify-content: center;
+      gap: 10px; /* Space between input and button */
+    }
+      #divNav {
+      display: flex;
+      justify-content: center; /* Center the forms horizontally */
+      align-items: center;     /* Align items vertically */
+      gap: 20px;               /* Space between the forms */
+      padding: 10px;           /* Add some padding around the container */
+    }
+    #divNav form {
+      display: flex;
+      align-items: center;    /* Align form elements vertically */
+      gap: 10px;              /* Space between form elements */
+    }
+    #divNav input,
+    #divNav select {
+      padding: 5px;
+      font-size: 14px;
+    }
+    #divNav button {
+      padding: 5px 10px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+       #divNav label {
+      color: white;           /* Make the label text white */
+    }
+
+
+
 
 
     </style>
@@ -551,26 +691,57 @@ footer {
 
 
 <header>
-    <img src="../images/banner.jpg" alt="Welcome"></header>
+    <img src="../images/banner.jpg" alt="Welcome">
+</header>
+
 <nav>
     <div class="nav-left">
-        <a href="/home/user">Home</a>
+        <a th:href="@{/homeTest}">Home</a>
+        <a th:href="@{/forum}">Forum</a>
     </div>
-    <div class="nav-center">
-        <form action="/searchResults" method="get">
-            <input type="text" name="search" placeholder="Search books..." required>
-            <button type="submit">Search</button>
-        </form>
-    </div>
+
+
+
     <div class="nav-right">
-        <a href="/signup">Sign Up</a>
-        <a href="/login">Login</a>
-        <a href="/home/basket"><img src="../images/purchase.png" alt="Shopping Basket"> </a>
+        <!-- Check if the user is logged in -->
+        <div th:if="${#authentication.principal != 'anonymousUser'}" class="user-info">
+            <div class="user-details">
+                <span>Welcome, <strong th:text="${#authentication.name}">User</strong>!</span>
+                <p>Your account balance is: $<span th:text="${balance}">0.00</span></p>
+            </div>
+            <div class="user-links">
+                <a href="/logged-in" class="user-link">My Account</a>
+                <a href="/logout" class="user-link">Logout</a>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- Show Login/Sign Up buttons if the user is not logged in -->
+<!--        <div th:if="${#authentication.principal == 'anonymousUser'}">-->
+<!--            &lt;!&ndash;      <a href="/signup">Sign Up</a>&ndash;&gt;-->
+<!--            <button type="button" data-bs-toggle="modal" data-bs-target="#signupModal" class="text-button" style="margin-right: 20px;">-->
+<!--                Sign Up-->
+<!--            </button>-->
+
+<!--            <button type="button" data-bs-toggle="modal" data-bs-target="#loginModal" class="text-button">-->
+<!--                Login-->
+<!--            </button>-->
+
+<!--        </div>-->
+
+
+
+        <!-- Shopping Basket Icon -->
+        <a href="/homeTest/basket">
+            <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
+        </a>
     </div>
+
+
 </nav>
-
-
-</div>
 
 
 <div style="margin-top: 20px; text-align: center; font-size: 24px; font-weight: bold;" th:if="${emptyBasket == 'true'}">

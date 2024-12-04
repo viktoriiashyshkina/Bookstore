@@ -4,10 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bookstore</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
   <style>
-    body {
+     body {
 
       font-family: Arial, sans-serif;
       margin: 0;
@@ -686,18 +684,15 @@ form button:hover {
 
 
 
-
-
-
-
   </style>
 </head>
-
 <body>
 
 <header>
   <img th:src="@{/images/banner.jpg}" alt="Welcome to the Bookstore" src="">
 </header>
+
+
 
 <nav>
   <div class="nav-left">
@@ -710,21 +705,21 @@ form button:hover {
 
     <div id="divNav">
 
-    <form id="filterForm" method="get" action="">
-      <label for="sortBy">Sort By:</label>
-      <select name="sort" id="sortBy" onchange="submitForm()">
-        <option value="">-- Select Sorting Option --</option>
-        <option value="price">Price (Low to High)</option>
-        <option value="priceDesc">Price (High to Low)</option>
-        <option value="title">Title (A to Z)</option>
-        <option value="titleDesc">Title (Z to A)</option>
-      </select>
-    </form>
+      <form id="filterForm" method="get" action="">
+        <label for="sortBy">Sort By:</label>
+        <select name="sort" id="sortBy" onchange="submitForm()">
+          <option value="">-- Select Sorting Option --</option>
+          <option value="price">Price (Low to High)</option>
+          <option value="priceDesc">Price (High to Low)</option>
+          <option value="title">Title (A to Z)</option>
+          <option value="titleDesc">Title (Z to A)</option>
+        </select>
+      </form>
 
-    <form action="/homeTest/searchResults" method="get">
-      <input type="text" name="query" placeholder="Search books..." required>
-      <button type="submit">Search</button>
-    </form>
+      <form action="/homeTest/searchResults" method="get">
+        <input type="text" name="query" placeholder="Search books..." required>
+        <button type="submit">Search</button>
+      </form>
 
     </div>
 
@@ -758,7 +753,7 @@ form button:hover {
 
     <!-- Show Login/Sign Up buttons if the user is not logged in -->
     <div th:if="${#authentication.principal == 'anonymousUser'}">
-<!--      <a href="/signup">Sign Up</a>-->
+      <!--      <a href="/signup">Sign Up</a>-->
       <button type="button" data-bs-toggle="modal" data-bs-target="#signupModal" class="text-button" style="margin-right: 20px;">
         Sign Up
       </button>
@@ -782,11 +777,6 @@ form button:hover {
 
 <div style="margin-top: 20px; text-align: center; font-size: 24px; font-weight: bold;" th:if="${totalItems == 0}">
   No books found
-</div>
-
-
-<div th:if="${param.signupSuccess}" class="alert alert-success" role="alert">
-  Signed up successfully
 </div>
 
 
@@ -908,183 +898,119 @@ form button:hover {
 
 
 
-  <div id="showBooks" class="container">
-    <div th:if="${role == 'user'}" class="book-container-wrapper">
-      <div  th:each="book : ${books}" class="book-container">
-        <form th:action="@{/homeTest/addToBasket/{bookId}(bookId=${book.id})}" method="post">
-          <div class="book-content">
-            <div>
-              <img th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" class="book-image" alt="Book Image">
-            </div>
-            <div class="book-price"><span th:text="${book.price}">Price</span> €</div>
+<div id="showBooks" class="container">
+  <div th:if="${role == 'user'}" class="book-container-wrapper">
+    <div  th:each="book : ${books}" class="book-container">
+      <form th:action="@{/homeTest/addToBasket/{bookId}(bookId=${book.id})}" method="post">
+        <div class="book-content">
+          <div>
+            <img th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" class="book-image" alt="Book Image">
+          </div>
+          <div class="book-price"><span th:text="${book.price}">Price</span> €</div>
 
-            <div class="book-info">
-              <div class="book-title" th:text="${book.title}">Book Title</div>
-              <div th:each="author : ${book.author}"class="book-author">by <span th:text="${author}">Author Name</span></div>
-              <p>Category: <span th:each="category : ${book.category}" th:text="${category}">Category</span></p>
-              <p>ISBN: <span th:text="${book.isbn}">ISBN</span></p>
-              <div class="add-to-basket">
-                <label for="quantityNull-${book.id}">Quantity:</label>
-                <input id="quantityNull-${book.id}" type="number" name="quantity" value="1" min="1" class="quantity-input">
-                <button type="submit" class="add-to-basket-button">Add to Basket</button>
-
-              </div>
-
+          <div class="book-info">
+            <div class="book-title" th:text="${book.title}">Book Title</div>
+            <div th:each="author : ${book.author}"class="book-author">by <span th:text="${author}">Author Name</span></div>
+            <p>Category: <span th:each="category : ${book.category}" th:text="${category}">Category</span></p>
+            <p>ISBN: <span th:text="${book.isbn}">ISBN</span></p>
+            <div class="add-to-basket">
+              <label for="quantityNull-${book.id}">Quantity:</label>
+              <input id="quantityNull-${book.id}" type="number" name="quantity" value="1" min="1" class="quantity-input">
+              <button type="submit" class="add-to-basket-button">Add to Basket</button>
 
             </div>
 
-          </div>
-        </form>
-      </div>
-    </div>
 
+          </div>
 
-    <div th:if="${param.successfullyAddedToBasket}" class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <!-- Modal Header -->
-          <div class="modal-header bg-success text-white">
-            <h5 class="modal-title" id="successModalLabel">The book has been successfully added to your basket.</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <!-- Modal Body -->
-          <!-- Modal Footer -->
-          <div class="modal-footer">
-            <a href="/homeTest" class="btn btn-primary">Continue Shopping</a>
-            <a href="/homeTest/basket" class="btn btn-secondary">Go to Basket</a>
-          </div>
         </div>
-      </div>
+      </form>
     </div>
-
-
-
-
-    <div th:if="${role == 'null'}" class="book-container-wrapper">
-      <div th:each="book : ${books}" class="book-container">
-          <div class="book-content">
-            <div>
-              <img th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" class="book-image" alt="Book Image">
-            </div>
-            <div class="book-price"><span th:text="${book.price}">Price</span> €</div>
-
-            <div class="book-info">
-              <div class="book-title" th:text="${book.title}">Book Title</div>
-              <div th:each="author : ${book.author}"class="book-author">by <span th:text="${author}">Author Name</span></div>
-              <p>Category: <span th:each="category : ${book.category}" th:text="${category}">Category</span></p>
-              <p>ISBN: <span th:text="${book.isbn}">ISBN</span></p>
-              <div class="add-to-basket">
-                <label for="quantity-${book.id}">Quantity:</label>
-                <input id="quantity-${book.id}" type="number" name="quantity" value="1" min="1" class="quantity-input">
-<!--                <button  type="button" class="btn btn-primary add-to-basket-button" data-bs-toggle="modal" th:data-bs-target="|#loginModal-${book.id}|">-->
-                  <button  type="button" class="btn btn-primary add-to-basket-button" data-bs-toggle="modal" data-bs-target="#loginModal">
-                  Add to Basket
-                </button>
-
-              </div>
-
-
-
-              <!-- Modal, should only open if there no logged in user!-->
-<!--              <div  class="modal fade" th:id="|loginModal-${book.id}|" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">-->
-<!--                <form th:action="@{/homeTest/process-login-modal}" method="post" class="needs-validation" novalidate>-->
-<!--                  <div class="modal-dialog modal-dialog-centered" style="max-width: 900px;">-->
-<!--                    <div class="modal-content">-->
-<!--                      &lt;!&ndash; Modal Header &ndash;&gt;-->
-<!--                      <div class="modal-header bg-success text-white">-->
-<!--                        <h5 class="modal-title" id="loginModalLabel">Login to Proceed</h5>-->
-<!--                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>-->
-<!--                      </div>-->
-<!--                      &lt;!&ndash; Modal Body &ndash;&gt;-->
-<!--                      <div class="modal-body">-->
-<!--                        <div class="form-container">-->
-<!--                          <h2 class="text-center">Login</h2>-->
-<!--                          &lt;!&ndash; Username &ndash;&gt;-->
-<!--                          <div class="mb-3">-->
-<!--                            <label for="username" class="form-label">Username</label>-->
-<!--                            <input-->
-<!--                                type="text"-->
-<!--                                id="username"-->
-<!--                                name="username"-->
-<!--                                class="form-control"-->
-<!--                                placeholder="Enter your username"-->
-<!--                                required>-->
-<!--                          </div>-->
-<!--                          &lt;!&ndash; Password &ndash;&gt;-->
-<!--                          <div class="mb-3">-->
-<!--                            <label for="password" class="form-label">Password</label>-->
-<!--                            <input-->
-<!--                                type="password"-->
-<!--                                id="password"-->
-<!--                                name="password"-->
-<!--                                class="form-control"-->
-<!--                                placeholder="Enter your password"-->
-<!--                                required>-->
-<!--                          </div>-->
-<!--                          &lt;!&ndash; Role &ndash;&gt;-->
-<!--                          <div class="mb-3">-->
-<!--                            <label for="role" class="form-label">Role</label>-->
-<!--                            <select id="role" name="role" class="form-select" required>-->
-<!--                              <option value="USER">User</option>-->
-<!--                              <option value="ADMIN">Admin</option>-->
-<!--                            </select>-->
-<!--                          </div>-->
-<!--                          &lt;!&ndash; Submit Button &ndash;&gt;-->
-<!--                          <div class="text-center">-->
-<!--                            <button type="submit" class="btn btn-primary btn-lg">Login</button>-->
-<!--                          </div>-->
-<!--                        </div>-->
-<!--                      </div>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                </form>-->
-<!--              </div>-->
-
-
-
-
-
-            </div>
-          </div>
-      </div>
-    </div>
-
-
-
-    </div>
-
-
-
-    <div class="pagination-bar">
-    <span th:if="${currentPage > 0}">
-        <a th:href="@{'?page=' + (${currentPage - 1}) + '&size=10'}" class="prev">Prev</a>
-    </span>
-
-      <!-- Loop through the total pages and create a link for each page -->
-      <span th:if="${totalPages > 1}" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
-        <a th:href="@{'?page=' + ${pageNum} + '&size=10'}"
-           th:text="${pageNum + 1}"
-           th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>
-    </span>
-
-
-
-      <span th:if="${currentPage < totalPages - 1}">
-        <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10'}" class="next">Next</a>
-    </span>
-
-    </div>
-
   </div>
 
 
+  <div th:if="${param.successfullyAddedToBasket}" class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="successModalLabel">The book has been successfully added to your basket.</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- Modal Body -->
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <a href="/homeTest" class="btn btn-primary">Continue Shopping</a>
+          <a href="/homeTest/basket" class="btn btn-secondary">Go to Basket</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div th:if="${role == 'null'}" class="book-container-wrapper">
+    <div th:each="book : ${books}" class="book-container">
+      <div class="book-content">
+        <div>
+          <img th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" class="book-image" alt="Book Image">
+        </div>
+        <div class="book-price"><span th:text="${book.price}">Price</span> €</div>
+
+        <div class="book-info">
+          <div class="book-title" th:text="${book.title}">Book Title</div>
+          <div th:each="author : ${book.author}"class="book-author">by <span th:text="${author}">Author Name</span></div>
+          <p>Category: <span th:each="category : ${book.category}" th:text="${category}">Category</span></p>
+          <p>ISBN: <span th:text="${book.isbn}">ISBN</span></p>
+          <div class="add-to-basket">
+            <label for="quantity-${book.id}">Quantity:</label>
+            <input id="quantity-${book.id}" type="number" name="quantity" value="1" min="1" class="quantity-input">
+            <!--                <button  type="button" class="btn btn-primary add-to-basket-button" data-bs-toggle="modal" th:data-bs-target="|#loginModal-${book.id}|">-->
+            <button  type="button" class="btn btn-primary add-to-basket-button" data-bs-toggle="modal" data-bs-target="#loginModal">
+              Add to Basket
+            </button>
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+
+<div class="pagination-bar">
+  <!-- Previous Page Link -->
+  <span th:if="${currentPage > 0}">
+      <a th:href="@{'/homeTest/searchResults?query=' + ${query} + '&page=' + (${currentPage - 1}) + '&size=10'}" class="prev">Prev</a>
+  </span>
+
+  <!-- Page Numbers -->
+  <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
+      <a th:href="@{'/homeTest/searchResults?query=' + ${query} + '&page=' + ${pageNum} + '&size=10'}"
+         th:text="${pageNum + 1}"
+         th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>
+  </span>
+
+  <!-- Next Page Link -->
+  <span th:if="${currentPage < totalPages - 1}">
+      <a th:href="@{'/homeTest/searchResults?query=' + ${query} + '&page=' + (${currentPage + 1}) + '&size=10'}" class="next">Next</a>
+  </span>
+</div>
+
+
+
+</div>
+
+
 <footer>
-  <p>&copy; 2024 Bookstore. All rights reserved.</p>
+  <p>&copy; 2024 Bookstore</p>
 </footer>
-
 </body>
-
-
 <script>
   function showLoginModal() {
     const modal = document.getElementById('loginModal');
@@ -1161,6 +1087,7 @@ document.addEventListener('DOMContentLoaded', function () {
   form.submit();
 }
 
+
 const successModal = new bootstrap.Modal(document.getElementById('successModal'));
 successModal.show();
 
@@ -1168,8 +1095,5 @@ successModal.show();
 
 
 
-
-
 </script>
 </html>
-
