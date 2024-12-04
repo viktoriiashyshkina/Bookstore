@@ -20,13 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class PurchaseHistoryController {
 
   private final UserService userService;
-  private final OrderService orderService;
   private final OrderDetailsRepository orderDetailsRepository;
 
-  public PurchaseHistoryController(UserService userService, OrderService orderService,
+  public PurchaseHistoryController(UserService userService,
       OrderDetailsRepository orderDetailsRepository) {
     this.userService = userService;
-    this.orderService = orderService;
     this.orderDetailsRepository = orderDetailsRepository;
   }
 

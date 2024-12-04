@@ -15,9 +15,11 @@ import javax.management.remote.JMXAuthenticator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -118,6 +120,31 @@ public class UserController {
     }
     //return "signup"; // Return to signup page with error message
   }
+
+//  @GetMapping("/")
+//  public String deleteAccount(Model model) {
+//    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//    User user = userService.findByUsername(username);
+//
+//    if (user != null) {
+//      model.addAttribute("user", user);  // Add the user object to the model
+//    }
+//    AccountEntity accountEntity = new AccountEntity();
+//    if (accountEntity == null) {
+//      throw new RuntimeException("Account is null");
+//    }
+//    model.addAttribute("name", username);
+//    model.addAttribute("balance", user.getAccount().getBalance());
+//    return "logged-in";
+//  }
+//
+//  @PostMapping("/delete-account")
+//  public ResponseEntity<String> deleteAccount(@AuthenticationPrincipal UserDetails currentUser) {
+//    String username = currentUser.getUsername();
+//    userService.deleteAccountAndProfile(username);
+//    return ResponseEntity.ok("Account and profile deleted successfully.");
+//  }
+
 
 
 
