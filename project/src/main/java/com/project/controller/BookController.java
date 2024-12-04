@@ -49,6 +49,7 @@ public class BookController {
 //    model.addAttribute("books", bookRepository.findAll());
 //    return "books"; // This matches the Thymeleaf template books.html
 //  }
+  //Line to remove if merge conflict
 
   @GetMapping("/home")
   public String getBooks(Model model, Pageable pageable) {
