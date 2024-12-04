@@ -41,13 +41,8 @@ public class HomeController {
     return "redirect:/homeTest";
   }
 
-
-
   @GetMapping("/homeTest")
   public String getHomeScreen(Model model, Principal principal, Pageable pageable) {
-
-
-
 
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
     Set<Role> role = null;
@@ -67,17 +62,6 @@ public class HomeController {
       model.addAttribute("user","null");
       model.addAttribute("role", "null");
     }
-
-
-//    if (principal != null) {
-//      String username = principal.getName();
-//      User user = userService.findByUsername(username);
-//
-//      if (user != null) {
-//        model.addAttribute("user", user); // Add the user object to the model
-//        model.addAttribute("balance", user.getAccount().getBalance());
-//      }
-//    }
 
     Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
     Page<BookEntity> books = bookRepository.findAll(pageRequest);
@@ -104,4 +88,10 @@ public class HomeController {
       return  "books";
     }
   }
+
+
+
+
+
+
 }
