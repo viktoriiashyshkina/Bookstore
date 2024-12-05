@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/homeTest")
+//@RequestMapping("/homeTest")
 public class PaymentController {
 
     private final UserService userService;
@@ -50,8 +50,46 @@ public class PaymentController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/basket/checkout")
+    @GetMapping("/homeTest/basket/checkout")
     public String showPaymentPage(Model model) {
+        // Fetch authenticated user
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userService.findByUsername(username);
+        if (user == null) {
+            model.addAttribute("message", "User not found.");
+            return "error"; // Redirect to an error page
+        }
+
+        // Fetch user's basket
+        Basket basket = basketService.getBasketFromLoggedInUser();
+        if (basket == null || basket.getBasketDetails().isEmpty()) {
+            model.addAttribute("message", "Your basket is empty.");
+            return "error"; // Redirect to an error page
+        }
+        // Calculate the total amount including the delivery cost
+        //BigDecimal totalAmount = basket.getTotalAmount().add(DELIVERY_COST);
+
+        // Add necessary attributes to the model
+        model.addAttribute("name", user.getUsername());
+        model.addAttribute("email", user.getEmail());
+        model.addAttribute("firstName", user.getAccount().getFirstName());
+        model.addAttribute("lastName", user.getAccount().getLastName());
+        model.addAttribute("address", user.getAccount().getAddress());
+        model.addAttribute("phoneNumber", user.getAccount().getPhoneNumber());
+        model.addAttribute("zipCode", user.getAccount().getZipCode());
+        model.addAttribute("birthday", user.getAccount().getBirthday());
+        //model.addAttribute("balance", user.getAccount().getBalance());
+        //model.addAttribute("basket", basket);
+        //model.addAttribute("basketDetails", basket.getBasketDetails()); // Pass basket details
+        //model.addAttribute("totalAmount", totalAmount);
+
+        return "paymentCheckout";
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/homeTest/basket/checkout/confirm")
+    public String showPaymentConfirmPage(Model model) {
         // Fetch authenticated user
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userService.findByUsername(username);
@@ -77,10 +115,16 @@ public class PaymentController {
         model.addAttribute("basketDetails", basket.getBasketDetails()); // Pass basket details
         model.addAttribute("totalAmount", totalAmount);
 
-        return "payment";
+        return "paymentConfirm";
     }
 
-    @PostMapping("/basket/pay")
+
+
+
+
+
+
+    @PostMapping("/homeTest/basket/pay")
     public String payForOrder(Model model) {
         // Get authenticated user's details
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -97,21 +141,21 @@ public class PaymentController {
         Basket basket = basketService.getBasketFromLoggedInUser();
         if (basket == null || basket.getBasketDetails().isEmpty()) {
             model.addAttribute("error", "Your basket is empty!");
-            return "payment";
+            return "home_test";
         }
 
         // Calculate total amount from the basket
         BigDecimal totalAmount = basket.getTotalAmount().add(DELIVERY_COST);
         if (totalAmount == null || totalAmount.compareTo(BigDecimal.ZERO) <= 0) {
             model.addAttribute("error", "Your basket total is invalid. Please check your basket.");
-            return "payment"; // Return an error page
+            return "ShowBasket"; // Return an error page
         }
 
         // Check if the user's profile is complete
         if (account.getFirstName()==null || account.getLastName()==null || account.getPhoneNumber()==null
             ||account.getAddress()==null) {
             model.addAttribute("error", "Please complete your profile before paying.");
-            return "payment"; // Return an error page
+            return "paymentCheckout"; // Return an error page
         }
 
         if (user.getAccount().getBalance().compareTo(basket.getTotalAmount()) < 0) {
@@ -119,7 +163,7 @@ public class PaymentController {
                 ", Balance: " + user.getAccount().getBalance() +
                 ", Required: " + basket.getTotalAmount());
             model.addAttribute("error", "Insufficient balance. Please add money.");
-            return "payment";
+            return "paymentConfirm";
         }
 
         // Deduct the total amount from the user's balance

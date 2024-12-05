@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/homeTest")
+//@RequestMapping("/homeTest")
 public class PurchaseHistoryController {
 
   private final UserService userService;
@@ -29,7 +29,7 @@ public class PurchaseHistoryController {
   }
 
   @PreAuthorize("isAuthenticated()")
-  @GetMapping("/purchase-history")
+  @GetMapping("/homeTest/purchase-history")
   public String viewPurchaseHistory(Model model) {
     // Fetch authenticated user
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
