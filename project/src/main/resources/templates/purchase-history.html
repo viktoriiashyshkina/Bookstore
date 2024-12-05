@@ -46,15 +46,39 @@
             background-color: #666;
         }
 
+        .main-content {
+            width: 80%;
+            margin: 20px auto;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .purchase-history {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .order-header {
+            font-size: 18px;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #444;
+        }
+
         .purchase-history-table {
             width: 100%;
             margin-top: 20px;
             border-collapse: collapse;
+            table-layout: fixed;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);  /* Shadow for better separation */
         }
 
         .purchase-history-table th, .purchase-history-table td {
-            padding: 12px;
-            text-align: left;
+            padding: 15px;
+            text-align: center;  /* Center text in both header and data cells */
             border: 1px solid #ddd;
         }
 
@@ -64,11 +88,38 @@
         }
 
         .purchase-history-table tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #f9f9f9; /* Lighter row color */
         }
 
         .purchase-history-table tr:hover {
-            background-color: #ddd;
+            background-color: #f1f1f1; /* Hover effect */
+        }
+
+        /* Adjust column widths for better balance */
+        .purchase-history-table th:nth-child(1), .purchase-history-table td:nth-child(1) {
+            width: 30%;
+        }
+
+        .purchase-history-table th:nth-child(2), .purchase-history-table td:nth-child(2) {
+            width: 10%;
+        }
+
+        .purchase-history-table th:nth-child(3), .purchase-history-table td:nth-child(3) {
+            width: 20%;
+        }
+
+        .purchase-history-table th:nth-child(4), .purchase-history-table td:nth-child(4) {
+            width: 20%;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            width: 100%;
+            bottom: 0;
         }
 
     </style>
@@ -81,7 +132,7 @@
 
 <nav>
     <div class="nav-left">
-        <a href="/home">Home</a>
+        <a href="/homeTest">Home</a>
     </div>
     <div class="nav-center">
         <form action="/searchResults" method="get">
@@ -100,13 +151,12 @@
 
     <!-- Loop through each order -->
     <div th:each="order : ${orders}">
-        <h3>Order # <span th:text="${order.id}"></span></h3>
+        <h3>Order #<span th:text="${order.id}"></span> - <span th:text="${order.orderEntity.date.toString()}"></span></h3>
 
         <!-- Create a table for each order -->
         <table class="purchase-history-table">
             <thead>
             <tr>
-                <th>#</th>
                 <th>Book Title</th>
                 <th>Quantity</th>
                 <th>Date</th>
@@ -114,12 +164,13 @@
             </tr>
             </thead>
             <tbody>
-            <!-- Loop through books in the current order -->
             <tr th:each="book : ${order.book}">
+
 <!--                <td th:text="${iterStat.index + 1}"></td>-->
+
                 <td th:text="${order.book.title}"></td>
                 <td th:text="${order.quantity}"></td>
-                <td th:text="${order.orderEntity.date.toString()}"></td>
+                <td th:text="${order.orderEntity.date}"></td>
                 <td th:text="${order.orderEntity.totalAmount}"></td>
             </tr>
             </tbody>
