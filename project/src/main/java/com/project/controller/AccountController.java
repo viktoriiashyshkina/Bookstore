@@ -54,7 +54,7 @@ public class AccountController {
 
   @PreAuthorize("isAuthenticated()")
 
-  @PostMapping("/updateProfile")
+  @PostMapping("/logged-in/updateProfile")
   public String updateProfile(
       @RequestParam String firstName,
       @RequestParam String lastName,
@@ -84,7 +84,7 @@ public class AccountController {
     // Save the account information
     accountService.updateAccount(accountEntity);
     // Optionally, save any additional user details if required
-    return "redirect:/logged-in";  // Redirect to the profile page after saving
+    return "redirect:/logged-in/profile";  // Redirect to the profile page after saving
   }
 
 

@@ -57,10 +57,10 @@ public class PurchaseHistoryController {
 
     // Fetch the user's order history
     List<OrderEntity> orders = orderRepository.findByAccountEntityOrderByDateDesc(account);
-    if (orders.isEmpty()) {
-      model.addAttribute("message", "You have no previous orders.");
-      return "error"; // Redirect to an error page
-    }
+//    if (orders.isEmpty()) {
+//      model.addAttribute("message", "You have no previous orders.");
+//      return "error"; // Redirect to an error page
+//    }
 
     // Loop through each order and aggregate quantities by book
     List<Map<BookEntity, Integer>> aggregatedOrderDetails = new ArrayList<>();
