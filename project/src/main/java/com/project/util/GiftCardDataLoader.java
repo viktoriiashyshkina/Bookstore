@@ -22,37 +22,37 @@
 //  public void run(String... args) throws Exception {
 //    // Create gift cards
 //    GiftCardEntity giftCard1 = GiftCardEntity.builder()
-//        .cardCode("GC123456")
+//        .cardCode("GC14456")
 //        .balance(new BigDecimal("50.00"))
 //        .redeemed(false)
 //        .build();
 //
 //    GiftCardEntity giftCard2 = GiftCardEntity.builder()
-//        .cardCode("GC67585")
+//        .cardCode("GC89585")
 //        .balance(new BigDecimal("100.00"))
 //        .redeemed(false)
 //        .build();
 //
 //    GiftCardEntity giftCard3 = GiftCardEntity.builder()
-//        .cardCode("GC11757")
+//        .cardCode("GC75757")
 //        .balance(new BigDecimal("20.00"))
 //        .redeemed(false)
 //        .build();
 //
 //    GiftCardEntity giftCard4 = GiftCardEntity.builder()
-//        .cardCode("GC445587")
+//        .cardCode("GC365587")
 //        .balance(new BigDecimal("75.00"))
 //        .redeemed(false)
 //        .build();
 //
 //    GiftCardEntity giftCard5 = GiftCardEntity.builder()
-//        .cardCode("GC78568")
+//        .cardCode("GC785868")
 //        .balance(new BigDecimal("150.00"))
 //        .redeemed(false)
 //        .build();
 //
 //    GiftCardEntity giftCard6 = GiftCardEntity.builder()
-//        .cardCode("GC23257")
+//        .cardCode("GC25857")
 //        .balance(new BigDecimal("200.00"))
 //        .redeemed(false)
 //        .build();
