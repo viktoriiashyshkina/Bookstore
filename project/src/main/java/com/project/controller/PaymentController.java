@@ -78,7 +78,7 @@ public class PaymentController {
         model.addAttribute("phoneNumber", user.getAccount().getPhoneNumber());
         model.addAttribute("zipCode", user.getAccount().getZipCode());
         model.addAttribute("birthday", user.getAccount().getBirthday());
-        //model.addAttribute("balance", user.getAccount().getBalance());
+        model.addAttribute("balance", user.getAccount().getBalance());
         //model.addAttribute("basket", basket);
         //model.addAttribute("basketDetails", basket.getBasketDetails()); // Pass basket details
         //model.addAttribute("totalAmount", totalAmount);

@@ -1,5 +1,6 @@
 package com.project.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -48,7 +49,7 @@ public class AccountEntity {
 @OneToMany(mappedBy = "accountEntity")
   private List<OrderEntity> orderList;
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name ="basket_id")
   private Basket basket;
 
