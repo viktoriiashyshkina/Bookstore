@@ -1,5 +1,6 @@
 package com.project.service;
 
+import com.project.entity.Basket;
 import com.project.entity.BasketDetails;
 import com.project.repository.BasketDetailsRepository;
 import java.time.LocalDateTime;
@@ -20,27 +21,27 @@ public class BasketDetailsService {
     return basketDetailsRepository.findById(id).orElse(null);
   }
 
+  public List<BasketDetails> getBasketDetailsFromBasketId (Long basketId) {
+    return basketDetailsRepository.findByBasketId(basketId);
+  }
+
 @Transactional
   public void saveOrderToDatabase (BasketDetails incompleteOrder) {basketDetailsRepository.save(incompleteOrder);
   }
 
-//  public boolean checkAndCleanupExpiredBasketDetails(Long basketId) {
-//    List<BasketDetails> basketDetails = basketDetailsRepository.findByBasketId(basketId);
-//    if (basketDetails.isEmpty()) {
-//      return true; // Stop scheduler if no items are associated with this basket
-//    }
-//
-//    LocalDateTime expirationThreshold = LocalDateTime.now().minusMinutes(30);
-//    List<BasketDetails> expiredItems = basketDetails.stream()
-//        .filter(item -> item.getUpdatedAt().isBefore(expirationThreshold))
-//        .toList();
-//
-//    if (!expiredItems.isEmpty()) {
-//      basketDetailsRepository.deleteAll(expiredItems); // Remove expired items
-//    }
-//
-//    return basketDetailsRepository.findByBasketId(basketId).isEmpty();
-//  }
+  public void resetExpirationTimeForAllItems(Basket basket) {
+    // Set the expiration time to the most recent item's updated time
+    LocalDateTime latestUpdatedAt = basket.getBasketDetails().stream()
+        .map(BasketDetails::getUpdatedAt)
+        .max(LocalDateTime::compareTo)
+        .orElse(LocalDateTime.now()); // Default to current time if no items exist
+
+    // Update all BasketDetails with the latest expiration time
+    for (BasketDetails detail : basket.getBasketDetails()) {
+      detail.setUpdatedAt(latestUpdatedAt);
+      saveOrderToDatabase(detail); // Persist the updated BasketDetails
+    }
+  }
 
 
 }

@@ -23,23 +23,15 @@ public class BookService {
     return bookRepository.findAll();
   }
 
-
-  // edit code later, please do NOT DELETE!!!
-  /*public Set<String> getAllBookCategories () {
-  List<BookEntity> bookList = getAllBooks();
-  TreeSet<String> sortedSetOfBookCategories = new TreeSet<>();
-  for (BookEntity book : bookList) {
-    sortedSetOfBookCategories.add(book.getCategory());
-  }
-  return sortedSetOfBookCategories;
-}  */
-
-
   public void saveBookToDatabase (BookEntity book) {
     bookRepository.save(book);
   }
   public long getBookCount() {
     return bookRepository.count();
+  }
+
+  public BookEntity getBookById (Long bookId) {
+    return bookRepository.findById(bookId).orElse(null);
   }
 
 

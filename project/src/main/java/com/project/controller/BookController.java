@@ -44,13 +44,6 @@ public class BookController {
   @Autowired
   private UserService userService;
 
-//  @GetMapping
-//  public String getBooks(Model model) {
-//    model.addAttribute("books", bookRepository.findAll());
-//    return "books"; // This matches the Thymeleaf template books.html
-//  }
-  //Line to remove if merge conflict
-
   @GetMapping("/home")
   public String getBooks(Model model, Pageable pageable) {
 
@@ -214,98 +207,6 @@ public class BookController {
   }
 
 
-
-
-
-//  @PostMapping("/books/edit/{id}")
-//  public String editBook(
-//      @PathVariable("id") Long id,
-//      @RequestParam("title") String title,
-//      @RequestParam("author") String author,
-//      @RequestParam("editCategoryList") String category,
-//      @RequestParam("isbn") String isbn,
-//      @RequestParam("price") double price,
-//      @RequestParam("description") String description,
-//      @RequestParam("image") MultipartFile imageFile,
-//      RedirectAttributes redirectAttributes) {
-//
-//    System.out.println("Here1");
-//
-//    BookEntity book = bookRepository.findById(id).orElse(null);
-//    if (book == null) {
-//      redirectAttributes.addFlashAttribute("error", "Book not found!");
-//      return "redirect:/books";
-//    }
-//
-//    book.setTitle(title);
-//    book.setAuthor(author);
-//    String[] categories = category.split(",");
-//    book.setCategory(Arrays.asList(categories));
-//    //book.setCategory(category);
-//    book.setIsbn(isbn);
-//    book.setPrice(BigDecimal.valueOf(price));
-//    book.setDescription(description);
-//
-//    try {
-//      if (!imageFile.isEmpty()) {
-//        book.setImage(imageFile.getBytes());
-//      }
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//      redirectAttributes.addFlashAttribute("error", "Image upload failed!");
-//      return "redirect:/books";
-//    }
-//
-//    bookRepository.save(book);
-//    return "redirect:/books";
-//  }
-
-
-
-//  @PostMapping("/books/edit/{id}")
-//  public String editBook(
-//      @PathVariable("id") Long id,
-//      @RequestParam("image") MultipartFile imageFile,
-//      @ModelAttribute BookEntity updatedBook,
-//      @RequestParam("editCategoryList") String editCategoryList,
-//      RedirectAttributes redirectAttributes,
-//      Model model
-//  ) {
-//    // Fetch the existing book from the database
-//    BookEntity existingBook = bookRepository.findById(id).orElse(null);
-//    if (existingBook == null) {
-//      redirectAttributes.addFlashAttribute("error", "Book not found!");
-//      return "redirect:/books";
-//    }
-//
-//    // Update the book details
-//    existingBook.setTitle(updatedBook.getTitle());
-//    existingBook.setAuthor(updatedBook.getAuthor());
-//    existingBook.setDescription(updatedBook.getDescription());
-//    existingBook.setIsbn(updatedBook.getIsbn());
-//    existingBook.setPrice(updatedBook.getPrice());
-//
-//    // Handle categories: split the comma-separated string and set to the book
-//    String[] categories = editCategoryList.split(",");
-//    existingBook.setCategory(Arrays.asList(categories));
-//
-//    // Update the image if a new file was uploaded
-//    try {
-//      if (!imageFile.isEmpty()) {
-//        existingBook.setImage(imageFile.getBytes());
-//      }
-//    } catch (IOException e) {
-//      e.printStackTrace();
-//      redirectAttributes.addFlashAttribute("error", "Image upload failed!");
-//      return "redirect:/books";
-//    }
-//
-//    // Save the updated book
-//    bookRepository.save(existingBook);
-//
-//    // Redirect back to the book list page
-//    return "redirect:/books";
-//  }
 
   @PostMapping("/delete/{id}")
   public String deleteBook (

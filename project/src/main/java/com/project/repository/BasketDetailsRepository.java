@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface BasketDetailsRepository extends JpaRepository<BasketDetails, Long> {
+// @Modifying
+// @Transactional
   @Query("SELECT bd FROM BasketDetails bd JOIN FETCH bd.basket WHERE bd.basket.id = :basketId")
   List<BasketDetails> findByBasketId(@Param("basketId") Long basketId);
 
@@ -37,7 +39,7 @@ public interface BasketDetailsRepository extends JpaRepository<BasketDetails, Lo
 
   BasketDetails findByBookIsbn(String isbn);
 
-
+  @Transactional
   BasketDetails findByBookId(Long id);
 
 }
