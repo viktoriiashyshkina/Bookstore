@@ -93,16 +93,16 @@ public class AdminController {
 
 //      logger.info("Redirecting to: /logged-in");
 
-      return "redirect:/admin/home?signupSuccess"; // Redirect to login after successful signup
+      return "redirect:/admin/dashboard?signupSuccess"; // Redirect to login after successful signup
 
     } catch (IllegalArgumentException e) {
       model.addAttribute("error", "Invalid role or user already exists.");
       logger.error("Error during signup: {}", e.getMessage());
-      return "redirect:/admin/home?signupError";
+      return "redirect:/admin/dashboard?signupError";
     } catch (Exception e) {
       model.addAttribute("error", "An unexpected error occurred: " + e.getMessage());
       logger.error("Unexpected error during signup", e);
-      return "redirect:/admin/home?unexpectedError";
+      return "redirect:/admin/dashboard?unexpectedError";
     }
     //return "signup"; // Return to signup page with error message
   }
