@@ -41,6 +41,7 @@
     .nav-left {
      display: flex;
      align-items: center;
+     flex: 1;
     }
 .nav-center {
   justify-content: center; /* Center the forms horizontally */
@@ -48,6 +49,8 @@
   gap: 20px;               /* Space between filter form and search form */
   flex-grow: 1;            /* Allow this container to grow and fill available space */
   margin-left: 0px;
+      flex: 2;
+      text-align: center;
 }
 
 .nav-center form {
@@ -58,6 +61,9 @@
     .nav-right {
       flex: 1;
       text-align: right;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
     }
     .nav-center input[type="text"] {
       padding: 10px;
@@ -79,18 +85,7 @@
       background-color: #555;
     }
 
-    .main-content {
-      padding: 20px;
-    }
-    footer {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 10px;
-      position: fixed;
-      width: 100%;
-      bottom: 0;
-    }
+
     form input {
       padding: 10px;
       margin: 10px 0;
@@ -99,18 +94,20 @@
       border: 1px solid #ccc;
       font-size: 14px;
     }
-    form button {
-      padding: 10px 20px;
-      background-color: #444;
+.nav-center button {
+      padding: 8px 16px;
+      margin-left: 5px;
+      background-color: #007BFF;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      width: auto;
       font-size: 14px;
     }
-    form button:hover {
-      background-color: #333;
+    .nav-center button:hover {
+      background-color: #007BFF;
+    }
+
     }
     .form-container {
       max-width: 400px;
@@ -150,109 +147,6 @@
       vertical-align: middle;
     }
 
-
-
-
-    header {
-      width: 100%;
-      height: 110px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    header img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    nav {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 20px;
-      background-color: #444;
-    }
-
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      padding: 8px 15px;
-      border-radius: 5px;
-    }
-
-    nav a:hover {
-      background-color: #666;
-    }
-
-    .nav-left {
-      flex: 1;
-    }
-
-    .nav-center {
-      flex: 2;
-      text-align: center;
-    }
-
-    .nav-right {
-      flex: 1;
-      text-align: right;
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-    }
-
-    .nav-center form {
-      display: flex;
-      justify-content: center;
-    }
-
-    .nav-center input[type="text"] {
-      padding: 10px;
-      width: 250px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    .nav-center button {
-      padding: 6px 12px;
-      margin-left: 10px;
-      background-color: #666;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .nav-center button:hover {
-      background-color: #555;
-    }
-
-    .category-dropdown {
-      display: inline-block;
-    }
-
-    .category-dropdown select {
-      padding: 5px;
-      margin-top: 10px;
-    }
-
-    .main-content {
-      padding: 20px;
-    }
-
-
-
-
-    section {
-      display: none;
-    }
-
-    section:target {
-      display: block;
-    }
 
     .nav-right img {
       width: 30px;
@@ -629,16 +523,17 @@ form button:hover {
 }
 
 /* Button for the price range form */
-.price-range-form button {
-  padding: 8px 16px;
-  background-color: #007BFF;
+
+    .price-range-form button {
+  padding: 6px 12px;
+  background-color: #666;
   color: white;
   border: none;
   cursor: pointer;
 }
 
 .price-range-form button:hover {
-  background-color: #0056b3;
+  background-color: #666;
 }
 
 /* Price range input styling */
@@ -739,33 +634,6 @@ function closeCategoryModal() {
   document.getElementById('categoryModal').style.display = 'none';
   document.getElementById('categoryInput').value = ''; // Clear the input field
 }
-
-<!--        #basket p {-->
-<!--          font-size: 18px;-->
-<!--          font-weight: bold;-->
-<!--          text-align: center;-->
-<!--          margin-top: 20px;-->
-<!--        }-->
-<!--        .basket-items {-->
-<!--          margin-top: 20px;-->
-<!--          display: flex;-->
-<!--          flex-direction: column;-->
-<!--          align-items: center;-->
-<!--        }-->
-<!--        .basket-items .item {-->
-<!--          padding: 10px;-->
-<!--          background-color: #EAEAEA;-->
-<!--          margin: 5px;-->
-<!--          border-radius: 5px;-->
-<!--          width: 80%;-->
-<!--          text-align: center;-->
-<!--        }-->
-<!--        .nav-right img {-->
-<!--          width: 30px;-->
-<!--          height: 30px;-->
-<!--          vertical-align: middle;-->
-<!--        }-->
-
 
 
 let authorList = []; // Global array to store categories
@@ -922,6 +790,37 @@ function submitEditAuthor(bookId) {
         };
         reader.readAsDataURL(event.target.files[0]);
     }
+
+
+      function setAction() {
+    const form = document.getElementById('filterForm');
+    const sortValue = document.getElementById('sortBy').value;
+
+    if (sortValue === "price" || sortValue === "priceDesc") {
+      form.action = '/homeTest/filterByPrice';
+    } else if (sortValue === "title" || sortValue === "titleDesc") {
+      form.action = '/homeTest/filterByTitle';
+    } else {
+      form.action = ''; // Default action, if nothing is selected
+    }
+  }
+
+  function submitForm() {
+  const form = document.getElementById('filterForm');
+  const sortValue = document.getElementById('sortBy').value;
+
+  // Set the form action based on the selected value
+  if (sortValue === "price" || sortValue === "priceDesc") {
+    form.action = '/homeTest/filterByPrice';
+  } else if (sortValue === "title" || sortValue === "titleDesc") {
+    form.action = '/homeTest/filterByTitle';
+  } else {
+    form.action = ''; // Default action, if no selection is made
+  }
+
+  // Submit the form
+  form.submit();
+}
   </script>
 </head>
 <body>
@@ -973,9 +872,9 @@ function submitEditAuthor(bookId) {
 
   <div class="nav-right">
       <div class="user-links">
-        <button type="button" data-bs-toggle="modal" data-bs-target="#signupModal" class="text-button" style="margin-right: 20px;">
-          Sign up new Admin
-        </button>
+<!--        <button type="button" data-bs-toggle="modal" data-bs-target="#signupModal" class="text-button" style="margin-right: 20px;">-->
+<!--          Sign up new Admin-->
+<!--        </button>-->
         <a href="/admin/dashboard" class="user-link">Dashboard</a>
         <a href="/logout" class="user-link">Logout</a>
       </div>
@@ -1050,52 +949,6 @@ function submitEditAuthor(bookId) {
     </div>
   </form>
 </div>
-
-
-
-
-
-<!--<nav>-->
-<!--  <div class="nav-left">-->
-<!--    <a th:href="@{/home}">Home</a>-->
-<!--  </div>-->
-
-
-<!--  <div class="nav-center">-->
-<!--    <form action="/searchResults" method="get">-->
-<!--      <input type="text" name="query" placeholder="Search books..." required>-->
-<!--      <button type="submit">Search</button>-->
-<!--    </form>-->
-<!--  </div>-->
-
-<!--  <div class="nav-right">-->
-<!--    &lt;!&ndash; Check if the user is logged in &ndash;&gt;-->
-<!--    <div th:if="${#authentication.principal != 'anonymousUser'}">-->
-<!--      <span>Welcome, <strong th:text="${#authentication.name}">User</strong>!</span>-->
-<!--      <p>Your account balance is: $<span th:text="${balance}">0.00</span></p>-->
-
-
-
-<!--      <a href="/logged-in">My Account</a>-->
-<!--      <a href="/logout">Logout</a>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; Show Login/Sign Up buttons if the user is not logged in &ndash;&gt;-->
-<!--    <div th:if="${#authentication.principal == 'anonymousUser'}">-->
-<!--      <a href="/login#signup">Sign Up</a>-->
-<!--      <a href="/login#login">Login</a>-->
-<!--    </div>-->
-
-
-
-<!--    &lt;!&ndash; Shopping Basket Icon &ndash;&gt;-->
-<!--    <a href="/basket">-->
-<!--      <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">-->
-<!--    </a>-->
-<!--  </div>-->
-
-
-<!--</nav>-->
 
 
 <div class="container">
@@ -1316,24 +1169,45 @@ function submitEditAuthor(bookId) {
 </div>
 
 
+<!--<div class="pagination-bar">-->
+<!--    <span th:if="${currentPage > 0}">-->
+<!--        <a th:href="@{'?page=' + (${currentPage - 1}) + '&size=10'}" class="prev">Prev</a>-->
+<!--    </span>-->
+
+<!--  &lt;!&ndash; Loop through the total pages and create a link for each page &ndash;&gt;-->
+<!--  <span th:if="${totalPages > 1}" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">-->
+<!--        <a th:href="@{'?page=' + ${pageNum} + '&size=10'}"-->
+<!--           th:text="${pageNum + 1}"-->
+<!--           th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>-->
+<!--    </span>-->
+
+
+
+<!--  <span th:if="${currentPage < totalPages - 1}">-->
+<!--        <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10'}" class="next">Next</a>-->
+<!--    </span>-->
+
+<!--</div>-->
+
 <div class="pagination-bar">
+  <div class="pagination-bar">
+    <!-- Previous Page Link -->
     <span th:if="${currentPage > 0}">
-        <a th:href="@{'?page=' + (${currentPage - 1}) + '&size=10'}" class="prev">Prev</a>
+        <a th:href="@{'?page=' + (${currentPage - 1}) + '&size=10' + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&sort=' + ${sort}}" class="prev">Prev</a>
     </span>
 
-  <!-- Loop through the total pages and create a link for each page -->
-  <span th:if="${totalPages > 1}" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
-        <a th:href="@{'?page=' + ${pageNum} + '&size=10'}"
+    <!-- Page Numbers -->
+    <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="@{'?page=' + ${pageNum} + '&size=10' + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&sort=' + ${sort}}"
            th:text="${pageNum + 1}"
            th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>
     </span>
 
-
-
-  <span th:if="${currentPage < totalPages - 1}">
-        <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10'}" class="next">Next</a>
+    <!-- Next Page Link -->
+    <span th:if="${currentPage < totalPages - 1}">
+        <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10' + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&sort=' + ${sort}}" class="next">Next</a>
     </span>
-
+  </div>
 </div>
 
 
