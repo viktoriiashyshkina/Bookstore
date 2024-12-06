@@ -2,7 +2,9 @@ package com.project.controller;
 import static com.project.util.SecurityUtils.userIsAuthenticated;
 
 import com.project.entity.AccountEntity;
+import com.project.entity.Basket;
 import com.project.entity.User;
+import com.project.repository.BasketRepository;
 import com.project.service.AccountService;
 import com.project.service.UserService;
 import com.project.util.Role;
@@ -38,15 +40,17 @@ public class UserController {
   private final PasswordEncoder passwordEncoder;
   private final AccountService accountService;
   private final AuthenticationManager authenticationManager;
+  private final BasketRepository basketRepository;
 
   public UserController(UserService userService,
       PasswordEncoder passwordEncoder, AccountService accountService,
-      AuthenticationManager authenticationManager) {
+      AuthenticationManager authenticationManager, BasketRepository basketRepository) {
     this.userService = userService;
     this.passwordEncoder = passwordEncoder;
     this.accountService = accountService;
 
     this.authenticationManager = authenticationManager;
+    this.basketRepository = basketRepository;
   }
 
   @GetMapping("/signup")
@@ -121,33 +125,30 @@ public class UserController {
     //return "signup"; // Return to signup page with error message
   }
 
-//  @GetMapping("/")
-//  public String deleteAccount(Model model) {
-//    String username = SecurityContextHolder.getContext().getAuthentication().getName();
-//    User user = userService.findByUsername(username);
-//
-//    if (user != null) {
-//      model.addAttribute("user", user);  // Add the user object to the model
-//    }
-//    AccountEntity accountEntity = new AccountEntity();
-//    if (accountEntity == null) {
-//      throw new RuntimeException("Account is null");
-//    }
-//    model.addAttribute("name", username);
-//    model.addAttribute("balance", user.getAccount().getBalance());
-//    return "logged-in";
-//  }
-//
-//  @PostMapping("/delete-account")
-//  public ResponseEntity<String> deleteAccount(@AuthenticationPrincipal UserDetails currentUser) {
-//    String username = currentUser.getUsername();
-//    userService.deleteAccountAndProfile(username);
-//    return ResponseEntity.ok("Account and profile deleted successfully.");
-//  }
+  @PostMapping("/logged-in/delete-account")
+  public String deleteAccount(Model model) {
+    String username = SecurityContextHolder.getContext().getAuthentication().getName();
+    User user = userService.findByUsername(username);
 
-
-
-
+    if (user != null) {
+      model.addAttribute("user", user);  // Add the user object to the model
+    }
+    AccountEntity accountEntity = new AccountEntity();
+    if (accountEntity == null) {
+      throw new RuntimeException("Account is null");
+    }
+    // Optionally, nullify the reference in the Basket entity before deleting the account
+    if (accountEntity.getBasket() != null) {
+      Basket basket = accountEntity.getBasket();
+      basket.setAccountEntity(null); // Remove the association
+      basketRepository.save(basket); // Save the updated basket entity
+    }
+    userService.deleteAccountAndProfile(username);
+    logger.info("Deleted account {}", username);
+    model.addAttribute("name", username);
+    model.addAttribute("balance", user.getAccount().getBalance());
+    return "redirect:/logout";
+  }
 
 }
 

@@ -50,6 +50,7 @@ public class BasketController {
 
         model.addAttribute("basketDetails", basketDetails);
         model.addAttribute("basket", basket);
+        model.addAttribute("balance",basket.getAccountEntity().getBalance());
 
       } else  {
         model.addAttribute("emptyBasket", "true");
