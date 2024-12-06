@@ -26,7 +26,8 @@ public class BasketDetailsService {
   }
 
 @Transactional
-  public void saveOrderToDatabase (BasketDetails incompleteOrder) {basketDetailsRepository.save(incompleteOrder);
+  public void saveOrderToDatabase (BasketDetails incompleteOrder) {
+    basketDetailsRepository.save(incompleteOrder);
   }
 
   public void resetExpirationTimeForAllItems(Basket basket) {

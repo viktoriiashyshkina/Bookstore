@@ -27,7 +27,7 @@ public class OrderDetailsEntity {
 
   private Integer quantity;
 
-  @ManyToOne
+  @ManyToOne()
   @JoinColumn(name = "book_id", nullable = false)
   private BookEntity book;
 
