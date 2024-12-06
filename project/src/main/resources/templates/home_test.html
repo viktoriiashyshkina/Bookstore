@@ -786,32 +786,28 @@ form button:hover {
     </div>
 
 
-
-    </div>
-
-
-
     <div class="pagination-bar">
-    <span th:if="${currentPage > 0}">
-        <a th:href="@{'?page=' + (${currentPage - 1}) + '&size=10'}" class="prev">Prev</a>
+      <div class="pagination-bar">
+        <!-- Previous Page Link -->
+        <span th:if="${currentPage > 0}">
+        <a th:href="@{'?page=' + (${currentPage - 1}) + '&size=10' + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&sort=' + ${sort}}" class="prev">Prev</a>
     </span>
 
-      <!-- Loop through the total pages and create a link for each page -->
-      <span th:if="${totalPages > 1}" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
-        <a th:href="@{'?page=' + ${pageNum} + '&size=10'}"
+          <!-- Page Numbers -->
+    <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="@{'?page=' + ${pageNum} + '&size=10' + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&sort=' + ${sort}}"
            th:text="${pageNum + 1}"
            th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>
     </span>
 
-
-
-      <span th:if="${currentPage < totalPages - 1}">
-        <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10'}" class="next">Next</a>
+    <!-- Next Page Link -->
+    <span th:if="${currentPage < totalPages - 1}">
+        <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10' + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&sort=' + ${sort}}" class="next">Next</a>
     </span>
-
     </div>
-
   </div>
+
+</div>
 
 
 <footer>

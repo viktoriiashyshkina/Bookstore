@@ -120,9 +120,6 @@ public class FilterController {
     }
 
 
-
-    Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
-
     Page<BookEntity> books;
 
     // Determine sort order and filter books
@@ -137,7 +134,7 @@ public class FilterController {
     }
 
     // Update pageable with sort order
-    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
+    pageable = PageRequest.of(pageable.getPageNumber(), 10, sortOrder);
 
     // Filter books based on the price range and sorting
     if (minPrice != null && maxPrice != null && (minPrice > 0 || maxPrice < 1000000)) {
@@ -212,7 +209,7 @@ public class FilterController {
         break;
     }
     // Apply the sort to the pageable
-    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sortOrder);
+    pageable = PageRequest.of(pageable.getPageNumber(), 10, sortOrder);
 
     // Fetch the sorted books
     Page<BookEntity> books = filterService.getAllBooks(pageable); // Update method name if necessary
