@@ -1,7 +1,7 @@
 package com.project.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.project.model.Reply;
+import com.project.entity.Reply;
 
 import java.util.List;
 
