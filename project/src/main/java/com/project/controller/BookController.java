@@ -94,10 +94,10 @@ public class BookController {
     } catch (IOException e) {
       e.printStackTrace();
       redirectAttributes.addFlashAttribute("error", "Image upload failed!");
-      return "redirect:/books";
+      return "redirect:/admin/home";
     }
     bookRepository.save(book);
-    return "redirect:/books";
+    return "redirect:/admin/home";
   }
 
 
@@ -151,7 +151,7 @@ public class BookController {
     BookEntity book = bookRepository.findById(id).orElse(null);
     if (book == null) {
       redirectAttributes.addFlashAttribute("error", "Book not found!");
-      return "redirect:/books";
+      return "redirect:/admin/home";
     }
 
     book.setTitle(title);
@@ -199,11 +199,11 @@ public class BookController {
     } catch (IOException e) {
       e.printStackTrace();
       redirectAttributes.addFlashAttribute("error", "Image upload failed!");
-      return "redirect:/books";
+      return "redirect:/admin/home";
     }
 
     bookRepository.save(book);
-    return "redirect:/books";
+    return "redirect:/admin/home";
   }
 
 
@@ -214,10 +214,10 @@ public class BookController {
     BookEntity book = bookRepository.findById(id).orElse(null);
     if (book == null) {
       redirectAttributes.addFlashAttribute("error", "Book not found!");
-      return "redirect:/books";
+      return "redirect:/admin/home";
     }
     bookRepository.delete(book);
-    return "redirect:/books";
+    return "redirect:/admin/home";
   }
 
 

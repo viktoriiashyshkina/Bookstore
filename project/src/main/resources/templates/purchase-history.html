@@ -412,7 +412,7 @@
 
 <nav>
     <div class="nav-left">
-        <a th:href="@{/homeTest}">Home</a>
+        <a th:href="@{/home}">Home</a>
         <a th:href="@{/forum}">Forum</a>
     </div>
 
@@ -437,7 +437,7 @@
         </div>
 
         <!-- Shopping Basket Icon -->
-        <a href="/homeTest/basket">
+        <a href="/home/basket">
             <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
         </a>
     </div>
@@ -452,7 +452,7 @@
         <div th:each="order, iterStat : ${orders}">
             <h3 class="order-header">
                 Order #<span th:text="${order.id}"></span> -
-                <span class="order-date" th:text="${#strings.substring(order.date, 0, 19)}"></span>
+                <span class="order-date" th:text="${order.date}"></span>
             </h3>
 
             <!-- Create a table for each order -->
@@ -471,7 +471,7 @@
                     <td th:text="${entry.key.title}"></td> <!-- Book Title -->
                     <td th:text="${entry.value}"></td> <!-- Aggregated Quantity -->
                     <td th:text="${entry.key.price * entry.value}"></td> <!-- Price * Quantity -->
-                    <td th:text="${entry.key.#strings.substring(order.date, 0, 19)}"></td> <!-- New "Data" column for the entry -->
+                    <td th:text="${order.date}"></td> <!-- New "Data" column for the entry -->
                 </tr>
                 </tbody>
             </table>

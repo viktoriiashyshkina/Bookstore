@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/homeTest")
+@RequestMapping("/home")
 public class BasketUserController {
 
 
@@ -63,7 +63,7 @@ public class BasketUserController {
     BookEntity book = bookService.getBookById(bookId);
     if (book == null) {
       model.addAttribute("error", "Book not found");
-      return "redirect:/homeTest?bookNotFoundError";
+      return "redirect:/home?bookNotFoundError";
     }
 
     // Retrieve the basket for the currently logged-in user
@@ -117,7 +117,7 @@ public class BasketUserController {
     // Start the cleanup scheduler for this basket
     dynamicSchedulingConfig.startBasketDetailsCleanupScheduler(basket.getId(), Duration.ofMinutes(5));
 
-    return "redirect:/homeTest?successfullyAddedToBasket";
+    return "redirect:/home?successfullyAddedToBasket";
   }
 
 

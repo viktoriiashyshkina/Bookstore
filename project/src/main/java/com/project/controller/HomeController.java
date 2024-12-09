@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-//@RequestMapping("/homeTest")
 public class HomeController {
 
   private final BookRepository bookRepository;
@@ -38,10 +37,10 @@ public class HomeController {
 
   @GetMapping
   public String redirectToHome () {
-    return "redirect:/homeTest";
+    return "redirect:/home";
   }
 
-  @GetMapping("/homeTest")
+  @GetMapping("/home")
   public String getHomeScreen(Model model, Principal principal, Pageable pageable) {
 
     String username = SecurityContextHolder.getContext().getAuthentication().getName();

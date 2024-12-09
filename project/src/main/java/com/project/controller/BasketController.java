@@ -27,7 +27,7 @@ public class BasketController {
   }
 
 
-  @GetMapping("/homeTest/basket")
+  @GetMapping("/home/basket")
   public String getBasket(Model model) {
 
     if (!Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(),
@@ -57,14 +57,14 @@ public class BasketController {
       }
 
     } else {
-      return "redirect:/homeTest?basketLoginError";
+      return "redirect:/home?basketLoginError";
     }
     return "ShowBasket";
   }
 
 
 
-  @PostMapping("/homeTest/updateBasket/{bookId}")
+  @PostMapping("/home/updateBasket/{bookId}")
   public String updateBasket(@PathVariable Long bookId, @RequestParam int quantity, Model model) {
     basketService.updateBasketDetails(bookId, quantity);
 
@@ -73,10 +73,10 @@ public class BasketController {
     model.addAttribute("details", updatedDetails);
 
 
-    return "redirect:/homeTest/basket";
+    return "redirect:/home/basket";
   }
 
-  @PostMapping("/homeTest/removeFromBasket/{bookId}")
+  @PostMapping("/home/removeFromBasket/{bookId}")
   public String removeFromBasket(@PathVariable Long bookId) {
 
     List<BasketDetails> details = basketService.getBasketFromLoggedInUser()
@@ -94,7 +94,7 @@ public class BasketController {
       basketService.removeBasketDetail(detail);
     }
     System.out.println("removed from db");
-    return "redirect:/homeTest/basket";
+    return "redirect:/home/basket";
   }
 
 

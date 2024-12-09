@@ -696,7 +696,7 @@ form button:hover {
 
 <nav>
     <div class="nav-left">
-        <a th:href="@{/homeTest}">Home</a>
+        <a th:href="@{/home}">Home</a>
         <a th:href="@{/forum}">Forum</a>
     </div>
 
@@ -719,23 +719,8 @@ form button:hover {
 
 
 
-        <!-- Show Login/Sign Up buttons if the user is not logged in -->
-<!--        <div th:if="${#authentication.principal == 'anonymousUser'}">-->
-<!--            &lt;!&ndash;      <a href="/signup">Sign Up</a>&ndash;&gt;-->
-<!--            <button type="button" data-bs-toggle="modal" data-bs-target="#signupModal" class="text-button" style="margin-right: 20px;">-->
-<!--                Sign Up-->
-<!--            </button>-->
-
-<!--            <button type="button" data-bs-toggle="modal" data-bs-target="#loginModal" class="text-button">-->
-<!--                Login-->
-<!--            </button>-->
-
-<!--        </div>-->
-
-
-
         <!-- Shopping Basket Icon -->
-        <a href="/homeTest/basket">
+        <a href="/home/basket">
             <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
         </a>
     </div>
@@ -753,7 +738,7 @@ form button:hover {
 <div  id="showBasket" class="container" >
     <div class="book-container-wrapper">
     <div th:each="detail : ${basketDetails}" class="book-container">
-        <form th:action="@{/homeTest/updateBasket/{bookId}(bookId=${detail.book.id})}" method="post">
+        <form th:action="@{/home/updateBasket/{bookId}(bookId=${detail.book.id})}" method="post">
             <div class="book-content">
                 <!-- Book Image -->
                 <div class="book-image-container">
@@ -783,7 +768,7 @@ form button:hover {
 
                     <!-- Remove Button -->
                     <button type="submit"
-                            th:formaction="@{/homeTest/removeFromBasket/{bookId}(bookId=${detail.book.id})}"
+                            th:formaction="@{/home/removeFromBasket/{bookId}(bookId=${detail.book.id})}"
                             formmethod="post"
                             class="remove-button">
                         Remove
@@ -817,7 +802,7 @@ form button:hover {
         </div>
 
         <!-- Checkout Button -->
-        <form th:action="@{/homeTest/basket/checkout}" method="get">
+        <form th:action="@{/home/basket/checkout}" method="get">
             <button type="submit" class="checkout-button">Checkout</button>
         </form>
 

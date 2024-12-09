@@ -192,10 +192,10 @@
 
 <nav>
   <div class="nav-left">
-    <a th:href="@{/homeTest}">Home</a>
+    <a th:href="@{/home}">Home</a>
     <a th:href="@{/forum}">Forum</a>
     <a th:href="@{/logged-in/profile}">My Profile</a>
-    <a th:href="@{/homeTest/purchase-history}">My Orders</a>
+    <a th:href="@{/home/purchase-history}">My Orders</a>
   </div>
   <div class="nav-right">
     <div th:if="${#authentication.principal != 'anonymousUser'}" class="user-info">
@@ -208,7 +208,7 @@
         <a href="/logout" class="user-link">Logout</a>
       </div>
     </div>
-    <a href="/homeTest/basket">
+    <a href="/home/basket">
       <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
     </a>
   </div>
@@ -227,7 +227,7 @@
   <h2>Dashboard</h2>
   <div class="button-container">
     <a th:href="@{/logged-in/profile}">View Profile</a>
-    <a th:href="@{/homeTest/purchase-history}">View Orders</a>
+    <a th:href="@{/home/purchase-history}">View Orders</a>
   </div>
   <!-- Delete Account Button -->
   <div class="button-container">

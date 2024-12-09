@@ -11,6 +11,7 @@ import com.project.repository.OrderDetailsRepository;
 import com.project.repository.OrderRepository;
 import com.project.repository.PaymentRepository;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -96,7 +97,14 @@ public class OrderService {
     // Create and save the order entity
     OrderEntity order = new OrderEntity();
     order.setAccountEntity(account);
-    order.setDate(LocalDateTime.now().toString()); // Store current timestamp
+
+
+    LocalDateTime localDateTime = LocalDateTime.now();
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("EEEE, MMM dd, yyyy HH:mm:ss a");
+    String orderDate = localDateTime.format(dateTimeFormatter);
+    order.setDate(orderDate);
+
+   // order.setDate(LocalDateTime.now().toString()); // Store current timestamp
     order.setTotalAmount(basket.getTotalAmount()); // Set total amount from basket
     order = orderRepository.save(order);  // Save the order
 

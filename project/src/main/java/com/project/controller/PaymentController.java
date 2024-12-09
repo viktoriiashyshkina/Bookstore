@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @Controller
-//@RequestMapping("/homeTest")
 public class PaymentController {
 
     private final UserService userService;
@@ -50,7 +49,7 @@ public class PaymentController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/homeTest/basket/checkout")
+    @GetMapping("/home/basket/checkout")
     public String showPaymentPage(Model model) {
         // Fetch authenticated user
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -88,7 +87,7 @@ public class PaymentController {
 
 
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/homeTest/basket/checkout/confirm")
+    @GetMapping("/home/basket/checkout/confirm")
     public String showPaymentConfirmPage(Model model) {
         // Fetch authenticated user
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -124,7 +123,7 @@ public class PaymentController {
 
 
 
-    @PostMapping("/homeTest/basket/pay")
+    @PostMapping("/home/basket/pay")
     public String payForOrder(Model model) {
         // Get authenticated user's details
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -175,7 +174,7 @@ public class PaymentController {
         // Add order data to the model
         model.addAttribute("order", order);
         model.addAttribute("name", account.getUsername());
-        return "redirect:/homeTest/purchase-history"; // Return a success page
+        return "redirect:/home/purchase-history"; // Return a success page
     }
 
 
