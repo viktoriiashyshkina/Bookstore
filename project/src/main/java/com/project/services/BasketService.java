@@ -1,15 +1,13 @@
 package com.project.service;
 
-import com.project.config.DynamicSchedulingConfig;
+import com.project.configuration.DynamicSchedulingConfig;
 import com.project.entity.AccountEntity;
 import com.project.entity.Basket;
 import com.project.entity.BasketDetails;
 import com.project.entity.User;
 import com.project.repository.BasketDetailsRepository;
 import com.project.repository.BasketRepository;
-import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;

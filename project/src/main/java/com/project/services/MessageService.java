@@ -2,8 +2,8 @@ package com.project.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.project.model.Message;
-import com.project.model.Reply;
+import com.project.entity.Message;
+import com.project.entity.Reply;
 import com.project.repository.MessageRepository;
 import com.project.repository.ReplyRepository;
 

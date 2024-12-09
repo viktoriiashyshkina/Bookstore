@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import com.project.model.Message;
-import com.project.model.Reply;
+import com.project.entity.Message;
+import com.project.entity.Reply;
 import com.project.repository.MessageRepository;
 import com.project.repository.ReplyRepository;
 
