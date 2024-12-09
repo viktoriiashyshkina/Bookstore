@@ -1,3 +1,0 @@
---ALTER TABLE book_entity
---ALTER COLUMN categories TYPE text[]
---USING string_to_array(categories, ',');
