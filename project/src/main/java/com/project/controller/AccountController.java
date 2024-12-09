@@ -124,14 +124,6 @@ public class AccountController {
   }
 
 
-//  @GetMapping("homeTest/basket/checkout/confirm")
-//  public String getConfirm () {
-//    return "paymentConfirm";
-//  }
-
-
-
-
 }
 
 

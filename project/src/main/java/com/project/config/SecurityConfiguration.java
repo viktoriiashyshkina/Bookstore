@@ -36,8 +36,6 @@ public class SecurityConfiguration {
   }
 
 
-
-
   @Bean
   public SecurityFilterChain securityFilterChainModal(HttpSecurity http) throws Exception {
     http
@@ -136,15 +134,11 @@ public class SecurityConfiguration {
                 })
                 .permitAll()
         )
-
-
         .logout(logout ->
             logout
                 .logoutUrl("/logout")  // URL for logging out
                 .logoutSuccessUrl("/")  // Redirect after successful logout
         );
-
-
     return http.build();
 
   }

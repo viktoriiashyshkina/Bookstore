@@ -26,8 +26,7 @@ public class AdminController {
   private final UserService userService;
   private final BookService bookService;
   private final OrderService orderService;
-
-
+  private static final Logger logger = LoggerFactory.getLogger(UserController.class);
   private final AuthenticationManager authenticationManager;
 
   public AdminController(UserService userService, BookService bookService,
@@ -38,22 +37,18 @@ public class AdminController {
     this.orderService = orderService;
     this.authenticationManager = authenticationManager;
   }
-
   // Show Admin Dashboard
   @GetMapping("/admin/dashboard")
   public String showAdminDashboard(Model model) {
-
     // Fetch counts for users, books, and orders
     long userCount = userService.getUserCount();
     long bookCount = bookService.getBookCount();
     long orderCount = orderService.getOrderCount();
 
-////    // Fetch recent orders, e.g., the last 10 orders
+    // Fetch recent orders, e.g., the last 10 orders
     List<OrderEntity> recentOrders = orderService.getRecentOrders();
-
     // Add recent orders to the model
     model.addAttribute("recentOrders", recentOrders);
-
     // Add attributes to the model
     model.addAttribute("userCount", userCount);
     model.addAttribute("bookCount", bookCount);
@@ -61,10 +56,6 @@ public class AdminController {
     model.addAttribute("recentOrders", recentOrders);
     return "admin_dashboard"; // Thymeleaf template for the admin dashboard
   }
-
-
-  private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
 
   @PostMapping("/admin/signup")
   public String signup(
@@ -86,13 +77,8 @@ public class AdminController {
           user.getAuthorities()// Fetch roles as authorities
       );
       Authentication authentication = authenticationManager.authenticate(authenticationToken);
-
       SecurityContextHolder.getContext().setAuthentication(authentication);
       logger.info("New admin user signed up and authenticated: {}", username);
-
-
-//      logger.info("Redirecting to: /logged-in");
-
       return "redirect:/admin/dashboard?signupSuccess"; // Redirect to login after successful signup
 
     } catch (IllegalArgumentException e) {

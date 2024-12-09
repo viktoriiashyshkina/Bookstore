@@ -1172,25 +1172,41 @@ function submitEditAuthor(bookId) {
 
 
 <div class="pagination-bar">
-  <div class="pagination-bar">
-    <!-- Previous Page Link -->
-    <span th:if="${currentPage > 0}">
-        <a th:href="@{'?page=' + (${currentPage - 1}) + '&size=10' + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&sort=' + ${sort}}" class="prev">Prev</a>
+  <!-- Previous Page Link -->
+  <span th:if="${currentPage > 0}">
+        <a th:href="@{'?query=' + (${query != null ? query : ''})
+                     + '&minPrice=' + (${minPrice != null ? minPrice : ''})
+                     + '&maxPrice=' + (${maxPrice != null ? maxPrice : ''})
+                     + '&sort=' + (${sort != null ? sort : ''})
+                     + '&page=' + (${currentPage - 1})
+                     + '&size=10'}"
+           class="prev">Prev</a>
     </span>
 
-    <!-- Page Numbers -->
-    <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
-        <a th:href="@{'?page=' + ${pageNum} + '&size=10' + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&sort=' + ${sort}}"
+  <!-- Page Numbers -->
+  <span th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="@{'?query=' + (${query != null ? query : ''})
+                     + '&minPrice=' + (${minPrice != null ? minPrice : ''})
+                     + '&maxPrice=' + (${maxPrice != null ? maxPrice : ''})
+                     + '&sort=' + (${sort != null ? sort : ''})
+                     + '&page=' + ${pageNum}
+                     + '&size=10'}"
            th:text="${pageNum + 1}"
            th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>
     </span>
 
-    <!-- Next Page Link -->
-    <span th:if="${currentPage < totalPages - 1}">
-        <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10' + '&minPrice=' + ${minPrice} + '&maxPrice=' + ${maxPrice} + '&sort=' + ${sort}}" class="next">Next</a>
+  <!-- Next Page Link -->
+  <span th:if="${currentPage < totalPages - 1}">
+        <a th:href="@{'?query=' + (${query != null ? query : ''})
+                     + '&minPrice=' + (${minPrice != null ? minPrice : ''})
+                     + '&maxPrice=' + (${maxPrice != null ? maxPrice : ''})
+                     + '&sort=' + (${sort != null ? sort : ''})
+                     + '&page=' + (${currentPage + 1})
+                     + '&size=10'}"
+           class="next">Next</a>
     </span>
-  </div>
 </div>
+
 
 
 <footer>
