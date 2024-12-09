@@ -32,11 +32,8 @@ public class AuthenticationController {
 
   @GetMapping("/logged-in")
   public String loggedInPage(Model model) {
-
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
     User user = userService.findByUsername(username);
-
-
     if (user != null) {
       model.addAttribute("user", user);  // Add the user object to the model
     }
@@ -48,8 +45,7 @@ public class AuthenticationController {
     model.addAttribute("balance", user.getAccount().getBalance());
     return "logged-in"; // The Thymeleaf template to render
   }
-
-    }
+}
 
 
 

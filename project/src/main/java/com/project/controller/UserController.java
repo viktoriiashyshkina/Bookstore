@@ -61,17 +61,6 @@ public class UserController {
   }
 
 
-//  @PostMapping("/login2")
-//  public String processModalLogin(@RequestParam("username") String username,
-//      @RequestParam("password") String password,
-//      @RequestParam("role") String role,
-//      HttpServletRequest request, HttpServletResponse response) {
-//    // Handle the modal login form submission
-//    // ...
-//    return "redirect:/"; // or any other appropriate redirect URL
-//  }
-
-
   private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
   /**

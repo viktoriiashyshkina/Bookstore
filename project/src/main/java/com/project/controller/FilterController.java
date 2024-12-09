@@ -1,13 +1,9 @@
 package com.project.controller;
-
 import com.project.entity.BookEntity;
 import com.project.entity.User;
-import com.project.repository.BookRepository;
-
 import com.project.service.FilterService;
 import com.project.service.UserService;
 import com.project.util.Role;
-import java.awt.print.Book;
 import java.util.Base64;
 import java.util.List;
 import java.util.Set;
@@ -16,8 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,10 +25,6 @@ public class FilterController {
 
   @Autowired
   private FilterService filterService;
-
-  @Autowired
-  private BookRepository bookRepository;
-
 
   @Autowired
   private UserService userService;
@@ -50,7 +41,7 @@ public class FilterController {
     if (userService.findByUsername(username) != null) {
       user = userService.findByUsername(username);
       role = user.getRoles();
-      System.out.println("role: "+ role);
+      System.out.println("role: " + role);
       model.addAttribute("user", user);
       if (role.contains(Role.ADMIN)) {
         model.addAttribute("role", "admin");
@@ -59,11 +50,9 @@ public class FilterController {
         model.addAttribute("balance", user.getAccount().getBalance());
       }
     } else {
-      model.addAttribute("user","null");
+      model.addAttribute("user", "null");
       model.addAttribute("role", "null");
     }
-
-
 
     Pageable pageRequest = PageRequest.of(pageable.getPageNumber(), 10);
 
@@ -84,10 +73,10 @@ public class FilterController {
     model.addAttribute("totalPages", books.getTotalPages());
     model.addAttribute("totalItems", books.getTotalElements());
 
-    if (role==null || role.contains(Role.USER)) {
+    if (role == null || role.contains(Role.USER)) {
       return "home_test";
     } else {
-      return  "books";
+      return "books";
     }
 
   }
@@ -106,7 +95,7 @@ public class FilterController {
     if (userService.findByUsername(username) != null) {
       user = userService.findByUsername(username);
       role = user.getRoles();
-      System.out.println("role: "+ role);
+      System.out.println("role: " + role);
       model.addAttribute("user", user);
       if (role.contains(Role.ADMIN)) {
         model.addAttribute("role", "admin");
@@ -115,10 +104,9 @@ public class FilterController {
         model.addAttribute("balance", user.getAccount().getBalance());
       }
     } else {
-      model.addAttribute("user","null");
+      model.addAttribute("user", "null");
       model.addAttribute("role", "null");
     }
-
 
     Page<BookEntity> books;
 
@@ -153,7 +141,6 @@ public class FilterController {
       }
     });
 
-
     // Add attributes to the model
     model.addAttribute("books", books.getContent());
     model.addAttribute("currentPage", books.getNumber());
@@ -163,13 +150,12 @@ public class FilterController {
     model.addAttribute("maxPrice", maxPrice);
     model.addAttribute("sort", sort);
 
-    if (role==null || role.contains(Role.USER)) {
+    if (role == null || role.contains(Role.USER)) {
       return "home_test";
     } else {
-      return  "books";
+      return "books";
     }
   }
-
 
   @GetMapping("/home/filterByTitle")
   public String filterBooksByTitle(
@@ -184,7 +170,7 @@ public class FilterController {
     if (userService.findByUsername(username) != null) {
       user = userService.findByUsername(username);
       role = user.getRoles();
-      System.out.println("role: "+ role);
+      System.out.println("role: " + role);
       model.addAttribute("user", user);
       if (role.contains(Role.ADMIN)) {
         model.addAttribute("role", "admin");
@@ -193,7 +179,7 @@ public class FilterController {
         model.addAttribute("balance", user.getAccount().getBalance());
       }
     } else {
-      model.addAttribute("user","null");
+      model.addAttribute("user", "null");
       model.addAttribute("role", "null");
     }
 
@@ -230,21 +216,19 @@ public class FilterController {
     model.addAttribute("maxPrice", maxPrice);
     model.addAttribute("sort", sort);
 
-    if (role==null || role.contains(Role.USER)) {
+    if (role == null || role.contains(Role.USER)) {
       return "home_test";
     } else {
-      return  "books";
+      return "books";
     }
   }
 
-  // Helper method to encode image data to Base64
   private String encodeImageToBase64(byte[] imageData) {
     return Base64.getEncoder().encodeToString(imageData);
   }
-
   @GetMapping("/home/filterByCategory")
   public String filterBooksByCategory(
-     @RequestParam String category, Model model) {
+      @RequestParam String category, Model model) {
     List<BookEntity> books = filterService.filterByCategory(category);
 
     // Ensure image data is converted to Base64 for display
@@ -257,12 +241,10 @@ public class FilterController {
       }
     });
 
-  // Add attributes to the model for rendering in the view
+    // Add attributes to the model for rendering in the view
     model.addAttribute("books", books);
-
     return "home_test";
-
-}
+  }
 }
 
 
