@@ -149,7 +149,6 @@ public class UserController {
     model.addAttribute("balance", user.getAccount().getBalance());
     return "redirect:/logout";
   }
-
 }
 
 
