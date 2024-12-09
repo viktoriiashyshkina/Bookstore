@@ -113,23 +113,6 @@ public class BasketService {
 
 
 
-//  @Transactional
-//  public void addBasketDetails(Long basketId, BasketDetails basketDetails) {
-//    // Retrieve the Basket entity by its ID
-//    Basket basket = basketRepository.findById(basketId)
-//        .orElseThrow(() -> new EntityNotFoundException("Basket not found with ID: " + basketId));
-//
-//    // Set the Basket entity in BasketDetails
-//    basketDetails.setBasket(basket);
-//    basketDetails.setUpdatedAt(LocalDateTime.now());
-//
-//    // Save the BasketDetails entity to the database
-//    basketDetailsRepository.save(basketDetails);
-//
-//    // Start cleanup scheduler for this basket ID
-//    dynamicSchedulingConfig.startBasketDetailsCleanupScheduler(basketId);
-//  }
-
 
 
 
