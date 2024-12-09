@@ -41,7 +41,7 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain securityFilterChainModal(HttpSecurity http) throws Exception {
     http
-        .securityMatcher("/homeTest/**")
+        .securityMatcher("/home/**")
         .csrf().disable()
         .authorizeRequests(authorizeRequests ->
             authorizeRequests
@@ -52,18 +52,18 @@ public class SecurityConfiguration {
                 .requestMatchers("/logged-in/", "/redeemGiftCard").authenticated()  // Restrict access to logged-in users
                 .requestMatchers("/profile").authenticated()
                 .requestMatchers("/logged-in/updateProfile").authenticated()
-                .requestMatchers("/homeTest/basket/checkout").authenticated()
-                .requestMatchers("/homeTest/payment").authenticated()
-                .requestMatchers("/homeTest/basket/pay").authenticated()
-                .requestMatchers("/homeTest/purchase-history").authenticated()
+                .requestMatchers("/home/basket/checkout").authenticated()
+                .requestMatchers("/home/payment").authenticated()
+                .requestMatchers("/home/basket/pay").authenticated()
+                .requestMatchers("/home/purchase-history").authenticated()
                 .requestMatchers("/books/**").permitAll()
 
         )
         .formLogin(formLogin ->
             formLogin
-                .loginPage("/homeTest")  // Custom login page
+                .loginPage("/home")  // Custom login page
                 .defaultSuccessUrl("/", true)  // Redirect after successful login
-                .loginProcessingUrl("/homeTest/process-login-modal")  // Form action for login
+                .loginProcessingUrl("/home/process-login-modal")  // Form action for login
                 .successHandler((request, response, authentication) -> {
                   // Redirect based on roles
                   authentication.getAuthorities().stream()
@@ -73,7 +73,7 @@ public class SecurityConfiguration {
                           if ("ROLE_ADMIN".equals(authority)) {
                             response.sendRedirect("/admin/dashboard");
                           } else if ("ROLE_USER".equals(authority)) {
-                            response.sendRedirect("/homeTest?success");
+                            response.sendRedirect("/home?success");
                           }
                         } catch (IOException e) {
                           e.printStackTrace();
@@ -84,8 +84,8 @@ public class SecurityConfiguration {
 
         .logout(logout ->
             logout
-                .logoutUrl("/homeTest/logout")  // URL for logging out
-                .logoutSuccessUrl("/homeTest")  // Redirect after successful logout
+                .logoutUrl("/home/logout")  // URL for logging out
+                .logoutSuccessUrl("/home")  // Redirect after successful logout
         )
     ;
 

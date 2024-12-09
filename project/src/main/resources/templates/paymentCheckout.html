@@ -269,7 +269,7 @@ form {
 
 <nav>
     <div class="nav-left">
-        <a th:href="@{/homeTest}">Home</a>
+        <a th:href="@{/home}">Home</a>
         <a th:href="@{/forum}">Forum</a>
     </div>
 
@@ -290,7 +290,7 @@ form {
 
 
         <!-- Shopping Basket Icon -->
-        <a href="/homeTest/basket">
+        <a href="/home/basket">
             <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
         </a>
     </div>
@@ -305,7 +305,7 @@ form {
 
     <div class="content">
         <h2>Please enter your address information</h2>
-        <form th:action="@{/homeTest/basket/checkout/updateProfile}" method="post">
+        <form th:action="@{/home/basket/checkout/updateProfile}" method="post">
             <input type="hidden" name="_method" value="put">
 
             <div class="input-field">

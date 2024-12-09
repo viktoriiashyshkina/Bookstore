@@ -494,7 +494,7 @@ form button:hover {
 
 <nav>
   <div class="nav-left">
-    <a th:href="@{/homeTest}">Home</a>
+    <a th:href="@{/home}">Home</a>
     <a th:href="@{/forum}">Forum</a>
   </div>
 
@@ -514,7 +514,7 @@ form button:hover {
       </select>
     </form>
 
-    <form action="/homeTest/searchResults" method="get">
+    <form action="/home/searchResults" method="get">
       <input type="text" name="query" placeholder="Search books..." required>
       <button type="submit">Search</button>
     </form>
@@ -523,7 +523,7 @@ form button:hover {
 
     <div class="nav-center price-range-container">
       <!-- Price Range Form -->
-      <form method="get" action="/homeTest/filterByPriceRange" class="price-range-form">
+      <form method="get" action="/home/filterByPriceRange" class="price-range-form">
         <button type="submit">Filter by Price Range</button>
         <input type="number" name="minPrice" id="minPrice" value="${minPrice}" placeholder="Min">
         <input type="number" name="maxPrice" id="maxPrice" value="${maxPrice}" placeholder="Max">
@@ -565,7 +565,7 @@ form button:hover {
 
 
     <!-- Shopping Basket Icon -->
-    <a href="/homeTest/basket">
+    <a href="/home/basket">
       <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
     </a>
   </div>
@@ -585,7 +585,7 @@ form button:hover {
 
 
 <div  class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-  <form th:action="@{/homeTest/process-login-modal}" method="post" class="needs-validation" novalidate>
+  <form th:action="@{/home/process-login-modal}" method="post" class="needs-validation" novalidate>
     <div class="modal-dialog modal-dialog-centered" style="max-width: 900px;">
       <div class="modal-content">
         <!-- Modal Header -->
@@ -648,7 +648,7 @@ form button:hover {
 
 <!-- Signup Modal -->
 <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
-  <form th:action="@{/homeTest/signup}" method="post">
+  <form th:action="@{/home/signup}" method="post">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 900px;">
       <div class="modal-content">
         <!-- Modal Header -->
@@ -707,7 +707,7 @@ form button:hover {
   <div id="showBooks" class="container">
     <div th:if="${role == 'user'}" class="book-container-wrapper">
       <div  th:each="book : ${books}" class="book-container">
-        <form th:action="@{/homeTest/addToBasket/{bookId}(bookId=${book.id})}" method="post">
+        <form th:action="@{/home/addToBasket/{bookId}(bookId=${book.id})}" method="post">
           <div class="book-content">
             <div>
               <img th:src="'data:image/jpeg;base64,' + ${book.imageDataBase64}" class="book-image" alt="Book Image">
@@ -746,8 +746,8 @@ form button:hover {
           <!-- Modal Body -->
           <!-- Modal Footer -->
           <div class="modal-footer">
-            <a href="/homeTest" class="btn btn-primary">Continue Shopping</a>
-            <a href="/homeTest/basket" class="btn btn-secondary">Go to Basket</a>
+            <a href="/home" class="btn btn-primary">Continue Shopping</a>
+            <a href="/home/basket" class="btn btn-secondary">Go to Basket</a>
           </div>
         </div>
       </div>
@@ -874,9 +874,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const sortValue = document.getElementById('sortBy').value;
 
     if (sortValue === "price" || sortValue === "priceDesc") {
-      form.action = '/homeTest/filterByPrice';
+      form.action = '/home/filterByPrice';
     } else if (sortValue === "title" || sortValue === "titleDesc") {
-      form.action = '/homeTest/filterByTitle';
+      form.action = '/home/filterByTitle';
     } else {
       form.action = ''; // Default action, if nothing is selected
     }
@@ -888,9 +888,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Set the form action based on the selected value
   if (sortValue === "price" || sortValue === "priceDesc") {
-    form.action = '/homeTest/filterByPrice';
+    form.action = '/home/filterByPrice';
   } else if (sortValue === "title" || sortValue === "titleDesc") {
-    form.action = '/homeTest/filterByTitle';
+    form.action = '/home/filterByTitle';
   } else {
     form.action = ''; // Default action, if no selection is made
   }

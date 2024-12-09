@@ -312,12 +312,16 @@ nav button:hover {
     <tr th:each="order : ${recentOrders}">
       <td th:text="${order.id}"></td>
       <td th:text="${order.accountEntity.username}"></td>
-      <td th:text="${order.Date}"></td>
+      <td th:text="${order.date}"></td>
       <td th:text="${order.totalAmount}"></td>
     </tr>
     </tbody>
   </table>
 </section>
+
+
+
+
 
 
   <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
@@ -402,6 +406,10 @@ nav button:hover {
       }, 10000);
     });
   });
+
+
+
+
 
 
 </script>

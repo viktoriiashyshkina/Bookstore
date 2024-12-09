@@ -41,7 +41,7 @@ public class PurchaseHistoryController {
 
 
   @PreAuthorize("isAuthenticated()")
-  @GetMapping("/homeTest/purchase-history")
+  @GetMapping("/home/purchase-history")
   public String viewPurchaseHistory(Model model) {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
     User user = userService.findByUsername(username);

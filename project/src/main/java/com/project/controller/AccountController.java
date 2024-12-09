@@ -90,7 +90,7 @@ public class AccountController {
 
   @PreAuthorize("isAuthenticated()")
 
-  @PostMapping("/homeTest/basket/checkout/updateProfile")
+  @PostMapping("/home/basket/checkout/updateProfile")
   public String updateProfileInPayment(
       @RequestParam String firstName,
       @RequestParam String lastName,
@@ -120,7 +120,7 @@ public class AccountController {
     // Save the account information
     accountService.updateAccount(accountEntity);
     // Optionally, save any additional user details if required
-    return "redirect:/homeTest/basket/checkout/confirm";  // Redirect to the profile page after saving
+    return "redirect:/home/basket/checkout/confirm";  // Redirect to the profile page after saving
   }
 
 

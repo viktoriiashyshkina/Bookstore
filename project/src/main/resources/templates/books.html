@@ -797,9 +797,9 @@ function submitEditAuthor(bookId) {
     const sortValue = document.getElementById('sortBy').value;
 
     if (sortValue === "price" || sortValue === "priceDesc") {
-      form.action = '/homeTest/filterByPrice';
+      form.action = '/home/filterByPrice';
     } else if (sortValue === "title" || sortValue === "titleDesc") {
-      form.action = '/homeTest/filterByTitle';
+      form.action = '/home/filterByTitle';
     } else {
       form.action = ''; // Default action, if nothing is selected
     }
@@ -811,9 +811,9 @@ function submitEditAuthor(bookId) {
 
   // Set the form action based on the selected value
   if (sortValue === "price" || sortValue === "priceDesc") {
-    form.action = '/homeTest/filterByPrice';
+    form.action = '/home/filterByPrice';
   } else if (sortValue === "title" || sortValue === "titleDesc") {
-    form.action = '/homeTest/filterByTitle';
+    form.action = '/home/filterByTitle';
   } else {
     form.action = ''; // Default action, if no selection is made
   }
@@ -861,7 +861,7 @@ function submitEditAuthor(bookId) {
 
     <div class="nav-center price-range-container">
       <!-- Price Range Form -->
-      <form method="get" action="/homeTest/filterByPriceRange" class="price-range-form">
+      <form method="get" action="/home/filterByPriceRange" class="price-range-form">
         <button type="submit">Filter by Price Range</button>
         <input type="number" name="minPrice" id="minPrice" value="${minPrice}" placeholder="Min">
         <input type="number" name="maxPrice" id="maxPrice" value="${maxPrice}" placeholder="Max">
@@ -960,7 +960,7 @@ function submitEditAuthor(bookId) {
 
 <!--   Add Book Form-->
   <div id="addBookContainer" class="add-book-container">
-    <form th:action="@{/books/add}" method="post" enctype="multipart/form-data">
+    <form th:action="@{/admin/add}" method="post" enctype="multipart/form-data">
       <div class="image-upload">
         <label for="imageUpload" class="image-upload-frame">
           <span id="uploadIcon" style="display: block;">+</span>
@@ -1070,7 +1070,7 @@ function submitEditAuthor(bookId) {
 
     <!-- Edit Book Form (Hidden by Default) -->
     <div th:id="|editBookContainer-${book.id}|" class="edit-book-container">
-      <form th:action="@{/books/edit/{id}(id=${book.id})}" method="post" enctype="multipart/form-data">
+      <form th:action="@{/admin/edit/{id}(id=${book.id})}" method="post" enctype="multipart/form-data">
 
 
         <div class="image-upload">
@@ -1157,7 +1157,7 @@ function submitEditAuthor(bookId) {
     <!-- Button to open the confirmation modal -->
     <div class="d-flex mt-2">
       <button class="btn btn-secondary me-2" th:onclick="|toggleEditBook('${book.id}')|">Edit</button>
-            <form th:action="@{/books/delete/{id}(id=${book.id})}" method="post" style="display: inline;">
+            <form th:action="@{/admin/delete/{id}(id=${book.id})}" method="post" style="display: inline;">
               <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this book?');">Delete</button>
             </form>
   </div>
@@ -1169,25 +1169,7 @@ function submitEditAuthor(bookId) {
 </div>
 
 
-<!--<div class="pagination-bar">-->
-<!--    <span th:if="${currentPage > 0}">-->
-<!--        <a th:href="@{'?page=' + (${currentPage - 1}) + '&size=10'}" class="prev">Prev</a>-->
-<!--    </span>-->
 
-<!--  &lt;!&ndash; Loop through the total pages and create a link for each page &ndash;&gt;-->
-<!--  <span th:if="${totalPages > 1}" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}">-->
-<!--        <a th:href="@{'?page=' + ${pageNum} + '&size=10'}"-->
-<!--           th:text="${pageNum + 1}"-->
-<!--           th:classappend="${pageNum == currentPage ? 'active' : ''}"></a>-->
-<!--    </span>-->
-
-
-
-<!--  <span th:if="${currentPage < totalPages - 1}">-->
-<!--        <a th:href="@{'?page=' + (${currentPage + 1}) + '&size=10'}" class="next">Next</a>-->
-<!--    </span>-->
-
-<!--</div>-->
 
 <div class="pagination-bar">
   <div class="pagination-bar">

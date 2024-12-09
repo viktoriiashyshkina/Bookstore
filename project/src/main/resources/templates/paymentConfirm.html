@@ -1392,7 +1392,7 @@ form {
 
 <nav>
     <div class="nav-left">
-        <a th:href="@{/homeTest}">Home</a>
+        <a th:href="@{/home}">Home</a>
         <a th:href="@{/forum}">Forum</a>
     </div>
 
@@ -1413,7 +1413,7 @@ form {
 
 
         <!-- Shopping Basket Icon -->
-        <a href="/homeTest/basket">
+        <a href="/home/basket">
             <img th:src="@{/images/purchase.png}" alt="Shopping Basket" style="width: 30px; height: 30px;">
         </a>
     </div>
@@ -1447,7 +1447,7 @@ form {
 
 <!-- Basket Action Buttons -->
 <div class="buttons">
-    <a href="/homeTest/basket/checkout" style="display:inline;">
+    <a href="/home/basket/checkout" style="display:inline;">
         <button type="submit">Go back</button>
     </a>
 
@@ -1455,7 +1455,7 @@ form {
         <button type="submit">Add Money</button>
     </form>
 
-    <form th:action="@{/homeTest/basket/pay}" method="post" style="display:inline;">
+    <form th:action="@{/home/basket/pay}" method="post" style="display:inline;">
         <button type="submit" name="pay">Pay Now</button>
     </form>
 </div>

@@ -38,7 +38,7 @@ public class FilterController {
   @Autowired
   private UserService userService;
 
-  @GetMapping("/homeTest/filterByPriceRange")
+  @GetMapping("/home/filterByPriceRange")
   public String filterBookByPriceRange(
       @RequestParam(defaultValue = "0") Double minPrice,
       @RequestParam(defaultValue = "1000000") Double maxPrice,
@@ -92,7 +92,7 @@ public class FilterController {
 
   }
 
-  @GetMapping("/homeTest/filterByPrice")
+  @GetMapping("/home/filterByPrice")
   public String filterBooksByPrice(
       @RequestParam(defaultValue = "1") Double minPrice,
       @RequestParam(defaultValue = "1000000") Double maxPrice,
@@ -171,7 +171,7 @@ public class FilterController {
   }
 
 
-  @GetMapping("/homeTest/filterByTitle")
+  @GetMapping("/home/filterByTitle")
   public String filterBooksByTitle(
       @RequestParam(defaultValue = "1") Double minPrice,
       @RequestParam(defaultValue = "1000000") Double maxPrice,
@@ -242,7 +242,7 @@ public class FilterController {
     return Base64.getEncoder().encodeToString(imageData);
   }
 
-  @GetMapping("/homeTest/filterByCategory")
+  @GetMapping("/home/filterByCategory")
   public String filterBooksByCategory(
      @RequestParam String category, Model model) {
     List<BookEntity> books = filterService.filterByCategory(category);

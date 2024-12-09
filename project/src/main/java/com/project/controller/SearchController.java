@@ -28,7 +28,7 @@ public class SearchController {
     this.userService = userService;
   }
 
-  @GetMapping("/homeTest/searchResults")
+  @GetMapping("/home/searchResults")
   public String getHomeScreen(Model model,
       @RequestParam("query") String query,
       @RequestParam(value = "page", defaultValue = "0") int page,
