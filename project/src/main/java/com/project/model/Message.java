@@ -12,16 +12,19 @@ public class Message {
     private Long id;
 
     private String name;
+
     private String email;
 
     @Column(name = "message_content")
     private String messageContent;
 
-    private LocalDateTime createdDate;
+    private LocalDateTime messageAt;
 
     @PrePersist
     public void prePersist() {
-        createdDate = LocalDateTime.now();
+        if (messageAt == null) {
+            messageAt = LocalDateTime.now(); // Ensure messageAt is initialized when the entity is persisted
+        }
     }
 
     // Getters and setters
@@ -57,11 +60,11 @@ public class Message {
         this.messageContent = messageContent;
     }
 
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
+    public LocalDateTime getMessageAt() {
+        return messageAt;
     }
 
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
+    public void setMessageAt(LocalDateTime messageAt) {
+        this.messageAt = messageAt;
     }
 }

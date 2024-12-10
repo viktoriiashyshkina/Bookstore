@@ -125,41 +125,52 @@
     </div>
 
 </nav>
-<!--Forum-->
-<section class="forum-section" style="width: 60%; max-width: 800px; background-color: rgba(255, 255, 255, 0.7); padding: 15px; margin: 30px auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-    <h2 style="text-align: center; margin-bottom: 15px; font-size: 1.8rem;">Mini Forum</h2>
+<!-- Forum -->
+<section class="forum-section"
+         style="width: 80%; max-width: 800px; background-color: #ffffff; padding: 20px; margin: 40px auto 60px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+    <h2 style="text-align: center; margin-bottom: 25px; font-size: 2rem; color: #444; font-weight: bold;">Mini Forum</h2>
 
     <!-- Contact Form to Post New Message -->
-    <section class="contact-form" style="margin-top: 15px; background-color: rgba(255, 255, 255, 0.9); padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <section class="contact-form"
+             style="margin-top: 20px; background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);">
         <form th:action="@{/forum/post}" method="post" style="display: block;">
-            <label for="name" style="display: block; margin-top: 10px; font-size: 14px;">Your Name:</label>
-            <input type="text" id="name" name="name" required placeholder="Enter your name" style="width: 100%; padding: 6px; margin-top: 5px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px;">
+            <label for="name" style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: bold; color: #333;">Your Name:</label>
+            <input type="text" id="name" name="name" required placeholder="Enter your name"
+                   style="width: 100%; padding: 12px; margin-bottom: 15px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px;">
 
-            <label for="email" style="display: block; margin-top: 10px; font-size: 14px;">Your Email:</label>
-            <input type="email" id="email" name="email" required placeholder="Enter your email" style="width: 100%; padding: 6px; margin-top: 5px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px;">
+            <label for="email" style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: bold; color: #333;">Your Email:</label>
+            <input type="email" id="email" name="email" required placeholder="Enter your email"
+                   style="width: 100%; padding: 12px; margin-bottom: 15px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px;">
 
-            <label for="message" style="display: block; margin-top: 10px; font-size: 14px;">Your Message:</label>
-            <textarea id="message" name="messageContent" rows="4" placeholder="Ask questions, share thoughts..." required style="width: 100%; padding: 6px; margin-top: 5px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; resize: vertical;"></textarea>
+            <label for="message" style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: bold; color: #333;">Your Message:</label>
+            <textarea id="message" name="messageContent" rows="4" placeholder="Ask questions, share thoughts..." required
+                      style="width: 100%; padding: 12px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px; resize: vertical; margin-bottom: 15px;"></textarea>
 
-            <button type="submit" style="background-color: #4CAF50; color: white; padding: 8px 16px; border: none; cursor: pointer; margin-top: 10px; border-radius: 5px; font-size: 14px;">Post</button>
+            <button type="submit"
+                    style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px; font-size: 14px;">Post</button>
         </form>
 
         <p th:if="${param.success}" style="color: green; margin-top: 10px; font-size: 14px;">Thank you for your message!</p>
     </section>
 
     <!-- Display Forum Messages -->
-    <div class="forum-messages" style="margin-top: 20px;">
-        <h3 style="font-size: 18px; margin-bottom: 10px;">Messages Posted</h3>
-        <div th:each="message : ${messages}" style="background-color: rgba(255, 255, 255, 0.6); padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px;">
+    <section class="forum-messages" style="margin-top: 30px;">
+        <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: #444;">Messages Posted</h3>
+        <div th:each="message : ${messages}"
+             style="background-color: #ffffff; padding: 15px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
             <div style="margin-bottom: 8px;">
-                <p>
-                    <strong th:text="${message.name}" style="color: black;"></strong>:
-                    <a th:href="@{/forum/message/{id}(id=${message.id})}" th:text="${message.messageContent}" style="color: #007BFF; text-decoration: none; font-weight: bold;"></a>
+                <p style="margin: 0; color: #333;">
+                    <strong th:text="${message.name}" style="color: #000;"></strong> posted at:
+                    <span th:text="${message.messageAt}" style="color: #777;"></span>
                 </p>
             </div>
+            <a th:href="@{/forum/message/{id}(id=${message.id})}" th:text="${message.messageContent}"
+               style="color: #007BFF; text-decoration: none; font-weight: bold;"></a>
         </div>
-    </div>
+    </section>
 </section>
+
+
 
 
 <footer>
