@@ -133,8 +133,10 @@
 
     <!-- Display the original message -->
     <div class="message" style="background-color: #f9f9f9; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); font-size: 0.9rem;">
-        <p><strong th:text="${message.name}" style="font-weight: bold; color: #333;"></strong></p>
-        <p th:text="${message.messageContent}" style="margin-top: 8px; color: #555;"></p>
+        <p style="margin: 0; color: #333;">
+            <strong th:text="${message.name}" style="color: #000;"></strong> posted at:
+            <span th:text="${message.messageAt}" style="color: #777;"></span>
+        </p>
     </div>
 
     <!-- Success or error message after posting a reply -->
